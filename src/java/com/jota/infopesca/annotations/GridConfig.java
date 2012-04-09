@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
 public @interface GridConfig {
     
-    String label() default "Not Definied";
+    String label() default "Não definido";
     int order() default -1;
     boolean required() default false;
     boolean editable() default true;
