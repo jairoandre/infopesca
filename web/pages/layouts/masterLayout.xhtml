@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{resource['css:default.css']}" rel="stylesheet" type="text/css" />
+        <link href="#{resource['css:cssLayout.css']}" rel="stylesheet" type="text/css" />
+        <link href="#{resource['css:infopesca.css']}" rel="stylesheet" type="text/css" />
+        <link href="#{resource['css:grid.css']}" rel="stylesheet" type="text/css" />
+        <link href="#{resource['css:jquery-ui-1.8.16.custom.css']}" rel="stylesheet" type="text/css" />
+        <h:outputScript name="jquery-1.6.2.min.js" library="js" target="head" />
+        <h:outputScript name="jquery-ui-1.8.16.custom.min.js" library="js" target="head" />
+        <h:outputScript name="jquery.ui.datepicker-pt-BR.js" library="js" target="head" />
+        <h:outputScript name="jquery.validate.js" library="js" target="head" />
+        <h:outputScript name="jquery.maskedinput-1.3.js" library="js" target="head" />
+        <h:outputScript name="jquery.maskMoney.js" library="js" target="head" />
+        <h:outputScript name="messages_ptbr.js" library="js" target="head" />
+        <h:outputScript name="jsf.js" library="javax.faces"/>
+        <title>Celso Rocha Jr. - Comércio de Pescado</title>
+    </h:head>
+
+    <h:body>
+        <div id="top" class="top">
+            <h:graphicImage id="tunaImg" value="#{resource['imgs:tuna.png']}" styleClass="tuna"/>
+            <div class="titulo">
+                <h:outputText value="Celso Rocha - Comércio de Pescado" />
+            </div>
+        </div>
+        <div>
+            <div id="left">
+                <ui:include src="./../forms/menu.xhtml"/>
+            </div>
+            <div id="content" class="left_content">
+                <ui:repeat value="#{facesContext.messageList}" var="facesMessage">
+                    <h:panelGroup id="msgPanel" layout="block" styleClass="ui-state-error ui-corner-all" style="padding: 5px;" rendered="#{facesMessage.severity.ordinal eq 2}">
+                        <h:panelGroup id="icon" styleClass="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"/>
+                        <h:outputText id="msg" value="#{facesMessage.summary}" />    
+                    </h:panelGroup>
+                </ui:repeat>
+                <ui:insert name="content"/>
+                <h:messages style="visibility: hidden"/>
+            </div>
+        </div>
+    </h:body>
+</html>

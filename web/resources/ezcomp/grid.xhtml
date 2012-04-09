@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ip="http://infopesca.org/infopesca"
+      xmlns:ezcomp="http://java.sun.com/jsf/composite/ezcomp">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id"/>
+        <cc:attribute name="label" required="true"/>
+        <cc:attribute name="mb" required="true"/>
+        <cc:attribute name="formName"/>
+        <cc:facet name="formContent"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGroup id="grid">
+            <!-- DATA TABLE -->
+            <h:panelGroup id="gridPanel" layout="block" style="margin-bottom: 5px">
+                <ezcomp:message id="msgVazia" msg="Não há registros cadastrados." rendered="#{cc.attrs.mb.emptyList}"/>
+                <h:panelGroup id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
+                    <table class="box-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}">
+                                        <f:ajax event="click" execute="selectAll" render="tablePanel -#{cc.clientId}-deleteButton" listener="#{cc.attrs.mb.checkAll}"/>
+                                    </h:selectBooleanCheckbox>
+                                </th>
+                                <ui:repeat id="repeatFieldNames" value="#{cc.attrs.mb.fieldNames}" var="field">
+                                    <th scope="col">
+                                        <h:outputText value="#{cc.attrs.mb.labels[field]}"/>
+                                    </th>
+                                </ui:repeat>                 
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th colspan="#{cc.attrs.mb.columnsCount}">
+                                    <h:outputText value="Aqui ficará a paginação"/>
+                                </th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <ui:repeat id="repeatList" value="#{cc.attrs.mb.list}" var="obj" varStatus="status">
+                                <tr>
+                                    <td>
+                                        <h:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[status.index]}">
+                                            <f:ajax event="click" execute="checkBox" render="-#{cc.clientId}-selectAll -#{cc.clientId}-deleteButton" listener="#{cc.attrs.mb.clickCheck}"/>
+                                        </h:selectBooleanCheckbox>
+                                    </td>
+                                    <ui:repeat id="repeatFieldNames" value="#{cc.attrs.mb.fieldNames}" var="field">
+                                        <td>
+                                            <h:outputText id="objValues" value="#{obj[field]}" rendered="#{cc.attrs.mb.isText(field)}"/>
+                                            <h:outputText id="objValuesDt" value="#{obj[field]}" rendered="#{cc.attrs.mb.isDate(field)}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                            <h:outputText id="objValuesCurrency" value="#{obj[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                                <f:converter converterId="currencyConverter"/>
+                                            </h:outputText>
+                                        </td>
+                                    </ui:repeat>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </h:panelGroup>
+            </h:panelGroup>
+            <!-- NEW RECORD BUTTON -->
+            <h:panelGroup id="btnsPanel" layout="block">
+                <h:commandButton id="newButton" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}">
+                    <f:ajax render="formPanel btnsPanel" />
+                </h:commandButton>
+                <h:commandButton id="deleteButton" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" >
+                    <ip:deleteSelectedConfirm />
+                    <f:ajax execute="tablePanel" render="gridPanel btnsPanel" />
+                </h:commandButton>
+            </h:panelGroup>
+            <!-- FORM BOX -->
+            <h:panelGroup id="formPanel" layout="block">
+                <h:panelGroup id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
+                    <h:panelGroup styleClass="formBoxTitle" layout="block">
+                        <h:outputText value="#{cc.attrs.label}"/>
+                    </h:panelGroup>
+                    <table>
+                        <ui:repeat id="repeatFormFields" value="#{cc.attrs.mb.formFields}" var="field" varStatus="st">
+                            <tr>
+                                <td>
+                                    <h:outputLabel id="label" value="#{cc.attrs.mb.labels[field]}: "/>
+                                </td>
+                                <td>
+                                    <h:inputText id="field" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isText(field)}" styleClass="required"/>
+                                    <h:inputText id="fieldDt" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isDate(field)}" size="10" maxlength="10" styleClass="required date">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>                
+                                    </h:inputText>
+                                    <h:inputText id="fieldCurrency" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                        <f:converter converterId="currencyConverter"/>
+                                    </h:inputText>
+                                    <h:panelGroup rendered="#{cc.attrs.mb.isDate(field)}">
+                                        <script>
+                                            $(function(){
+                                                $("##{cc.clientId}-repeatFormFields-#{st.index}-fieldDt").datepicker({
+                                                    dateFormat: 'dd/mm/yy',
+                                                    onSelect : function(){
+                                                        this.focus();
+                                                    }
+                                                });
+                                                $("##{cc.clientId}-repeatFormFields-#{st.index}-fieldDt").mask("99/99/9999");
+                                            });
+                                        </script>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                        <script>
+                                            $(function(){
+                                                $("##{cc.clientId}-repeatFormFields-#{st.index}-fieldCurrency").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+                                            });
+                                        </script>
+                                    </h:panelGroup>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </table>
+                    <h:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" >
+                        <ip:clientSideValidation form="#{cc.attrs.formName}"/>
+                        <ip:clientSideValidation reset="true"/>
+                        <f:ajax execute="formPanel" render="grid" />                        
+                    </h:commandButton>  
+                    <h:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar">
+                        <f:ajax render="formPanel btnsPanel" />
+                    </h:commandButton>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </cc:implementation>
+</html>

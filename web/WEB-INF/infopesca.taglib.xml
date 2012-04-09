@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee" version="2.0">
+  <namespace>http://infopesca.org/infopesca</namespace>
+  <tag>
+    <tag-name>deleteSelectedConfirm</tag-name>
+    <behavior>
+      <behavior-id>infopesca.behavior.DeleteSelectedConfirm</behavior-id>
+    </behavior>
+  </tag>
+  <tag>
+    <tag-name>clientSideValidation</tag-name>
+    <behavior>
+      <behavior-id>infopesca.behavior.ClientSideValidation</behavior-id>
+    </behavior>
+  </tag>
+</facelet-taglib>

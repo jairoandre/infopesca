@@ -1,0 +1,120 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.jota.infopesca.bean;
+
+import com.jota.infopesca.enums.TipoTripulante;
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+/**
+ *
+ * @author André
+ */
+@Entity
+@Table(name = "tripulantes")
+@NamedQueries({
+    @NamedQuery(name = "Tripulante.findAll", query = "SELECT t FROM Tripulante t"),
+    @NamedQuery(name = "Tripulante.findById", query = "SELECT t FROM Tripulante t WHERE t.id = :id"),
+    @NamedQuery(name = "Tripulante.findByFuncao", query = "SELECT t FROM Tripulante t WHERE t.funcao = :funcao")})
+public class Tripulante implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "TRIP_ID")
+    private Long id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "TRIPNT_CO_FUNCAO")
+    @Enumerated(EnumType.ORDINAL)
+    private TipoTripulante funcao;
+    @JoinColumn(name = "FUNC_ID", referencedColumnName = "FUNC_ID")
+    @ManyToOne(optional = false)
+    private Funcionario funcionario;
+    @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
+    @ManyToOne(optional = false)
+    private Viagem viagem;
+
+    public Tripulante() {
+    }
+
+    public Tripulante(Long id) {
+        this.id = id;
+    }
+
+    public Tripulante(Long id, TipoTripulante funcao) {
+        this.id = id;
+        this.funcao = funcao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public TipoTripulante getFuncao() {
+        return funcao;
+    }
+
+    public void setFuncao(TipoTripulante funcao) {
+        this.funcao = funcao;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public Viagem getViagem() {
+        return viagem;
+    }
+
+    public void setViagem(Viagem viagem) {
+        this.viagem = viagem;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Tripulante)) {
+            return false;
+        }
+        Tripulante other = (Tripulante) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.jota.infopesca.bean.Tripulante[ id=" + id + " ]";
+    }
+    
+}
