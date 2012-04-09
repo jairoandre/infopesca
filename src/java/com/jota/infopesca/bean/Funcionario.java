@@ -56,6 +56,10 @@ public class Funcionario implements Serializable {
     @Column(name = "FUNC_NM")
     @GridConfig(label="Nome",editable=true,required=true)
     private String nome;
+    @Column(name = "FUNC_DT_NASCIMENTO")
+    @Temporal(TemporalType.DATE)
+    @GridConfig(date=true,required=true,label="Data de Nascimento")
+    private Date dataNascimento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
@@ -93,11 +97,7 @@ public class Funcionario implements Serializable {
     private BigDecimal salario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private Collection<Tripulante> tripulantes;
-    @Column(name = "FUNC_DT_NASCIMENTO")
-    @Temporal(TemporalType.DATE)
-    @GridConfig(date=true,required=true,label="Data de Nascimento")
-    private Date dataNascimento;
-
+    
     public Funcionario() {
     }
 
