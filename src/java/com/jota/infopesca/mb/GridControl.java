@@ -14,12 +14,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 /**
  * Classe genérica para manutenção de CRUD simples.
+ *
  * @author root
  */
 public abstract class GridControl<T> implements Serializable {
@@ -51,7 +54,7 @@ public abstract class GridControl<T> implements Serializable {
     }
 
     /*
-     * PRIVATE METHODS 
+     * PRIVATE METHODS
      */
     private void updateList() {
         try {
@@ -240,7 +243,8 @@ public abstract class GridControl<T> implements Serializable {
      */
     /**
      * Verifica se a lista de itens está vazia.
-     * @return 
+     *
+     * @return
      */
     public boolean isEmptyList() {
         return this.list != null ? this.list.isEmpty() : true;
@@ -248,7 +252,8 @@ public abstract class GridControl<T> implements Serializable {
 
     /**
      * Retorna a quantidade de colunas da grid.
-     * @return 
+     *
+     * @return
      */
     public int getColumnsCount() {
         return this.fieldNames != null ? this.fieldNames.size() + 1 : 0;
@@ -256,7 +261,8 @@ public abstract class GridControl<T> implements Serializable {
 
     /**
      * Verifica se há ao menos um item selecionado.
-     * @return 
+     *
+     * @return
      */
     public boolean isAtLeastOneSelect() {
         for (Boolean thereIs : selectedItens) {
@@ -269,8 +275,9 @@ public abstract class GridControl<T> implements Serializable {
 
     /**
      * Verifica se o campo é do tipo data.
+     *
      * @param fieldName
-     * @return 
+     * @return
      */
     public boolean isDate(String fieldName) {
         try {
@@ -293,15 +300,16 @@ public abstract class GridControl<T> implements Serializable {
             return false;
         }
     }
-    
-    public boolean isText(String fieldName){
+
+    public boolean isText(String fieldName) {
         return !isDate(fieldName) && !isCurrency(fieldName);
     }
 
     /**
      * Verifica se o campo é do tipo data.
+     *
      * @param fieldName
-     * @return 
+     * @return
      */
     public boolean isRequired(String fieldName) {
         try {

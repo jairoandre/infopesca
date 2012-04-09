@@ -5,8 +5,6 @@
 package com.jota.infopesca.mb;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -18,14 +16,10 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class NavegacaoMB implements Serializable{
     
-    private String page = "home.xhtml";
+    private String page = "home";
     
     /** Creates a new instance of NavegacaoMB */
     public NavegacaoMB() {
-    }
-
-    public void acionarAcao(String acao){
-        page = acao + ".xhtml";
     }
 
     public String getPage() {
