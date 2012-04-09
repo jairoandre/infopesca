@@ -6,14 +6,14 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Embarcacao;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author root
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class EmbarcacaoMB extends GridControl<Embarcacao> {
     
     public EmbarcacaoMB(){

@@ -6,14 +6,14 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Funcionario;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author root
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class FuncionarioMB extends GridControl<Funcionario> {
 
     public FuncionarioMB() {
