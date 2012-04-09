@@ -20,70 +20,8 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <h:panelGroup id="grid">
-            <!-- DATA TABLE -->
-            <h:panelGroup id="gridPanel" layout="block" style="margin-bottom: 5px">
-                <ez:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <h:panelGroup id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
-                    <table class="box-table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <h:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}">
-                                        <f:ajax event="click" execute="selectAll" render="tablePanel -#{cc.clientId}-deleteButton" listener="#{cc.attrs.mb.checkAll}"/>
-                                    </h:selectBooleanCheckbox>
-                                </th>
-                                <ui:repeat id="repeatFieldNames" value="#{cc.attrs.mb.fieldNames}" var="field">
-                                    <th scope="col">
-                                        <h:outputText value="#{cc.attrs.mb.labels[field]}"/>
-                                    </th>
-                                </ui:repeat>                 
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th colspan="#{cc.attrs.mb.columnsCount}">
-                                    <h:outputText value="Aqui ficará a paginação"/>
-                                </th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <ui:repeat id="repeatList" value="#{cc.attrs.mb.list}" var="obj" varStatus="status">
-                                <tr>
-                                    <td>
-                                        <h:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[status.index]}">
-                                            <f:ajax event="click" execute="checkBox" render="-#{cc.clientId}-selectAll -#{cc.clientId}-deleteButton" listener="#{cc.attrs.mb.clickCheck}"/>
-                                        </h:selectBooleanCheckbox>
-                                    </td>
-                                    <ui:repeat id="repeatFieldNames" value="#{cc.attrs.mb.fieldNames}" var="field">
-                                        <td>
-                                            <h:outputText id="objValues" value="#{obj[field]}" rendered="#{cc.attrs.mb.isText(field)}"/>
-                                            <h:outputText id="objValuesDt" value="#{obj[field]}" rendered="#{cc.attrs.mb.isDate(field)}">
-                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                            </h:outputText>
-                                            <h:outputText id="objValuesCurrency" value="#{obj[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
-                                                <f:converter converterId="currencyConverter"/>
-                                            </h:outputText>
-                                        </td>
-                                    </ui:repeat>
-                                </tr>
-                            </ui:repeat>
-                        </tbody>
-                    </table>
-                </h:panelGroup>
-            </h:panelGroup>
-            <!-- NEW RECORD BUTTON -->
-            <h:panelGroup id="btnsPanel" layout="block">
-                <p:commandButton id="otherBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" update="formPanel btnsPanel"/>
-                <h:commandButton id="newButton" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="false">
-                    <f:ajax render="formPanel btnsPanel" />
-                </h:commandButton>
-                <p:commandButton id="deleteButton" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" >
-                    <ip:deleteSelectedConfirm />
-                    <f:ajax execute="tablePanel" render="gridPanel btnsPanel" />
-                </p:commandButton>
-            </h:panelGroup>
             <!-- FORM BOX -->
-            <h:panelGroup id="formPanel" layout="block">
+            <h:panelGroup id="formPanel" layout="block" style="margin-bottom: 5px">
                 <h:panelGroup id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
                     <h:panelGroup styleClass="formBoxTitle" layout="block">
                         <h:outputText value="#{cc.attrs.label}"/>
@@ -136,6 +74,38 @@
                     </h:commandButton>
                 </h:panelGroup>
             </h:panelGroup>
+            <!-- DATA TABLE -->
+            <h:panelGroup id="gridPanel" layout="block">
+                <!-- NEW RECORD BUTTON -->
+                <h:panelGroup id="btnsPanel" layout="block">
+                    <p:commandButton id="otherBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" update="formPanel,btnsPanel"/>
+                    <h:commandButton id="newButton" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="false">
+                        <f:ajax render="formPanel btnsPanel" />
+                    </h:commandButton>
+                    <p:commandButton id="deleteButton" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" ajax="false">
+                        <ip:deleteSelectedConfirm />
+                        <p:ajax process="tablePanel" update="gridPanel,btnsPanel"/>
+                    </p:commandButton>
+                </h:panelGroup>
+                <ez:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
+                <h:panelGroup id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
+                    <p:dataTable value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="10">
+                        <p:columns value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
+                            <f:facet name="header">
+                                <h:outputText value="#{cc.attrs.mb.labels[field]}"/>
+                            </f:facet>
+                            <h:outputText id="objValues" value="#{obj[field]}" rendered="#{cc.attrs.mb.isText(field)}"/>
+                            <h:outputText id="objValuesDt" value="#{obj[field]}" rendered="#{cc.attrs.mb.isDate(field)}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText id="objValuesCurrency" value="#{obj[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                <f:converter converterId="currencyConverter"/>
+                            </h:outputText>
+                        </p:columns>
+                    </p:dataTable>                    
+                </h:panelGroup>
+            </h:panelGroup>
+            <!-- DATATABLE -->
         </h:panelGroup>
     </cc:implementation>
 </html>

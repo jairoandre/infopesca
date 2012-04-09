@@ -23,7 +23,6 @@
 
     <h:body>
         <h:form id="form">
-            <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide();"/>  
             <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
                       draggable="false" closable="false">  
                 <p:graphicImage value="#{resource['imgs:ajaxloadingbar.gif']}"/>  
@@ -35,8 +34,8 @@
                         <h:outputText value="Celso Rocha Jr. - Comércio de Pescado" styleClass="titulo"/>
                         <p:menubar id="menu" autoSubmenuDisplay="true" styleClass="menu" >
                             <p:submenu label="Cadastro">
-                                <p:menuitem  action="embarcacao" value="Embarcações" ajax="false"/>
-                                <p:menuitem  action="funcionario" value="Funcionários" ajax="false"/>
+                                <p:menuitem  action="embarcacao" value="Embarcações" ajax="false" onclick="statusDialog.show()"/>
+                                <p:menuitem  action="funcionario" value="Funcionários" ajax="false" onclick="statusDialog.show()"/>
                             </p:submenu>
                             <p:submenu label="Viagens"/>
                             <p:submenu label="Relatórios"/>
