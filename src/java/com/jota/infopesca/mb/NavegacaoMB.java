@@ -18,34 +18,22 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class NavegacaoMB implements Serializable{
     
-    private String[] opcoes = {
-        "Home",
-        "Embarcações",
-        "Funcionários"};
-    
-    private Map<String,String> paginas = new HashMap<String, String>();
+    private String page = "home.xhtml";
     
     /** Creates a new instance of NavegacaoMB */
     public NavegacaoMB() {
-        paginas.put("Home", "index");
-        paginas.put("Embarcações", "embarcacao");
-        paginas.put("Funcionários", "funcionario");
     }
 
-    public String[] getOpcoes() {
-        return opcoes;
+    public void acionarAcao(String acao){
+        page = acao + ".xhtml";
     }
 
-    public void setOpcoes(String[] opcoes) {
-        this.opcoes = opcoes;
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
     
-    public String acionarAcao(String acao){
-        String conteudo = paginas.get(acao);
-        if(conteudo == null){
-            conteudo = paginas.get("Home");
-        }
-        return conteudo;
-    }
-
 }

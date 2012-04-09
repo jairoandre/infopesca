@@ -26,6 +26,7 @@ public abstract class GridControl<T> implements Serializable {
 
     private final String OPACIDADE_NORMAL = "1";
     private final String OPACIDADE_50 = "0.5";
+    private final Integer linesPerPage = 5;
     private Class<T> clazz;
     private T instance;
     private boolean showForm = false;
@@ -38,6 +39,8 @@ public abstract class GridControl<T> implements Serializable {
     private boolean selectAll;
     private String opacity;
     List<HtmlSelectBooleanCheckbox> checkBoxes;
+    private Integer page = 0;
+    private Integer[] pages = {1};
 
     public GridControl(Class<T> clazz) {
         this.clazz = clazz;
