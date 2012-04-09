@@ -235,7 +235,7 @@
 					: setSymbol(neg+t);
 			}
 
-			function mask() {
+			function funcMask() {
 				var value = input.val();
 				input.val(maskValue(value));
 			}
@@ -269,7 +269,7 @@
 			input.bind('keydown.maskMoney',keydownEvent);
 			input.bind('blur.maskMoney',blurEvent);
 			input.bind('focus.maskMoney',focusEvent);
-			input.bind('mask', mask);
+			input.bind('funcMask', funcMask);
 
 			input.one('unmaskMoney',function() {
 				input.unbind('.maskMoney');
@@ -287,8 +287,8 @@
 		return this.trigger('unmaskMoney');
 	};
 
-	$.fn.mask=function() {
-		return this.trigger('mask');
+	$.fn.funcMask=function() {
+		return this.trigger('funcMask');
 	};
 
 	$.fn.setCursorPosition = function(pos) {
