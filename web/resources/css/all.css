@@ -1,0 +1,55 @@
+body {
+    background: none repeat scroll 0 0 #FFFFFF;
+    margin: 0;
+    min-width: 998px;
+}
+
+#wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+
+#header{
+    height: 80px;
+    background-color: #045491;
+    color: #ffffff;
+}
+
+#footer{
+    height: 80px;
+    background-color: #045491;
+    color: #ffffff;
+}
+
+.content{
+    min-height: 400px;
+    padding: 10px;
+    
+}
+
+.header-block:after {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+.header-block {
+    height: 80px;
+    margin: 0 auto;
+    width: 998px;
+}
+
+.titulo { 
+    float:left;
+    line-height: 80px;
+    vertical-align: middle;
+}
+
+.tuna {
+    float: left;
+}
+
+.menu {
+    float: right;
+    margin-top: 20px;
+}
