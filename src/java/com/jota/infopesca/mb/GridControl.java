@@ -19,7 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 /**
- *
+ * Verificando atualização via github.
  * @author root
  */
 public abstract class GridControl<T> implements Serializable {
