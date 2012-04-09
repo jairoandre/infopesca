@@ -6,7 +6,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:ip="http://infopesca.org/infopesca"
-      xmlns:ezcomp="http://java.sun.com/jsf/composite/ezcomp">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -14,7 +15,6 @@
         <cc:attribute name="label" required="true"/>
         <cc:attribute name="mb" required="true"/>
         <cc:attribute name="formName"/>
-        <cc:facet name="formContent"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -22,7 +22,7 @@
         <h:panelGroup id="grid">
             <!-- DATA TABLE -->
             <h:panelGroup id="gridPanel" layout="block" style="margin-bottom: 5px">
-                <ezcomp:message id="msgVazia" msg="Não há registros cadastrados." rendered="#{cc.attrs.mb.emptyList}"/>
+                <ez:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
                 <h:panelGroup id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
                     <table class="box-table">
                         <thead>
@@ -73,13 +73,14 @@
             </h:panelGroup>
             <!-- NEW RECORD BUTTON -->
             <h:panelGroup id="btnsPanel" layout="block">
-                <h:commandButton id="newButton" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}">
+                <p:commandButton id="otherBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" update="formPanel btnsPanel"/>
+                <h:commandButton id="newButton" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="false">
                     <f:ajax render="formPanel btnsPanel" />
                 </h:commandButton>
-                <h:commandButton id="deleteButton" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" >
+                <p:commandButton id="deleteButton" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" >
                     <ip:deleteSelectedConfirm />
                     <f:ajax execute="tablePanel" render="gridPanel btnsPanel" />
-                </h:commandButton>
+                </p:commandButton>
             </h:panelGroup>
             <!-- FORM BOX -->
             <h:panelGroup id="formPanel" layout="block">
