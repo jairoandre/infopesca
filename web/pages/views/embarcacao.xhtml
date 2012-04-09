@@ -1,17 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-
-    <body>
-
-        <ui:composition template="./../layouts/masterLayout.xhtml">
-
-            <ui:define name="content">
-                <ui:include src="./../forms/embarcacao.xhtml"/>
-            </ui:define>
-
-        </ui:composition>
-
-    </body>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <h:panelGroup id="embcPanel" layout="block">
+            <p:fieldset legend="Embarcações">
+                <ez:grid id="embcGrid" label="Embarcação" mb="#{embarcacaoMB}" formName="form" />
+            </p:fieldset>
+        </h:panelGroup>
+    </ui:composition>
 </html>
