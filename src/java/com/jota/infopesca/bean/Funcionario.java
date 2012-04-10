@@ -82,13 +82,13 @@ public class Funcionario implements Serializable {
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "FUNC_CO_TEL")
-    @GridConfig(label="Telefone",editable=true,required=true)
+    @GridConfig(label="Telefone",editable=true,required=true,mask="(99)9999-9999")
     private String telefone;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "FUNC_CO_CEL")
-    @GridConfig(label="Celular",editable=true,required=true)
+    @GridConfig(label="Celular",editable=true,required=true,mask="(99)9999-9999")
     private String celular;
     @Basic(optional = false)
     @NotNull

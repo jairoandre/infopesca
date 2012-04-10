@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -27,21 +26,18 @@ public abstract class GridControl<T> implements Serializable {
 
     private final String OPACIDADE_NORMAL = "1";
     private final String OPACIDADE_50 = "0.5";
-    private final Integer linesPerPage = 5;
     private Class<T> clazz;
     private T instance;
     private boolean showForm = false;
+    private Boolean isNewRecord;
     private GenericBC<T> bc;
     private List<T> list;
     private Map<String, String> labels;
     private List<String> fieldNames;
     private List<String> formFields;
-    private Boolean[] selectedItens;
+    private Map<T, Boolean> selectedItens;
     private boolean selectAll;
     private String opacity;
-    List<HtmlSelectBooleanCheckbox> checkBoxes;
-    private Integer page = 0;
-    private Integer[] pages = {1};
 
     public GridControl(Class<T> clazz) {
         this.clazz = clazz;
@@ -57,9 +53,9 @@ public abstract class GridControl<T> implements Serializable {
     private void updateList() {
         try {
             list = bc.getList();
-            selectedItens = new Boolean[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                selectedItens[i] = false;
+            selectedItens = new HashMap<T, Boolean>();
+            for (T obj : list) {
+                selectedItens.put(obj, false);
             }
         } catch (Exception e) {
             //TODO: tratar
@@ -88,7 +84,19 @@ public abstract class GridControl<T> implements Serializable {
     /*
      * ACTIONS
      */
+    public void preAlter(ActionEvent e) {
+        isNewRecord = false;
+        for (T obj : list) {
+            if (selectedItens.get(obj)) {
+                instance = obj;
+                break;
+            }
+        }
+        showForm = true;
+    }
+
     public void preInclude(ActionEvent e) {
+        isNewRecord = true;
         try {
             instance = clazz.newInstance();
             showForm = true;
@@ -101,7 +109,11 @@ public abstract class GridControl<T> implements Serializable {
 
     public void confirm(ActionEvent e) {
         try {
-            bc.persist(instance);
+            if (isNewRecord) {
+                bc.persist(instance);
+            } else {
+                bc.update(instance);
+            }
             updateList();
             showForm = false;
         } catch (Exception ex) {
@@ -116,9 +128,9 @@ public abstract class GridControl<T> implements Serializable {
 
     public void deleteSelected(ActionEvent e) {
         try {
-            for (int i = 0; i < selectedItens.length; i++) {
-                if (selectedItens[i]) {
-                    bc.remove(list.get(i));
+            for (T obj : list) {
+                if (selectedItens.get(obj)) {
+                    bc.remove(obj);
                 }
             }
             updateList();
@@ -132,8 +144,8 @@ public abstract class GridControl<T> implements Serializable {
 
     public void checkAll(AjaxBehaviorEvent e) {
         if (selectedItens != null) {
-            for (int i = 0; i < this.selectedItens.length; i++) {
-                selectedItens[i] = selectAll;
+            for (T obj : list) {
+                selectedItens.put(obj, selectAll);
             }
         }
         if (selectAll) {
@@ -143,14 +155,14 @@ public abstract class GridControl<T> implements Serializable {
 
     public void clickCheck(AjaxBehaviorEvent e) {
         int trues = 0;
-        for (Boolean item : selectedItens) {
-            if (item != null && item) {
+        for (T obj : list) {
+            if (selectedItens.get(obj)) {
                 trues++;
             }
         }
         if (trues > 0) {
             selectAll = true;
-            if (trues < selectedItens.length) {
+            if (trues < selectedItens.size()) {
                 opacity = OPACIDADE_50;
             } else {
                 opacity = OPACIDADE_NORMAL;
@@ -228,12 +240,20 @@ public abstract class GridControl<T> implements Serializable {
         this.selectAll = selectAll;
     }
 
-    public Boolean[] getSelectedItens() {
+    public Map<T, Boolean> getSelectedItens() {
         return selectedItens;
     }
 
-    public void setSelectedItens(Boolean[] selectedItens) {
+    public void setSelectedItens(Map<T, Boolean> selectedItens) {
         this.selectedItens = selectedItens;
+    }
+
+    public Boolean getIsNewRecord() {
+        return isNewRecord;
+    }
+
+    public void setIsNewRecord(Boolean isNewRecord) {
+        this.isNewRecord = isNewRecord;
     }
 
     /*
@@ -263,12 +283,27 @@ public abstract class GridControl<T> implements Serializable {
      * @return
      */
     public boolean isAtLeastOneSelect() {
-        for (Boolean thereIs : selectedItens) {
-            if (thereIs) {
+        for (T obj : list) {
+            if (selectedItens.get(obj)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Verifica se há ao menos um item selecionado.
+     *
+     * @return
+     */
+    public boolean isOnlyOneSelect() {
+        int count = 0;
+        for (T obj : list) {
+            if (selectedItens.get(obj)) {
+                count++;
+            }
+        }
+        return count == 1;
     }
 
     /**
@@ -301,6 +336,32 @@ public abstract class GridControl<T> implements Serializable {
 
     public boolean isText(String fieldName) {
         return !isDate(fieldName) && !isCurrency(fieldName);
+    }
+    private Map<String, String> masks = new HashMap<String, String>();
+
+    public String getMask(String fieldName) {
+        if (masks.get(fieldName) == null) {
+            try {
+                Field field = clazz.getDeclaredField(fieldName);
+                GridConfig annotation = field.getAnnotation(GridConfig.class);
+                masks.put(fieldName, annotation.mask());
+            } catch (Exception e) {
+                System.out.println("Erro :" + e.getMessage());
+            }
+        }
+        return masks.get(fieldName);
+
+    }
+
+    public int getSize(String fieldName) {
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            GridConfig annotation = field.getAnnotation(GridConfig.class);
+            return annotation.size();
+        } catch (Exception e) {
+            System.out.println("Erro :" + e.getMessage());
+            return 20;
+        }
     }
 
     /**

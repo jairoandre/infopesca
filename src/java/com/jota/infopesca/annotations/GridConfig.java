@@ -23,5 +23,7 @@ public @interface GridConfig {
     boolean editable() default true;
     boolean date() default false;
     boolean currency() default false;
+    int size() default 20;
+    String mask() default "";
     
 }

@@ -35,5 +35,10 @@ public class GenericBC<T> implements Serializable {
     public void remove(T obj) throws Exception{
         dao.delete(obj);
     }
+    
+    public T update(T obj) throws Exception{
+        dao.update(obj);
+        return obj;
+    }
 
 }

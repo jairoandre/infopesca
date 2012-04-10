@@ -29,6 +29,22 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+    <filter>
+        <display-name>EncodingFilter</display-name>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>
+            com.jota.infopesca.filter.EncodingFilter
+        </filter-class>
+        <init-param>
+            <description>filtro para codificação dos caracteres</description>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <session-config>
         <session-timeout>
             30
