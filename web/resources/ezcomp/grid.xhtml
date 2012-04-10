@@ -21,72 +21,57 @@
     <cc:implementation>
         <h:panelGroup id="grid">
             <!-- FORM BOX -->
-            <h:panelGroup id="formPanel" layout="block" style="margin-bottom: 5px">
+            <h:panelGroup id="formPanel" layout="block">
                 <h:panelGroup id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
-                    <h:panelGroup styleClass="formBoxTitle" layout="block">
-                        <h:outputText value="#{cc.attrs.label}"/>
-                    </h:panelGroup>
-                    <table>
-                        <ui:repeat id="repeatFormFields" value="#{cc.attrs.mb.formFields}" var="field" varStatus="st">
-                            <tr>
-                                <td>
-                                    <h:outputLabel id="label" value="#{cc.attrs.mb.labels[field]}: "/>
-                                </td>
-                                <td>
-                                    <h:inputText id="field" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isText(field)}" styleClass="required"/>
-                                    <h:inputText id="fieldDt" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isDate(field)}" size="10" maxlength="10" styleClass="required date">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"/>                
-                                    </h:inputText>
-                                    <h:inputText id="fieldCurrency" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
-                                        <f:converter converterId="currencyConverter"/>
-                                    </h:inputText>
-                                    <h:panelGroup rendered="#{cc.attrs.mb.isDate(field)}">
-                                        <script>
-                                            $(function(){
-                                                $("##{cc.clientId}-repeatFormFields-#{st.index}-fieldDt").datepicker({
-                                                    dateFormat: 'dd/mm/yy',
-                                                    onSelect : function(){
-                                                        this.focus();
-                                                    }
-                                                });
-                                                $("##{cc.clientId}-repeatFormFields-#{st.index}-fieldDt").mask("99/99/9999");
-                                            });
-                                        </script>
-                                    </h:panelGroup>
-                                    <h:panelGroup rendered="#{cc.attrs.mb.isCurrency(field)}">
-                                        <script>
-                                            $(function(){
-                                                $("##{cc.clientId}-repeatFormFields-#{st.index}-fieldCurrency").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
-                                            });
-                                        </script>
-                                    </h:panelGroup>
-                                </td>
-                            </tr>
-                        </ui:repeat>
-                    </table>
-                    <h:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" >
+                    <p:fieldset legend="Novo Registro">
+                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st">
+                            <p:column style="width: 20%; text-align: right;">
+                                <h:outputLabel id="label" value="#{cc.attrs.mb.labels[field]}: "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="field" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isText(field)}" styleClass="required"/>
+                                <p:calendar id="fieldDt" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isDate(field)}" size="10" maxlength="10" styleClass="required date" pattern="dd/MM/yyyy"/>
+                                <p:inputText id="fieldCurrency" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                    <f:converter converterId="currencyConverter"/>
+                                </p:inputText>
+                                <h:panelGroup rendered="#{cc.attrs.mb.isDate(field)}">
+                                    <script>
+                                        $(function(){
+                                            $("##{cc.clientId}-dTable-#{st}-fieldDt_input").mask("99/99/9999");
+                                        });
+                                    </script>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                    <script>
+                                        $(function(){
+                                            $("##{cc.clientId}-dTable-#{st}-fieldCurrency").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+                                        });
+                                    </script>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                    <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" ajax="false">
                         <ip:clientSideValidation form="#{cc.attrs.formName}"/>
                         <ip:clientSideValidation reset="true"/>
-                        <f:ajax execute="formPanel" render="grid" />                        
-                    </h:commandButton>  
-                    <h:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar">
-                        <f:ajax render="formPanel btnsPanel" />
-                    </h:commandButton>
+                        <p:ajax process="formPanel" update="grid" />                        
+                    </p:commandButton>  
+                    <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" ajax="false">
+                        <p:ajax update="formPanel,btnsPanel" />
+                    </p:commandButton>
                 </h:panelGroup>
             </h:panelGroup>
             <!-- DATA TABLE -->
             <h:panelGroup id="gridPanel" layout="block">
                 <!-- NEW RECORD BUTTON -->
-                <h:panelGroup id="btnsPanel" layout="block">
+                <h:panelGroup id="btnsPanel" layout="block" style="margim-bottom: 5px;">
                     <p:commandButton id="otherBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" update="formPanel,btnsPanel"/>
-                    <h:commandButton id="newButton" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="false">
-                        <f:ajax render="formPanel btnsPanel" />
-                    </h:commandButton>
                     <p:commandButton id="deleteButton" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" ajax="false">
                         <ip:deleteSelectedConfirm />
                         <p:ajax process="tablePanel" update="gridPanel,btnsPanel"/>
                     </p:commandButton>
                 </h:panelGroup>
+                <!-- Mensagem lista vazia -->
                 <ez:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
                 <h:panelGroup id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
                     <p:dataTable value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="10">

@@ -5,7 +5,6 @@
 package com.jota.infopesca.converters;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,7 +20,7 @@ public class CurrencyConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-        if(string != null){
+        if(string != null && !string.isEmpty()){
             string = string.replace("R$ ", "").replace(".", "").replace(",", ".");
             return new BigDecimal(string);
         }else{
