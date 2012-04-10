@@ -2,6 +2,7 @@ body {
     background: none repeat scroll 0 0 #FFFFFF;
     margin: 0;
     min-width: 998px;
+    background-color: #045491;
 }
 
 #wrapper {
@@ -24,7 +25,7 @@ body {
 .content{
     min-height: 400px;
     padding: 10px;
-    
+    background-color: #ffffff;
 }
 
 .header-block:after {
@@ -52,4 +53,12 @@ body {
 .menu {
     float: right;
     margin-top: 20px;
+}
+
+.ui-widget{
+    
+}
+
+.ui-menu-child{
+    width: auto !important;
 }

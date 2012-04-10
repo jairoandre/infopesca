@@ -23,8 +23,8 @@
             <p:outputPanel id="formPanel" layout="block">
                 <p:outputPanel id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st">
-                            <p:column style="width: 20%; text-align: right;">
+                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st" resizableColumns="true">
+                            <p:column style="text-align: right;">
                                 <h:outputLabel id="label" value="#{cc.attrs.mb.labels[field]}: "/>
                             </p:column>
                             <p:column>
@@ -60,9 +60,7 @@
                             <p:ajax process="formPanel" update="grid" />                        
                         </p:commandButton>
                         <p:spacer width="5"/>
-                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" ajax="false">
-                            <p:ajax update="formPanel,gridBtnsPanel" />
-                        </p:commandButton>
+                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" update="formPanel,gridBtnsPanel"/>
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>
@@ -82,7 +80,7 @@
                 <!-- Mensagem lista vazia -->
                 <ez:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
                 <p:outputPanel id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
-                    <p:dataTable id="dtTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top">
+                    <p:dataTable id="dtTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top" resizableColumns="true">
                         <p:column id="columns" style="text-align: center;">
                             <f:facet name="header">
                                 <p:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}">
