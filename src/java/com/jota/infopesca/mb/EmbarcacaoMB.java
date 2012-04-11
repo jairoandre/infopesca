@@ -14,7 +14,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class EmbarcacaoMB extends GridControl<Embarcacao> {
+public class EmbarcacaoMB extends HardGridControl<Embarcacao> {
     
     public EmbarcacaoMB(){
         super(Embarcacao.class);

@@ -5,7 +5,6 @@
 package com.jota.infopesca.mb;
 
 import com.jota.infopesca.annotations.GridConfig;
-import com.jota.infopesca.business.GenericBC;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,20 +17,18 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 /**
- * Classe genérica para manutenção de CRUD simples.
  *
- * @author root
+ * @author 08404235783
  */
 public abstract class GridControl<T> implements Serializable {
 
     private final String OPACIDADE_NORMAL = "1";
     private final String OPACIDADE_50 = "0.5";
     private Class<T> clazz;
+    private List<T> list;
     private T instance;
     private boolean showForm = false;
     private Boolean isNewRecord;
-    private GenericBC<T> bc;
-    private List<T> list;
     private Map<String, String> labels;
     private List<String> fieldNames;
     private List<String> formFields;
@@ -41,28 +38,21 @@ public abstract class GridControl<T> implements Serializable {
 
     public GridControl(Class<T> clazz) {
         this.clazz = clazz;
-        this.bc = new GenericBC<T>(clazz);
         opacity = "1";
         retrieveLabelsAndFields();
-        updateList();
     }
 
-    /*
-     * PRIVATE METHODS
+    protected abstract void add(T obj);
+
+    protected abstract void alter(T obj);
+
+    protected abstract void remove(T obj);
+
+    protected abstract List<T> refresh();
+
+    /**
+     * Recupera os campos que são exibidos e trabalhados pelo grid.
      */
-    private void updateList() {
-        try {
-            list = bc.getList();
-            selectedItens = new HashMap<T, Boolean>();
-            for (T obj : list) {
-                selectedItens.put(obj, false);
-            }
-        } catch (Exception e) {
-            //TODO: tratar
-        }
-
-    }
-
     private void retrieveLabelsAndFields() {
         this.formFields = new ArrayList<String>();
         this.fieldNames = new ArrayList<String>();
@@ -81,9 +71,56 @@ public abstract class GridControl<T> implements Serializable {
         }
     }
 
+    protected void updateList() {
+        try {
+            list = refresh();
+            selectedItens = new HashMap<T, Boolean>();
+            for (T obj : list) {
+                selectedItens.put(obj, false);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
     /*
      * ACTIONS
      */
+    public void confirm(ActionEvent e) {
+        try {
+            if (isNewRecord) {
+                add(instance);
+            } else {
+                alter(instance);
+            }
+            updateList();
+            setShowForm(false);
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+
+    }
+
+    public void deleteSelected(ActionEvent e) {
+        try {
+            List<T> toRemove = new ArrayList<T>();
+            for (T obj : list) {
+                if (selectedItens.get(obj)) {
+                    toRemove.add(obj);
+                }
+            }
+            for (T obj : toRemove) {
+                remove(obj);
+            }
+            updateList();
+            selectAll = false;
+            opacity = OPACIDADE_NORMAL;
+        } catch (Exception ex) {
+            //TODO: Tratar
+        }
+
+    }
+
     public void preAlter(ActionEvent e) {
         isNewRecord = false;
         for (T obj : list) {
@@ -101,45 +138,14 @@ public abstract class GridControl<T> implements Serializable {
             instance = clazz.newInstance();
             showForm = true;
         } catch (InstantiationException ex) {
-            Logger.getLogger(GridControl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HardGridControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(GridControl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HardGridControl.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void confirm(ActionEvent e) {
-        try {
-            if (isNewRecord) {
-                bc.persist(instance);
-            } else {
-                bc.update(instance);
-            }
-            updateList();
-            showForm = false;
-        } catch (Exception ex) {
-            //TODO: Tratar
-        }
-
     }
 
     public void cancel(ActionEvent e) {
         showForm = false;
-    }
-
-    public void deleteSelected(ActionEvent e) {
-        try {
-            for (T obj : list) {
-                if (selectedItens.get(obj)) {
-                    bc.remove(obj);
-                }
-            }
-            updateList();
-            selectAll = false;
-            opacity = OPACIDADE_NORMAL;
-        } catch (Exception ex) {
-            //TODO: Tratar
-        }
-
     }
 
     public void checkAll(AjaxBehaviorEvent e) {
@@ -323,6 +329,12 @@ public abstract class GridControl<T> implements Serializable {
         }
     }
 
+    /**
+     * Verifica se o campo é do tipo moeda.
+     *
+     * @param fieldName
+     * @return
+     */
     public boolean isCurrency(String fieldName) {
         try {
             Field field = clazz.getDeclaredField(fieldName);

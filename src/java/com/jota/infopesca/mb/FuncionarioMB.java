@@ -14,7 +14,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class FuncionarioMB extends GridControl<Funcionario> {
+public class FuncionarioMB extends HardGridControl<Funcionario> {
 
     public FuncionarioMB() {
         super(Funcionario.class);

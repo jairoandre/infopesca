@@ -18,15 +18,17 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class ViagemMB {
+public class CadastroViagemMB {
 
     private List<Embarcacao> embarcacoes;
     
     private Viagem viagem;
     
     private GenericBC bcEmbc = new GenericBC<Embarcacao>(Embarcacao.class);
+    
+    private Boolean showComporTripulacao;
 
-    public ViagemMB() {
+    public CadastroViagemMB() {
         viagem = new Viagem();
         viagem.setInicio(new Date());
     }
@@ -54,6 +56,14 @@ public class ViagemMB {
 
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
+    }
+    
+    public void embarcacaoChanged(){
+        if(viagem.getEmbarcacao() != null){
+            showComporTripulacao = true;
+        }else{
+            showComporTripulacao = false;
+        }
     }
     
 }
