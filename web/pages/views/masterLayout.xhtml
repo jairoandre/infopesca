@@ -16,15 +16,16 @@
         <script type="text/javascript" src="#{resource['js:messages_ptbr.js']}"/>
     </h:head>
 
-    <h:body>
-        <h:form id="form">
-            <p:dialog modal="true" widgetVar="statusDialog" header="Carregando"   
-                      draggable="false" closable="false">  
-                <p:graphicImage value="#{resource['imgs:ajaxloadingbar.gif']}"/>  
-            </p:dialog> 
-            <div id="wrapper">
-                <div id="header">
-                    <div class="header-block">
+    <h:body id="body">
+        <div id="wrapper">
+
+            <div id="header">
+                <div class="header-block">
+                    <h:form id="form-menu">
+                        <p:dialog id="status" modal="true" widgetVar="statusDialog" header="Carregando"   
+                                  draggable="false" closable="false">  
+                            <p:graphicImage value="#{resource['imgs:ajaxloadingbar.gif']}"/>  
+                        </p:dialog> 
                         <p:remoteCommand name="home" action="home"/>
                         <p:graphicImage id="tunaImg" value="#{resource['imgs:tuna.png']}" styleClass="tuna" style="cursor: pointer;" onclick="statusDialog.show();home();"/>
                         <h:outputText value="Celso Rocha Jr. - Comércio de Pescado" styleClass="titulo"/>
@@ -41,15 +42,13 @@
                             <p:submenu label="Relatórios"/>
                             <p:submenu label="Sair"/>
                         </p:menubar>
-                    </div>
-                </div>
-                <h:panelGroup id="content" styleClass="content" layout="block">
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" /> 
-                    <ui:insert name="content"/>
-                </h:panelGroup>
-                <div id="footer">
+                    </h:form>
                 </div>
             </div>
-        </h:form>
+            <h:panelGroup id="content" styleClass="content" layout="block">
+                <ui:insert name="content"/>
+            </h:panelGroup>
+            <div id="footer"/>
+        </div>
     </h:body>
 </html>

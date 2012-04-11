@@ -1,13 +1,12 @@
-body {
-    background: none repeat scroll 0 0 #FFFFFF;
+html,body {
     margin: 0;
-    min-width: 998px;
-    background-color: #045491;
+    padding: 0;
+    height: 100%;
 }
 
 #wrapper {
-    overflow: hidden;
-    width: 100%;
+    min-height:100%;
+    position: relative;
 }
 
 #header{
@@ -17,15 +16,17 @@ body {
 }
 
 #footer{
-    height: 80px;
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:80px;
     background-color: #045491;
-    color: #ffffff;
 }
 
 .content{
-    min-height: 400px;
     padding: 10px;
     background-color: #ffffff;
+    padding-bottom: 80px;
 }
 
 .header-block:after {
@@ -56,7 +57,7 @@ body {
 }
 
 .ui-widget{
-    
+
 }
 
 .ui-menu-child{

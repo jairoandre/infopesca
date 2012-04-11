@@ -23,25 +23,26 @@
             <p:outputPanel id="formPanel" layout="block">
                 <p:outputPanel id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st" resizableColumns="true">
+                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st" resizableColumns="true" >
                             <p:column style="text-align: right;">
-                                <h:outputLabel id="label" value="#{cc.attrs.mb.labels[field]}: "/>
+                                <p:outputPanel id="labelPnl" layout="block" style="white-space: nowrap;">
+                                    <h:outputLabel id="label" value="#{cc.attrs.mb.labels[field]}: "/>
+                                </p:outputPanel>
                             </p:column>
                             <p:column>
                                 <p:inputMask id="fieldMsk" value="#{cc.attrs.mb.instance[field]}" mask="#{cc.attrs.mb.getMask(field)}" rendered="#{not empty cc.attrs.mb.getMask(field)}"/>
-                                <p:outputPanel rendered="#{empty cc.attrs.mb.getMask(field)}">
+                                <p:outputPanel id="fieldNoMsk" rendered="#{empty cc.attrs.mb.getMask(field)}">
                                     <p:inputText id="field" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isText(field)}" styleClass="required"/>
-                                    <p:calendar id="fieldDt" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isDate(field)}" size="10" maxlength="10" styleClass="required date" pattern="dd/MM/yyyy"/>
-                                    <p:inputText id="fieldCurrency" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
-                                        <f:converter converterId="currencyConverter"/>
-                                    </p:inputText>
-                                    <p:outputPanel rendered="#{cc.attrs.mb.isDate(field)}">
+                                    <p:calendar id="fieldDt" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isDate(field)}" size="10" maxlength="10" styleClass="required date" pattern="dd/MM/yyyy">
                                         <script>
                                             $(function(){
                                                 $("##{cc.clientId}-dTable-#{st}-fieldDt_input").mask("99/99/9999");
                                             });
                                         </script>
-                                    </p:outputPanel>
+                                    </p:calendar>
+                                    <p:inputText id="fieldCurrency" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
+                                        <f:converter converterId="currencyConverter"/>
+                                    </p:inputText>
                                     <p:outputPanel rendered="#{cc.attrs.mb.isCurrency(field)}">
                                         <script>
                                             $(function(){
@@ -93,9 +94,13 @@
                         </p:column>
                         <p:columns id="fieldNamesList" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
                             <f:facet name="header">
-                                #{cc.attrs.mb.labels[field]}
+                                <p:outputPanel id="headerLabel" style="white-space: nowrap" layout="block">
+                                    #{cc.attrs.mb.labels[field]}
+                                </p:outputPanel>
                             </f:facet>
-                            <h:outputText value="#{obj[field]}" converter="outputTextConverter"/>
+                            <p:outputPanel id="value" style="white-space: nowrap" layout="block">
+                                <h:outputText value="#{obj[field]}" converter="outputTextConverter"/>
+                            </p:outputPanel>
                         </p:columns>
                     </p:dataTable>                    
                 </p:outputPanel>
