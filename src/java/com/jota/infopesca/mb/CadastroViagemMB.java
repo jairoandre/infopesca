@@ -5,8 +5,10 @@
 package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Embarcacao;
+import com.jota.infopesca.bean.Tripulante;
 import com.jota.infopesca.bean.Viagem;
 import com.jota.infopesca.business.GenericBC;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -26,11 +28,13 @@ public class CadastroViagemMB {
     
     private GenericBC bcEmbc = new GenericBC<Embarcacao>(Embarcacao.class);
     
-    private Boolean showComporTripulacao;
-
+    private SoftGridControl<Tripulante> softGridTripulante;
+    
     public CadastroViagemMB() {
         viagem = new Viagem();
         viagem.setInicio(new Date());
+        viagem.setTripulantes(new ArrayList<Tripulante>());
+        softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes());
     }
     
     private void updateListaEmbarcacao(){
@@ -60,10 +64,16 @@ public class CadastroViagemMB {
     
     public void embarcacaoChanged(){
         if(viagem.getEmbarcacao() != null){
-            showComporTripulacao = true;
         }else{
-            showComporTripulacao = false;
         }
+    }
+    
+    public SoftGridControl<Tripulante> getSoftGridTripulante() {
+        return softGridTripulante;
+    }
+
+    public void setSoftGridTripulante(SoftGridControl<Tripulante> softGridTripulante) {
+        this.softGridTripulante = softGridTripulante;
     }
     
 }

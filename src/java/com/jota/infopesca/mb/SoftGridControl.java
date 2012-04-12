@@ -4,6 +4,7 @@
  */
 package com.jota.infopesca.mb;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,16 +13,14 @@ import java.util.List;
  */
 public class SoftGridControl<T> extends GridControl {
     
-    private List<T> list;
-    
-    public SoftGridControl(Class<T> clazz, List<T> list){
+    public SoftGridControl(Class<T> clazz, Collection<T> list){
         super(clazz);
-        this.list = list;
+        setList((List)list);
     }
 
     @Override
     protected void add(Object obj) {
-        list.add((T)obj);        
+        getList().add((T)obj);        
     }
 
     @Override
@@ -31,12 +30,12 @@ public class SoftGridControl<T> extends GridControl {
 
     @Override
     protected void remove(Object obj) {
-        list.remove((T)obj);
+        getList().remove((T)obj);
     }
 
     @Override
     protected List refresh() {
-        return list;
+        return getList();
     }
     
     

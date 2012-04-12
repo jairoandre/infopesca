@@ -11,17 +11,17 @@
             <h:form id="form">
                 <p:fieldset legend="Nova Viagem">
                     <p:panelGrid id="gridFormInit" columns="4">
-                        <cp:label id="labelInicio" label="Data Início:" for="dataInicio"/>
+                        <cp:label id="labelInicio" label="Data Início:"/>
                         <cp:calendar id="dataInicio" value="#{cadastroViagemMB.viagem.inicio}" label="Data Início"/>
-                        <cp:label id="labelEmbarcacao" label="Embarcação:" for="embarcacao"/>
-                        <cp:selectOne id="embarcacao" value="#{cadastroViagemMB.viagem.embarcacao}" list="#{cadastroViagemMB.embarcacoes}" listLabel="nome"/>
+                        <cp:label id="labelEmbarcacao" label="Embarcação:"/>
+                        <cp:selectOneBean id="embarcacao" value="#{cadastroViagemMB.viagem.embarcacao}" list="#{cadastroViagemMB.embarcacoes}" listLabel="nome"/>
                     </p:panelGrid>
                     <p:accordionPanel id="tripulantesPnl" dynamic="true" style="margin: 5px 0 5px;">
                         <p:tab title="Tripulação">
-                            Tripulantes
+                            <cp:grid label="Tripulantes" mb="#{cadastroViagemMB.softGridTripulante}" formName="form" id="tripulantes"/>
                         </p:tab>
                         <p:tab title="Despesas">
-                            Tripulantes
+                            Despesas
                         </p:tab>
                     </p:accordionPanel>
                 </p:fieldset>

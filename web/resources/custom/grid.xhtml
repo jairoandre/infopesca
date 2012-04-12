@@ -32,25 +32,7 @@
                             <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
                         </p:column>
                         <p:column>
-                            <p:inputMask id="fieldMsk" value="#{cc.attrs.mb.instance[field]}" mask="#{cc.attrs.mb.getMask(field)}" rendered="#{not empty cc.attrs.mb.getMask(field)}"/>
-                            <p:outputPanel id="fieldNoMsk" rendered="#{empty cc.attrs.mb.getMask(field)}">
-                                <p:inputText id="field" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isText(field)}" styleClass="required"/>
-                                <p:calendar id="fieldDt" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isDate(field)}" size="10" maxlength="10" styleClass="required date" pattern="dd/MM/yyyy">
-                                    <script>
-                                        $(function(){
-                                            $("##{cc.clientId}-dTable-#{st}-fieldDt_input").mask("99/99/9999");
-                                        });
-                                    </script>
-                                </p:calendar>
-                                <p:inputText id="fieldCurrency" value="#{cc.attrs.mb.instance[field]}" rendered="#{cc.attrs.mb.isCurrency(field)}">
-                                    <script>
-                                        $(function(){
-                                            $("##{cc.clientId}-dTable-#{st}-fieldCurrency").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
-                                        });
-                                    </script>
-                                    <f:converter converterId="currencyConverter"/>
-                                </p:inputText>
-                            </p:outputPanel>
+                            <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
                         </p:column>
                     </p:dataTable>
                     <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">

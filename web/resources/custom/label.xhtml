@@ -9,13 +9,12 @@
     <cc:interface>
         <cc:attribute name="id"/>
         <cc:attribute name="label" required="true"/>
-        <cc:attribute name="for"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:outputPanel id="labelPnl" style="white-space: nowrap; text-align: right; width: 100%" layout="block">
-            <h:outputLabel id="label" for="#{cc.attrs.for}" value="#{cc.attrs.label}"/>
+            <h:outputLabel id="label" value="#{cc.attrs.label}"/>
         </p:outputPanel>
     </cc:implementation>
 </html>

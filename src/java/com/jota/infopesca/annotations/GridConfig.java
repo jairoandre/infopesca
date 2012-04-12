@@ -25,5 +25,6 @@ public @interface GridConfig {
     boolean currency() default false;
     int size() default 20;
     String mask() default "";
-    
+    boolean enumerated() default false;
+    boolean listed() default false;
 }

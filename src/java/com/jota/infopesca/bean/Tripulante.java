@@ -4,19 +4,10 @@
  */
 package com.jota.infopesca.bean;
 
+import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.enums.TipoTripulante;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,7 +20,7 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Tripulante.findAll", query = "SELECT t FROM Tripulante t"),
     @NamedQuery(name = "Tripulante.findById", query = "SELECT t FROM Tripulante t WHERE t.id = :id"),
     @NamedQuery(name = "Tripulante.findByFuncao", query = "SELECT t FROM Tripulante t WHERE t.funcao = :funcao")})
-public class Tripulante implements Serializable {
+public class Tripulante extends GridBean implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -40,9 +31,11 @@ public class Tripulante implements Serializable {
     @NotNull
     @Column(name = "TRIPNT_CO_FUNCAO")
     @Enumerated(EnumType.ORDINAL)
+    @GridConfig(editable=true,label="Posto",enumerated=true, required=true)
     private TipoTripulante funcao;
     @JoinColumn(name = "FUNC_ID", referencedColumnName = "FUNC_ID")
     @ManyToOne(optional = false)
+    @GridConfig(editable=true,label="Funcionário",listed=true, required=true)
     private Funcionario funcionario;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = false)
@@ -115,6 +108,11 @@ public class Tripulante implements Serializable {
     @Override
     public String toString() {
         return "com.jota.infopesca.bean.Tripulante[ id=" + id + " ]";
+    }
+
+    @Override
+    public String getOutputTextLabel() {
+        return getFuncionario().getNome();
     }
     
 }

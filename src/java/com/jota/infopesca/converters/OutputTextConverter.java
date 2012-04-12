@@ -4,6 +4,8 @@
  */
 package com.jota.infopesca.converters;
 
+import com.jota.infopesca.bean.GridBean;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +18,7 @@ import javax.faces.convert.FacesConverter;
  *
  * @author 08404235783
  */
-@FacesConverter(value="outputTextConverter")
+@FacesConverter(value = "outputTextConverter")
 public class OutputTextConverter implements Converter {
 
     @Override
@@ -31,6 +33,16 @@ public class OutputTextConverter implements Converter {
         } else if (value instanceof Date) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             return sdf.format((Date) value);
+        } else if (value instanceof GridBean) {
+            return ((GridBean) value).getOutputTextLabel();
+        } else if (value instanceof Enum) {
+            try {
+                Method m = value.getClass().getDeclaredMethod("getLabel");
+                return (String) m.invoke(value);
+            } catch (Exception e) {
+                System.out.println("Erro na recuperação de label da enumeração: " + e);
+                return value.toString();
+            }
         }
         return value.toString();
     }
