@@ -15,6 +15,8 @@ import java.util.*;
  */
 public abstract class GridBean {
     
+    private int inserctionOrder;
+    
     public abstract String getOutputTextLabel();
     
     /**
@@ -142,6 +144,21 @@ public abstract class GridBean {
             System.out.println("Erro :" + e.getMessage());
             return null;
         }
+    }
+    
+    public int getInsertionOrder() {
+        return inserctionOrder;
+    }
+
+    public void setInsertionOrder(int inserctionOrder) {
+        this.inserctionOrder = inserctionOrder;
+    }
+    
+    public String getValidationRules(String fieldName){
+        StringBuilder str = new StringBuilder();
+        str.append(isRequired(fieldName) ? "required" : "");
+        str.append(isDate(fieldName) ? " date" : "");
+        return str.toString();
     }
     
 }

@@ -27,7 +27,6 @@ public class BeanConverter implements Converter {
             ois.close();
             return o;
         } catch (Exception e) {
-            System.out.println(e);
             return null;
         }
     }
@@ -42,7 +41,6 @@ public class BeanConverter implements Converter {
             Base64 base64 = new Base64();
             return base64.encode(baos.toByteArray());
         } catch (IOException e) {
-            System.out.println(e);
             return "";
         }
     }

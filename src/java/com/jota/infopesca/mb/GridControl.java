@@ -5,6 +5,7 @@
 package com.jota.infopesca.mb;
 
 import com.jota.infopesca.annotations.GridConfig;
+import com.jota.infopesca.bean.GridBean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public abstract class GridControl<T> implements Serializable {
     private Map<String, String> labels;
     private List<String> fieldNames;
     private List<String> formFields;
-    private Map<T, Boolean> selectedItens;
+    private Boolean[] selectedItens;
     private boolean selectAll;
     private String opacity;
 
@@ -49,6 +50,10 @@ public abstract class GridControl<T> implements Serializable {
     protected abstract void remove(T obj);
 
     protected abstract List<T> refresh();
+
+    protected boolean validateInclude() {
+        return true;
+    }
 
     /**
      * Recupera os campos que são exibidos e trabalhados pelo grid.
@@ -74,9 +79,11 @@ public abstract class GridControl<T> implements Serializable {
     protected void updateList() {
         try {
             list = refresh();
-            selectedItens = new HashMap<T, Boolean>();
-            for (T obj : list) {
-                selectedItens.put(obj, false);
+            selectedItens = new Boolean[list.size()];
+            for (int i = 0; i < selectedItens.length; i++) {
+                GridBean obj = (GridBean) list.get(i);
+                obj.setInsertionOrder(i);
+                selectedItens[i] = false;
             }
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -89,7 +96,11 @@ public abstract class GridControl<T> implements Serializable {
     public void confirm(ActionEvent e) {
         try {
             if (isNewRecord) {
-                add(instance);
+                if (validateInclude()) {
+                    add(instance);
+                } else {
+                    return;
+                }
             } else {
                 alter(instance);
             }
@@ -104,9 +115,9 @@ public abstract class GridControl<T> implements Serializable {
     public void deleteSelected(ActionEvent e) {
         try {
             List<T> toRemove = new ArrayList<T>();
-            for (T obj : list) {
-                if (selectedItens.get(obj)) {
-                    toRemove.add(obj);
+            for (int i = 0; i < list.size(); i++) {
+                if (selectedItens[i]) {
+                    toRemove.add(list.get(i));
                 }
             }
             for (T obj : toRemove) {
@@ -123,9 +134,9 @@ public abstract class GridControl<T> implements Serializable {
 
     public void preAlter(ActionEvent e) {
         isNewRecord = false;
-        for (T obj : list) {
-            if (selectedItens.get(obj)) {
-                instance = obj;
+        for (int i = 0; i < selectedItens.length; i++) {
+            if (selectedItens[i]) {
+                instance = list.get(i);
                 break;
             }
         }
@@ -149,10 +160,8 @@ public abstract class GridControl<T> implements Serializable {
     }
 
     public void checkAll(AjaxBehaviorEvent e) {
-        if (selectedItens != null) {
-            for (T obj : list) {
-                selectedItens.put(obj, selectAll);
-            }
+        for (int i = 0; i < selectedItens.length; i++) {
+            selectedItens[i] = selectAll;
         }
         if (selectAll) {
             this.opacity = OPACIDADE_NORMAL;
@@ -161,14 +170,14 @@ public abstract class GridControl<T> implements Serializable {
 
     public void clickCheck(AjaxBehaviorEvent e) {
         int trues = 0;
-        for (T obj : list) {
-            if (selectedItens.get(obj)) {
+        for (boolean is : selectedItens) {
+            if (is) {
                 trues++;
             }
         }
         if (trues > 0) {
             selectAll = true;
-            if (trues < selectedItens.size()) {
+            if (trues < selectedItens.length) {
                 opacity = OPACIDADE_50;
             } else {
                 opacity = OPACIDADE_NORMAL;
@@ -246,11 +255,11 @@ public abstract class GridControl<T> implements Serializable {
         this.selectAll = selectAll;
     }
 
-    public Map<T, Boolean> getSelectedItens() {
+    public Boolean[] getSelectedItens() {
         return selectedItens;
     }
 
-    public void setSelectedItens(Map<T, Boolean> selectedItens) {
+    public void setSelectedItens(Boolean[] selectedItens) {
         this.selectedItens = selectedItens;
     }
 
@@ -289,8 +298,8 @@ public abstract class GridControl<T> implements Serializable {
      * @return
      */
     public boolean isAtLeastOneSelect() {
-        for (T obj : list) {
-            if (selectedItens.get(obj)) {
+        for (boolean is : selectedItens) {
+            if (is) {
                 return true;
             }
         }
@@ -304,8 +313,8 @@ public abstract class GridControl<T> implements Serializable {
      */
     public boolean isOnlyOneSelect() {
         int count = 0;
-        for (T obj : list) {
-            if (selectedItens.get(obj)) {
+        for (boolean is : selectedItens) {
+            if (is) {
                 count++;
             }
         }

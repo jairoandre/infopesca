@@ -22,24 +22,21 @@
             <!-- FORM BOX -->
             <p:outputPanel id="formPanel" layout="block">
                 <p:outputPanel id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
-                    <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st" resizableColumns="true"  >
-                        <p:columnGroup type="header">
-                            <p:row>
-                                <p:column colspan="2" headerText="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}" style="text-align: left;"/>
-                            </p:row>
-                        </p:columnGroup>
-                        <p:column>
-                            <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
-                        </p:column>
-                        <p:column>
-                            <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
-                        </p:column>
-                    </p:dataTable>
+                    <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
+                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st" resizableColumns="true" styleClass="border-less">
+                            <p:columnGroup type="header"/>
+                            <p:column>
+                                <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
+                            </p:column>
+                            <p:column>
+                                <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
+                            </p:column>                        
+                        </p:dataTable>
+                    </p:fieldset>
                     <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
                         <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" ajax="false">
                             <ip:clientSideValidation form="#{cc.attrs.formName}"/>
-                            <ip:clientSideValidation reset="true"/>
-                            <p:ajax process="formPanel" update="grid" />                        
+                            <p:ajax process="formPanel" update="grid"/>
                         </p:commandButton>
                         <p:spacer width="5"/>
                         <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" update="formPanel,gridBtnsPanel"/>
@@ -69,7 +66,7 @@
                                     <p:ajax event="change" process="selectAll" listener="#{cc.attrs.mb.checkAll}" update="-#{cc.clientId}-tablePanel,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn" />
                                 </p:selectBooleanCheckbox>
                             </f:facet>
-                            <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj]}" converter="checkBoxBooleanConverter">
+                            <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj.insertionOrder]}" converter="checkBoxBooleanConverter">
                                 <p:ajax event="change" process="checkBox" listener="#{cc.attrs.mb.clickCheck}" update="-#{cc.clientId}-tablePanel,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn"/>
                             </p:selectBooleanCheckbox>
                         </p:column>

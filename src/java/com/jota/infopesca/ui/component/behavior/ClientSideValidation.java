@@ -37,12 +37,12 @@ public class ClientSideValidation extends ClientBehaviorBase {
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
         if (!reset) {
-            return "if($('#" + form + "').validate().form()){"
+            return "if($('#" + form + "').validate({errorClass : 'ui-state-error'}).form()){"
                     + "return true;}"
                     + "else{"
                     + "return false;}";
         }else{
-            return "$('#" + form + "').validate().form(); return true;";
+            return "$('#" + form + "').validate().resetForm(); return true;";
         }
     }
 }

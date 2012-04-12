@@ -11,13 +11,13 @@
         <cc:attribute name="value" required="true"/>
         <cc:attribute name="list" required="true"/>
         <cc:attribute name="listLabel" required="true"/>
-        <cc:attribute name="required" default="false"/>
+        <cc:attribute name="required" default="#{false}"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:outputPanel id="valuePnl" layout="block">
-            <p:selectOneMenu id="selectOne" value="#{cc.attrs.value}">
+            <p:selectOneMenu id="selectOne" value="#{cc.attrs.value}" required="#{cc.attrs.required}">
                 <f:selectItem itemLabel="Selecione" itemValue=""/>
                 <f:selectItems value="#{cc.attrs.list}" var="obj" itemLabel="#{obj[cc.attrs.listLabel]}" itemValue="#{obj}"/>
             </p:selectOneMenu>

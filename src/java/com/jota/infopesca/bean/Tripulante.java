@@ -89,6 +89,7 @@ public class Tripulante extends GridBean implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
+        hash += funcao.hashCode() + funcionario.hashCode();
         return hash;
     }
 

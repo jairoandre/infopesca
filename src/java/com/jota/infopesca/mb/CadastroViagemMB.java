@@ -5,9 +5,11 @@
 package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Embarcacao;
+import com.jota.infopesca.bean.Funcionario;
 import com.jota.infopesca.bean.Tripulante;
 import com.jota.infopesca.bean.Viagem;
 import com.jota.infopesca.business.GenericBC;
+import com.jota.infopesca.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +36,20 @@ public class CadastroViagemMB {
         viagem = new Viagem();
         viagem.setInicio(new Date());
         viagem.setTripulantes(new ArrayList<Tripulante>());
-        softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes());
+        softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes()){
+
+            @Override
+            protected boolean validateInclude() {
+                Funcionario func = ((Tripulante)getInstance()).getFuncionario();
+                for(Object trip : getList()){
+                    if(func.equals(((Tripulante)trip).getFuncionario())){
+                        FacesUtil.addError("Funcionário já é tripulante.");
+                        return false;
+                    };
+                }
+                return true;
+            }
+        };
     }
     
     private void updateListaEmbarcacao(){

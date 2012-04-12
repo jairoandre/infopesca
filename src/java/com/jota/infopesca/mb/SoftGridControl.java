@@ -16,6 +16,7 @@ public class SoftGridControl<T> extends GridControl {
     public SoftGridControl(Class<T> clazz, Collection<T> list){
         super(clazz);
         setList((List)list);
+        updateList();
     }
 
     @Override

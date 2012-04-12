@@ -9,6 +9,7 @@
     <ui:composition template="masterLayout.xhtml">
         <ui:define name="content">
             <h:form id="form">
+                <p:growl id="growl" showDetail="true" globalOnly="true"/>
                 <p:fieldset legend="Nova Viagem">
                     <p:panelGrid id="gridFormInit" columns="4">
                         <cp:label id="labelInicio" label="Data Início:"/>
