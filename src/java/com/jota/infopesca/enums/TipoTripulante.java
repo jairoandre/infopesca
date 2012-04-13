@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 public enum TipoTripulante {
 
-    MESTRE(10d, "Mestre"), CONTRA_MESTRE(5d, "Contra-mestre"), MOTORISTA(5d, "Motorista"), SEGUNDO_MOTORISTA(3.5d, "Segundo Motorista"), GELADOR(3d, "Gelador"), SEGUNDO_GELADOR(2d, "Segundo Gelador"), CONVES(1.25d, "Convés");
+    MESTRE(10d, "Mestre"), CONTRA_MESTRE(5d, "Contra-mestre"), COZINHEIRO(3d, "Cozinheiro"), MOTORISTA(5d, "Motorista"), SEGUNDO_MOTORISTA(3.5d, "Segundo Motorista"), GELADOR(3d, "Gelador"), SEGUNDO_GELADOR(2d, "Segundo Gelador"), CONVES(1.25d, "Convés");
     private double partes;
     private String label;
 

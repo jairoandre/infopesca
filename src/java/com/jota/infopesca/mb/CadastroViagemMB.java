@@ -4,10 +4,7 @@
  */
 package com.jota.infopesca.mb;
 
-import com.jota.infopesca.bean.Embarcacao;
-import com.jota.infopesca.bean.Funcionario;
-import com.jota.infopesca.bean.Tripulante;
-import com.jota.infopesca.bean.Viagem;
+import com.jota.infopesca.bean.*;
 import com.jota.infopesca.business.GenericBC;
 import com.jota.infopesca.util.FacesUtil;
 import java.util.ArrayList;
@@ -32,6 +29,8 @@ public class CadastroViagemMB {
     
     private SoftGridControl<Tripulante> softGridTripulante;
     
+    private SoftGridControl<Despesa> softGridDespesa;
+    
     public CadastroViagemMB() {
         viagem = new Viagem();
         viagem.setInicio(new Date());
@@ -50,6 +49,9 @@ public class CadastroViagemMB {
                 return true;
             }
         };
+        
+        viagem.setDespesas(new ArrayList<Despesa>());
+        softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas());
     }
     
     private void updateListaEmbarcacao(){
@@ -89,6 +91,14 @@ public class CadastroViagemMB {
 
     public void setSoftGridTripulante(SoftGridControl<Tripulante> softGridTripulante) {
         this.softGridTripulante = softGridTripulante;
+    }
+    
+    public SoftGridControl<Despesa> getSoftGridDespesa() {
+        return softGridDespesa;
+    }
+
+    public void setSoftGridDespesa(SoftGridControl<Despesa> softGridDespesa) {
+        this.softGridDespesa = softGridDespesa;
     }
     
 }

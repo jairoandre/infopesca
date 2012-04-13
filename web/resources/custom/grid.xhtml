@@ -13,17 +13,16 @@
         <cc:attribute name="id"/>
         <cc:attribute name="label" required="true"/>
         <cc:attribute name="mb" required="true"/>
-        <cc:attribute name="formName"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:outputPanel id="grid">
             <!-- FORM BOX -->
-            <p:outputPanel id="formPanel" layout="block">
-                <p:outputPanel id="formContent" styleClass="formContent" layout="block" rendered="#{cc.attrs.mb.showForm}">
+            <p:outputPanel id="formPnl" layout="block">
+                <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-                        <p:dataTable id="dTable" value="#{cc.attrs.mb.formFields}" var="field" rowIndexVar="st" resizableColumns="true" styleClass="border-less">
+                        <p:dataTable id="dataTable" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">
                             <p:columnGroup type="header"/>
                             <p:column>
                                 <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
@@ -34,12 +33,9 @@
                         </p:dataTable>
                     </p:fieldset>
                     <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
-                        <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" ajax="false">
-                            <ip:clientSideValidation form="#{cc.attrs.formName}"/>
-                            <p:ajax process="formPanel" update="grid"/>
-                        </p:commandButton>
+                        <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formPnl" update="grid"/>
                         <p:spacer width="5"/>
-                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" update="formPanel,gridBtnsPanel"/>
+                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPanel"/>
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>
@@ -47,14 +43,14 @@
             <p:outputPanel id="gridPanel" layout="block">
                 <!-- NEW RECORD BUTTON -->
                 <p:outputPanel id="gridBtnsPanel" layout="block" style="margin: 5px 0 5px 0;">
-                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" update="formPanel,gridBtnsPanel"/>
+                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPanel"/>
                     <p:spacer width="5"/>
                     <p:commandButton id="deleteBtn" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" ajax="false">
                         <ip:deleteSelectedConfirm />
                         <p:ajax process="tablePanel" update="gridPanel,gridBtnsPanel"/>
                     </p:commandButton>
                     <p:spacer width="5"/>
-                    <p:commandButton id="alterBtn" update="formPanel,gridBtnsPanel" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" />
+                    <p:commandButton id="alterBtn" process="tablePanel" update="formPnl,gridBtnsPanel" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" />
                 </p:outputPanel>
                 <!-- Mensagem lista vazia -->
                 <cp:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>

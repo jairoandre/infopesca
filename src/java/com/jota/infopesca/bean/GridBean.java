@@ -6,6 +6,7 @@ package com.jota.infopesca.bean;
 
 import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.business.GenericBC;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -13,7 +14,7 @@ import java.util.*;
  *
  * @author André
  */
-public abstract class GridBean {
+public abstract class GridBean implements Serializable{
     
     private int inserctionOrder;
     

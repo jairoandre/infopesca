@@ -4,19 +4,10 @@
  */
 package com.jota.infopesca.bean;
 
+import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.enums.TipoDespesa;
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import java.math.BigDecimal;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -31,7 +22,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Despesa.findByTipo", query = "SELECT d FROM Despesa d WHERE d.tipo = :tipo"),
     @NamedQuery(name = "Despesa.findByCusto", query = "SELECT d FROM Despesa d WHERE d.custo = :custo"),
     @NamedQuery(name = "Despesa.findByQuitada", query = "SELECT d FROM Despesa d WHERE d.quitada = :quitada")})
-public class Despesa implements Serializable {
+public class Despesa extends GridBean {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -42,11 +34,13 @@ public class Despesa implements Serializable {
     @NotNull
     @Column(name = "DESP_CO_TIPO")
     @Enumerated(EnumType.ORDINAL)
+    @GridConfig(enumerated = true, label = "Tipo", required = true)
     private TipoDespesa tipo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_VL_CUSTO")
-    private double custo;
+    @GridConfig(currency = true, label = "Custo", required = true)
+    private BigDecimal custo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_BL_QUITADA")
@@ -62,7 +56,7 @@ public class Despesa implements Serializable {
         this.id = id;
     }
 
-    public Despesa(Long id, TipoDespesa tipo, double custo, boolean quitada) {
+    public Despesa(Long id, TipoDespesa tipo, BigDecimal custo, boolean quitada) {
         this.id = id;
         this.tipo = tipo;
         this.custo = custo;
@@ -85,11 +79,11 @@ public class Despesa implements Serializable {
         this.tipo = tipo;
     }
 
-    public double getCusto() {
+    public BigDecimal getCusto() {
         return custo;
     }
 
-    public void setCusto(double custo) {
+    public void setCusto(BigDecimal custo) {
         this.custo = custo;
     }
 
@@ -133,5 +127,9 @@ public class Despesa implements Serializable {
     public String toString() {
         return "com.jota.infopesca.bean.Despesa[ id=" + id + " ]";
     }
-    
+
+    @Override
+    public String getOutputTextLabel() {
+        return "";
+    }
 }

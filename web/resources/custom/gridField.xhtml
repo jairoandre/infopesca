@@ -15,17 +15,17 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:inputMask id="masked" value="#{cc.attrs.bean[cc.attrs.field]}" mask="#{cc.attrs.bean.getMask(cc.attrs.field)}" rendered="#{not empty cc.attrs.bean.getMask(cc.attrs.field)}" styleClass="#{cc.attrs.bean.getValidationRules(cc.attrs.field)}"/>
+        <p:inputMask id="masked" value="#{cc.attrs.bean[cc.attrs.field]}" mask="#{cc.attrs.bean.getMask(cc.attrs.field)}" rendered="#{not empty cc.attrs.bean.getMask(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}" requiredMessage="Campo Obrigatório"/>
         <p:outputPanel id="notMaskedPnl" rendered="#{empty cc.attrs.bean.getMask(cc.attrs.field)}">
-            <p:inputText id="text" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isText(cc.attrs.field)}" styleClass="#{cc.attrs.bean.getValidationRules(cc.attrs.field)}"/>
-            <p:calendar id="date" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isDate(cc.attrs.field)}" size="10" maxlength="10" styleClass="#{cc.attrs.bean.getValidationRules(cc.attrs.field)}" pattern="dd/MM/yyyy">
+            <p:inputText id="text" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isText(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+            <p:calendar id="date" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isDate(cc.attrs.field)}" size="10" maxlength="10" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}" pattern="dd/MM/yyyy" requiredMessage="Campo Obrigatório">
                 <script>
                     $(function(){
                         $("##{cc.clientId}-date_input").mask("99/99/9999");
                     });
                 </script>
             </p:calendar>
-            <p:inputText id="currency" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isCurrency(cc.attrs.field)}" styleClass="#{cc.attrs.bean.getValidationRules(cc.attrs.field)}">
+            <p:inputText id="currency" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isCurrency(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}" requiredMessage="Campo Obrigatório">
                 <script>
                     $(function(){
                         $("##{cc.clientId}-currency").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});

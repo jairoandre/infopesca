@@ -9,24 +9,24 @@
     <ui:composition template="masterLayout.xhtml">
         <ui:define name="content">
             <h:form id="form">
-                <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
                 <p:fieldset legend="Nova Viagem">
-                    <p:panelGrid id="gridFormInit" columns="4">
+                    <p:panelGrid id="gridFormInit" columns="4" styleClass="border-less">
                         <cp:label id="labelInicio" label="Data Início:"/>
                         <cp:calendar id="dataInicio" value="#{cadastroViagemMB.viagem.inicio}" label="Data Início"/>
                         <cp:label id="labelEmbarcacao" label="Embarcação:"/>
                         <cp:selectOneBean id="embarcacao" value="#{cadastroViagemMB.viagem.embarcacao}" list="#{cadastroViagemMB.embarcacoes}" listLabel="nome"/>
                     </p:panelGrid>
-                    <p:accordionPanel id="tripulantesPnl" dynamic="true" style="margin: 5px 0 5px;">
+                    <p:accordionPanel id="accordion" dynamic="false" style="margin: 5px 0 5px;">
                         <p:tab title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{cadastroViagemMB.softGridTripulante}" formName="form" id="tripulantes"/>
                         </p:tab>
                         <p:tab title="Despesas">
-                            Despesas
+                            <cp:grid label="Despesas" mb="#{cadastroViagemMB.softGridDespesa}" formName="form" id="despesas"/>
                         </p:tab>
                     </p:accordionPanel>
+                    <p:commandButton value="Cadastrar" />
                 </p:fieldset>
-
             </h:form>
         </ui:define>
     </ui:composition>

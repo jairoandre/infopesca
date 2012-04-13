@@ -21,14 +21,15 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Embarcacao.findAll", query = "SELECT e FROM Embarcacao e"),
     @NamedQuery(name = "Embarcacao.findById", query = "SELECT e FROM Embarcacao e WHERE e.id = :id"),
     @NamedQuery(name = "Embarcacao.findByNome", query = "SELECT e FROM Embarcacao e WHERE e.nome = :nome")})
-public class Embarcacao extends GridBean implements Serializable {
+public class Embarcacao extends GridBean {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "EMBC_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @GridConfig(label = "Id", editable= false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GridConfig(label = "Id", editable = false)
     private Long id;
     @Basic(optional = false)
     @NotNull
@@ -38,7 +39,7 @@ public class Embarcacao extends GridBean implements Serializable {
     private String nome;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarcacao")
     private Collection<Viagem> viagens;
-    
+
     public Embarcacao() {
     }
 
@@ -104,8 +105,4 @@ public class Embarcacao extends GridBean implements Serializable {
     public String getOutputTextLabel() {
         return nome;
     }
-    
-    
-    
-    
 }

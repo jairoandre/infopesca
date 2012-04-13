@@ -29,63 +29,64 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Funcionario.findByTelefone", query = "SELECT f FROM Funcionario f WHERE f.telefone = :telefone"),
     @NamedQuery(name = "Funcionario.findByCelular", query = "SELECT f FROM Funcionario f WHERE f.celular = :celular"),
     @NamedQuery(name = "Funcionario.findBySalario", query = "SELECT f FROM Funcionario f WHERE f.salario = :salario")})
-public class Funcionario extends GridBean implements Serializable {
+public class Funcionario extends GridBean {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @GridConfig(label="Id",editable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GridConfig(label = "Id", editable = false)
     private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "FUNC_NM")
-    @GridConfig(label="Nome",editable=true,required=true)
+    @GridConfig(label = "Nome", editable = true, required = true)
     private String nome;
     @Column(name = "FUNC_DT_NASCIMENTO")
     @Temporal(TemporalType.DATE)
-    @GridConfig(date=true,required=true,label="Data de Nascimento")
+    @GridConfig(date = true, required = true, label = "Data de Nascimento")
     private Date dataNascimento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "FUNC_CO_CTPS")
-    @GridConfig(label="CTPS",editable=true,required=true)
+    @GridConfig(label = "CTPS", editable = true, required = true)
     private String ctps;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "FUNC_CO_CI")
-    @GridConfig(label="CI",editable=true,required=true)
+    @GridConfig(label = "CI", editable = true, required = true)
     private String ci;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "FUNC_TX_ENDERECO")
-    @GridConfig(label="Endereço",editable=true,required=true)
+    @GridConfig(label = "Endereço", editable = true, required = true)
     private String endereco;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "FUNC_CO_TEL")
-    @GridConfig(label="Telefone",editable=true,required=true,mask="(99)9999-9999")
+    @GridConfig(label = "Telefone", editable = true, required = true, mask = "(99)9999-9999")
     private String telefone;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "FUNC_CO_CEL")
-    @GridConfig(label="Celular",editable=true,required=true,mask="(99)9999-9999")
+    @GridConfig(label = "Celular", editable = true, required = true, mask = "(99)9999-9999")
     private String celular;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_VL_SALARIO")
-    @GridConfig(label="Salário",editable=true,required=true,currency=true)
+    @GridConfig(label = "Salário", editable = true, required = true, currency = true)
     private BigDecimal salario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private Collection<Tripulante> tripulantes;
-    
+
     public Funcionario() {
     }
 
@@ -183,7 +184,7 @@ public class Funcionario extends GridBean implements Serializable {
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -213,5 +214,4 @@ public class Funcionario extends GridBean implements Serializable {
     public String getOutputTextLabel() {
         return nome;
     }
-    
 }
