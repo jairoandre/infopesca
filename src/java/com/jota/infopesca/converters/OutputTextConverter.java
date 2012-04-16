@@ -28,6 +28,9 @@ public class OutputTextConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
+        if(value == null){
+            return "-";
+        }
         if (value instanceof BigDecimal) {
             return new CurrencyConverter().getAsString(context, component, value);
         } else if (value instanceof Date) {

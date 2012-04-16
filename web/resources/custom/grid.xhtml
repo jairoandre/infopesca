@@ -4,7 +4,6 @@
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ip="http://infopesca.org/infopesca"
       xmlns:p="http://primefaces.org/ui"
       xmlns:cp="http://java.sun.com/jsf/composite/custom">
 
@@ -20,6 +19,7 @@
         <p:outputPanel id="grid">
             <!-- FORM BOX -->
             <p:outputPanel id="formPnl" layout="block">
+                <p:focus/>
                 <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
                         <p:dataTable id="dataTable" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">

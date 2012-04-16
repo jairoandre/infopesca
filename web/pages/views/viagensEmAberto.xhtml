@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:cp="http://java.sun.com/jsf/composite/custom"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:h="http://java.sun.com/jsf/html">
+    <ui:composition template="masterLayout.xhtml">
+        <ui:define name="content">
+            <h:form id="form">
+                <p:focus/>
+                <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
+                <p:fieldset legend="Viagens em aberto" rendered="#{not empty viagemMB.viagens}">
+                    <p:accordionPanel id="accordion" dynamic="true" value="#{viagemMB.viagens}" var="viagem">
+                        <p:tab id="tab" title="#{viagem.embarcacao.nome}">
+                            <p:panelGrid columns="2">
+                                <cp:label label="Início"/>
+                                <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

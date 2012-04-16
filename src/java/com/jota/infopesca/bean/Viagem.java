@@ -64,6 +64,8 @@ public class Viagem implements Serializable {
     private Collection<Despesa> despesas;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "viagem")
     private Collection<Conta> contas;
+    @Column(name = "VIAG_IN_FECHADA")
+    private Boolean fechada;
 
     public Viagem() {
     }
@@ -134,6 +136,14 @@ public class Viagem implements Serializable {
         this.contas = contas;
     }
 
+    public Boolean getFechada() {
+        return fechada;
+    }
+
+    public void setFechada(Boolean fechada) {
+        this.fechada = fechada;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

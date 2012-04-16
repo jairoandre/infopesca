@@ -35,8 +35,8 @@
                                 <p:menuitem  action="funcionario" value="Funcionários" ajax="false" onclick="statusDialog.show()"/>
                             </p:submenu>
                             <p:submenu label="Viagens">
-                                <p:menuitem  action="cadastroViagem" value="Nova" ajax="false" onclick="statusDialog.show()"/>
-                                <p:menuitem  action="acompanharViagens" value="Acompanhar" ajax="false" onclick="statusDialog.show()"/>
+                                <p:menuitem  action="#{viagemMB.preIncluirViagem()}" value="Nova" ajax="false" onclick="statusDialog.show()"/>
+                                <p:menuitem  action="viagensEmAberto" value="Acompanhar" ajax="false" onclick="statusDialog.show()"/>
                                 <p:menuitem  action="fecharConta" value="Fechar Conta" ajax="false" onclick="statusDialog.show()"/>
                             </p:submenu>
                             <p:submenu label="Relatórios"/>
