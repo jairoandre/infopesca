@@ -29,7 +29,11 @@ public class Despesa extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_ID")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "DESP_TX_DESCRICAO")
+    @GridConfig(label="Descrição")
+    private String descricao;
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_CO_TIPO")
@@ -69,6 +73,14 @@ public class Despesa extends GridBean {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public TipoDespesa getTipo() {
@@ -132,4 +144,11 @@ public class Despesa extends GridBean {
     public String getOutputTextLabel() {
         return "";
     }
+
+    @Override
+    public void setParent(Object parent) {
+        setViagem((Viagem)parent);
+    }
+    
+    
 }

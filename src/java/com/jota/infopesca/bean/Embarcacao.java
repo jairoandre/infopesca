@@ -5,7 +5,6 @@
 package com.jota.infopesca.bean;
 
 import com.jota.infopesca.annotations.GridConfig;
-import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,7 +28,6 @@ public class Embarcacao extends GridBean {
     @NotNull
     @Column(name = "EMBC_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GridConfig(label = "Id", editable = false)
     private Long id;
     @Basic(optional = false)
     @NotNull

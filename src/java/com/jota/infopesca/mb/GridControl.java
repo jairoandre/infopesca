@@ -105,14 +105,15 @@ public abstract class GridControl<T> implements Serializable {
                 alter(instance);
             }
             updateList();
-            setShowForm(false);
+            selectAll = false;
+            showForm = false;
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
 
     }
 
-    public void deleteSelected(ActionEvent e) {
+    public void deleteSelected() {
         try {
             List<T> toRemove = new ArrayList<T>();
             for (int i = 0; i < list.size(); i++) {

@@ -4,6 +4,7 @@
  */
 package com.jota.infopesca.mb;
 
+import com.jota.infopesca.bean.GridBean;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,14 +14,18 @@ import java.util.List;
  */
 public class SoftGridControl<T> extends GridControl {
     
-    public SoftGridControl(Class<T> clazz, Collection<T> list){
+    private Object parent;
+    
+    public SoftGridControl(Class<T> clazz, Collection<T> list, Object parent){
         super(clazz);
         setList((List)list);
         updateList();
+        this.parent = parent;
     }
 
     @Override
     protected void add(Object obj) {
+        ((GridBean)obj).setParent(parent);
         getList().add((T)obj);        
     }
 

@@ -162,4 +162,7 @@ public abstract class GridBean implements Serializable{
         return str.toString();
     }
     
+    public void setParent(Object parent){
+    }
+    
 }

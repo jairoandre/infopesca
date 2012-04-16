@@ -56,8 +56,8 @@ html,body {
     margin-top: 20px;
 }
 
-.ui-widget{
-    font-size: 15px;
+.ui-widget, .ui-widget .ui-widget{
+    font-size: 12px;
 }
 
 .ui-menu-child{
@@ -66,7 +66,7 @@ html,body {
 
 .ui-growl{
     font-size: 12px;
-    top: 85px;
+    top: 90px;
 }
 
 .border-less table tbody, .border-less table tr,.border-less table tr td{

@@ -10,8 +10,11 @@ import com.jota.infopesca.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -20,7 +23,9 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class CadastroViagemMB {
-
+    
+    Logger LOG = Logger.getLogger("CadastroViagemMB");
+    
     private List<Embarcacao> embarcacoes;
     
     private Viagem viagem;
@@ -35,7 +40,7 @@ public class CadastroViagemMB {
         viagem = new Viagem();
         viagem.setInicio(new Date());
         viagem.setTripulantes(new ArrayList<Tripulante>());
-        softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes()){
+        softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem){
 
             @Override
             protected boolean validateInclude() {
@@ -51,7 +56,7 @@ public class CadastroViagemMB {
         };
         
         viagem.setDespesas(new ArrayList<Despesa>());
-        softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas());
+        softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
     }
     
     private void updateListaEmbarcacao(){
@@ -99,6 +104,22 @@ public class CadastroViagemMB {
 
     public void setSoftGridDespesa(SoftGridControl<Despesa> softGridDespesa) {
         this.softGridDespesa = softGridDespesa;
+    }
+    
+    public String cadastrarViagem(){
+        if(viagem.getTripulantes().isEmpty()){
+            FacesUtil.addError("Viagem sem tripulantes!");
+        }else{
+            GenericBC<Viagem> bc = new GenericBC<Viagem>(Viagem.class);
+            try{
+                bc.persist(viagem);
+                return "home";
+            }catch(Exception ex){
+                LOG.log(Level.OFF, ex.getMessage());
+                FacesUtil.addError("Erro no cadastro!");
+            }           
+        }
+        return null;
     }
     
 }

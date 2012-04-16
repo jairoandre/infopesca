@@ -35,35 +35,32 @@
                     <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
                         <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formPnl" update="grid"/>
                         <p:spacer width="5"/>
-                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPanel"/>
+                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl"/>
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>
             <!-- DATA TABLE -->
-            <p:outputPanel id="gridPanel" layout="block">
-                <!-- NEW RECORD BUTTON -->
-                <p:outputPanel id="gridBtnsPanel" layout="block" style="margin: 5px 0 5px 0;">
-                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPanel"/>
+            <p:outputPanel id="gridPnl" layout="block">
+                <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
+                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPnl"/>
                     <p:spacer width="5"/>
-                    <p:commandButton id="deleteBtn" actionListener="#{cc.attrs.mb.deleteSelected}" value="Excluir Selecionados" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}" ajax="false">
-                        <ip:deleteSelectedConfirm />
-                        <p:ajax process="tablePanel" update="gridPanel,gridBtnsPanel"/>
-                    </p:commandButton>
+                    <cp:dialogCommand id="#{cc.attrs.id}DeleteDialog" msg="Deseja excluir selecionado(s)?" action="#{cc.attrs.mb.deleteSelected}" process="-#{cc.clientId}-gridPnl" update="-#{cc.clientId}-gridPnl,-#{cc.clientId}-gridBtnsPnl" rendered="#{!cc.attrs.mb.showForm}" />
+                    <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{cc.attrs.id}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
                     <p:spacer width="5"/>
-                    <p:commandButton id="alterBtn" process="tablePanel" update="formPnl,gridBtnsPanel" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" />
+                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="gridPnl" update="formPnl,gridBtnsPnl"/>
                 </p:outputPanel>
                 <!-- Mensagem lista vazia -->
                 <cp:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <p:outputPanel id="tablePanel" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
+                <p:outputPanel id="tblPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
                     <p:dataTable id="dtTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top" resizableColumns="true">
                         <p:column id="columns" style="text-align: center;">
                             <f:facet name="header">
                                 <p:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}">
-                                    <p:ajax event="change" process="selectAll" listener="#{cc.attrs.mb.checkAll}" update="-#{cc.clientId}-tablePanel,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn" />
+                                    <p:ajax event="change" process="selectAll" listener="#{cc.attrs.mb.checkAll}" update="-#{cc.clientId}-tblPnl,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn" />
                                 </p:selectBooleanCheckbox>
                             </f:facet>
                             <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj.insertionOrder]}" converter="checkBoxBooleanConverter">
-                                <p:ajax event="change" process="checkBox" listener="#{cc.attrs.mb.clickCheck}" update="-#{cc.clientId}-tablePanel,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn"/>
+                                <p:ajax event="change" process="checkBox" listener="#{cc.attrs.mb.clickCheck}" update="-#{cc.clientId}-tblPnl,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
                         <p:columns id="fieldNamesList" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">

@@ -26,6 +26,7 @@ public class Tripulante extends GridBean implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "TRIP_ID")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
@@ -114,6 +115,11 @@ public class Tripulante extends GridBean implements Serializable {
     @Override
     public String getOutputTextLabel() {
         return getFuncionario().getNome();
+    }
+    
+    @Override
+    public void setParent(Object parent){
+        setViagem((Viagem)parent);
     }
     
 }

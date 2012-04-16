@@ -13,19 +13,20 @@
                 <p:fieldset legend="Nova Viagem">
                     <p:panelGrid id="gridFormInit" columns="4" styleClass="border-less">
                         <cp:label id="labelInicio" label="Data Início:"/>
-                        <cp:calendar id="dataInicio" value="#{cadastroViagemMB.viagem.inicio}" label="Data Início"/>
+                        <cp:calendar id="dataInicio" value="#{cadastroViagemMB.viagem.inicio}" label="Data Início" required="true"/>
                         <cp:label id="labelEmbarcacao" label="Embarcação:"/>
-                        <cp:selectOneBean id="embarcacao" value="#{cadastroViagemMB.viagem.embarcacao}" list="#{cadastroViagemMB.embarcacoes}" listLabel="nome"/>
+                        <cp:selectOneBean id="embarcacao" value="#{cadastroViagemMB.viagem.embarcacao}" list="#{cadastroViagemMB.embarcacoes}" listLabel="nome" required="true"/>
                     </p:panelGrid>
-                    <p:accordionPanel id="accordion" dynamic="false" style="margin: 5px 0 5px;">
+                    <p:accordionPanel id="accordion" dynamic="false" style="margin: 5px 0 5px;" >
+                        <p:ajax event="tabChange" update="@this"/>
                         <p:tab title="Tripulação">
-                            <cp:grid label="Tripulantes" mb="#{cadastroViagemMB.softGridTripulante}" formName="form" id="tripulantes"/>
+                            <cp:grid label="Tripulantes" mb="#{cadastroViagemMB.softGridTripulante}" id="tripulantes"/>
                         </p:tab>
                         <p:tab title="Despesas">
-                            <cp:grid label="Despesas" mb="#{cadastroViagemMB.softGridDespesa}" formName="form" id="despesas"/>
+                            <cp:grid label="Despesas" mb="#{cadastroViagemMB.softGridDespesa}" id="despesas"/>
                         </p:tab>
                     </p:accordionPanel>
-                    <p:commandButton value="Cadastrar" />
+                    <p:commandButton value="Cadastrar" action="#{cadastroViagemMB.cadastrarViagem}" update="@form"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

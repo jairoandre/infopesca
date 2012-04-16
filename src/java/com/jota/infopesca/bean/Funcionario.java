@@ -37,7 +37,6 @@ public class Funcionario extends GridBean {
     @NotNull
     @Column(name = "FUNC_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GridConfig(label = "Id", editable = false)
     private Long id;
     @Basic(optional = false)
     @NotNull
