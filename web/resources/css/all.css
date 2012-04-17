@@ -56,6 +56,11 @@ html,body {
     margin-top: 20px;
 }
 
+.border-less table tbody, .border-less table tr,.border-less table tr td{
+    background: none !important;
+    border: 0px none !important;
+}
+
 .ui-widget, .ui-widget .ui-widget{
     font-size: 12px;
 }
@@ -69,7 +74,6 @@ html,body {
     top: 90px;
 }
 
-.border-less table tbody, .border-less table tr,.border-less table tr td{
-    background: none !important;
-    border: 0px none !important;
+.ui-panelgrid-header{
+    text-align: left !important;
 }

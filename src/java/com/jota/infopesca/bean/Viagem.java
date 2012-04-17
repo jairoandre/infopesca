@@ -7,7 +7,6 @@ package com.jota.infopesca.bean;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.annotation.Generated;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -63,7 +62,7 @@ public class Viagem implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "viagem")
     private Collection<Despesa> despesas;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "viagem")
-    private Collection<Conta> contas;
+    private Collection<Venda> vendas;
     @Column(name = "VIAG_IN_FECHADA")
     private Boolean fechada;
 
@@ -128,12 +127,12 @@ public class Viagem implements Serializable {
         this.despesas = despesas;
     }
 
-    public Collection<Conta> getContas() {
-        return contas;
+    public Collection<Venda> getVendas() {
+        return vendas;
     }
 
-    public void setContas(Collection<Conta> contas) {
-        this.contas = contas;
+    public void setVendas(Collection<Venda> vendas) {
+        this.vendas = vendas;
     }
 
     public Boolean getFechada() {

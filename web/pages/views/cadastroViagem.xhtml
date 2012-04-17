@@ -5,29 +5,41 @@
     xmlns:cp="http://java.sun.com/jsf/composite/custom"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:h="http://java.sun.com/jsf/html">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition template="masterLayout.xhtml">
         <ui:define name="content">
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
                 <p:fieldset legend="Nova Viagem">
-                    <p:panelGrid id="gridFormInit" columns="4" styleClass="border-less">
+                    <p:panelGrid id="gridFormInit" columns="8" styleClass="border-less">
+                        <f:facet name="header">
+                            Dados Básicos da Viagem
+                        </f:facet>
                         <cp:label id="labelEmbarcacao" label="Embarcação:"/>
                         <cp:selectOneBean id="embarcacao" value="#{viagemMB.viagem.embarcacao}" list="#{viagemMB.embarcacoes}" listLabel="nome" required="true"/>
-                        <cp:label id="labelInicio" label="Data Início:"/>
-                        <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" label="Data Início" required="true"/>
+                        <cp:label id="labelInicio" label="Partida:"/>
+                        <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" label="Partida" required="true"/>
+                        <cp:label id="labelFim" label="Chegada:"/>
+                        <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}" label="Chegada" />
+                        <cp:label id="labelFechada" label="Fechada:"/>
+                        <cp:selectOneBoolean id="finalizada" value="#{viagemMB.viagem.fechada}"/>
                     </p:panelGrid>
-                    <p:outputPanel id="panel" style="margin: 5px 0 5px;" layout="block">
-                        <p:panel header="Tripulação" collapsed="true" toggleable="true" toggleSpeed="200">
-                            <p:ajax event="toggle" update="@this"/>
+                    <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true">
+                        <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
-                        </p:panel>
-                        <p:panel header="Despesas" collapsed="true" toggleable="true" toggleSpeed="200">
-                            <p:ajax event="toggle" update="@this"/>
+                        </p:tab>
+                        <p:tab id="despTab" title="Despesas">
                             <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas"/>
-                        </p:panel>
-                    </p:outputPanel>
+                        </p:tab>
+                        <p:tab id="vendaTab" title="Venda">
+                            Cadastro de Conta
+                        </p:tab>
+                        <p:tab id="balancoTab" title="Balanço">
+                            Balanço
+                        </p:tab>
+                    </p:tabView>
                     <p:commandButton value="Cadastrar" action="#{viagemMB.cadastrarViagem}" update="@form"/>
                 </p:fieldset>
             </h:form>

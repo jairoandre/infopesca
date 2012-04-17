@@ -25,35 +25,35 @@ import javax.validation.constraints.NotNull;
  * @author André
  */
 @Entity
-@Table(name = "contas")
+@Table(name = "VENDAS")
 @NamedQueries({
-    @NamedQuery(name = "Conta.findAll", query = "SELECT c FROM Conta c"),
-    @NamedQuery(name = "Conta.findById", query = "SELECT c FROM Conta c WHERE c.id = :id")})
-public class Conta implements Serializable {
+    @NamedQuery(name = "Venda.findAll", query = "SELECT c FROM Venda c"),
+    @NamedQuery(name = "Venda.findById", query = "SELECT c FROM Venda c WHERE c.id = :id")})
+public class Venda implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CONT_ID")
+    @Column(name = "VEND_ID")
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CONT_VL_TOTAL")
+    @Column(name = "VEND_VL_TOTAL")
     private BigDecimal total;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
     private Collection<Pescado> pescados;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = false)
     private Viagem viagem;
 
-    public Conta() {
+    public Venda() {
     }
 
-    public Conta(Long id) {
+    public Venda(Long id) {
         this.id = id;
     }
 
-    public Conta(Long id, BigDecimal total) {
+    public Venda(Long id, BigDecimal total) {
         this.id = id;
         this.total = total;
     }
@@ -100,10 +100,10 @@ public class Conta implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Conta)) {
+        if (!(object instanceof Venda)) {
             return false;
         }
-        Conta other = (Conta) object;
+        Venda other = (Venda) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -112,7 +112,7 @@ public class Conta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.jota.infopesca.bean.Conta[ id=" + id + " ]";
+        return "com.jota.infopesca.bean.Venda[ id=" + id + " ]";
     }
     
 }

@@ -4,11 +4,14 @@
  */
 package com.jota.infopesca.bean;
 
+import com.jota.infopesca.annotations.GridConfig;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -32,21 +35,24 @@ public class Pescado implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PESC_ID")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PESC_VL_PESO")
+    @GridConfig(label="Peso", required=true)
     private BigDecimal peso;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PESC_VL_PRECO")
+    @GridConfig(label="Preço/Kg",required=true,currency=true)
     private BigDecimal preco;
     @JoinColumn(name = "PEIX_ID", referencedColumnName = "PEIX_ID")
     @ManyToOne(optional = false)
     private Peixe peixe;
-    @JoinColumn(name = "CONT_ID", referencedColumnName = "CONT_ID")
+    @JoinColumn(name = "VEND_ID", referencedColumnName = "VEND_ID")
     @ManyToOne(optional = false)
-    private Conta conta;
+    private Venda venda;
 
     public Pescado() {
     }
@@ -93,12 +99,12 @@ public class Pescado implements Serializable {
         this.peixe = peixe;
     }
 
-    public Conta getConta() {
-        return conta;
+    public Venda getVenda() {
+        return venda;
     }
 
-    public void setConta(Conta conta) {
-        this.conta = conta;
+    public void setVenda(Venda venda) {
+        this.venda = venda;
     }
 
     @Override

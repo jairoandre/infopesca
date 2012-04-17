@@ -14,9 +14,11 @@
                 <p:fieldset legend="Viagens em aberto" rendered="#{not empty viagemMB.viagens}">
                     <p:accordionPanel id="accordion" dynamic="true" value="#{viagemMB.viagens}" var="viagem">
                         <p:tab id="tab" title="#{viagem.embarcacao.nome}">
-                            <p:panelGrid columns="2">
-                                <cp:label label="Início"/>
+                            <p:panelGrid columns="4" styleClass="border-less">
+                                <cp:label label="Início:"/>
                                 <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                                <cp:label label="Fim:"/>
+                                <h:outputText value="#{viagem.fim}" converter="outputTextConverter"/>
                             </p:panelGrid>
                         </p:tab>
                     </p:accordionPanel>

@@ -37,7 +37,7 @@ public class ViagemMB {
         try {
             embarcacoes = bcEmbc.getList();
         } catch (Exception e) {
-            //TODO: tratar
+            System.out.println(e.getMessage());
         }
     }
 
@@ -56,12 +56,6 @@ public class ViagemMB {
 
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
-    }
-
-    public void embarcacaoChanged() {
-        if (viagem.getEmbarcacao() != null) {
-        } else {
-        }
     }
 
     public SoftGridControl<Tripulante> getSoftGridTripulante() {
@@ -126,6 +120,7 @@ public class ViagemMB {
     public String preIncluirViagem() {
         viagem = new Viagem();
         viagem.setInicio(new Date());
+        viagem.setFechada(false);
         viagem.setTripulantes(new ArrayList<Tripulante>());
         softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem) {
 
