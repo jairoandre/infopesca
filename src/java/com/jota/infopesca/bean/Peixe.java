@@ -5,7 +5,6 @@
 package com.jota.infopesca.bean;
 
 import com.jota.infopesca.annotations.GridConfig;
-import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,19 +20,22 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Peixe.findAll", query = "SELECT p FROM Peixe p"),
     @NamedQuery(name = "Peixe.findById", query = "SELECT p FROM Peixe p WHERE p.id = :id"),
     @NamedQuery(name = "Peixe.findByNome", query = "SELECT p FROM Peixe p WHERE p.nome = :nome")})
-public class Peixe implements Serializable {
+public class Peixe extends GridBean {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "PEIX_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "PEIX_NM")
+    @GridConfig(label = "Nome")
     private String nome;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "peixe")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "peixe", fetch = FetchType.LAZY)
     private Collection<Pescado> pescados;
 
     public Peixe() {
@@ -96,5 +98,11 @@ public class Peixe implements Serializable {
     public String toString() {
         return "com.jota.infopesca.bean.Peixe[ id=" + id + " ]";
     }
+
+    @Override
+    public String getOutputTextLabel() {
+        return nome;
+    }
+    
     
 }

@@ -5,19 +5,9 @@
 package com.jota.infopesca.bean;
 
 import com.jota.infopesca.annotations.GridConfig;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import java.text.DecimalFormat;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,26 +19,31 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Pescado.findAll", query = "SELECT p FROM Pescado p"),
     @NamedQuery(name = "Pescado.findById", query = "SELECT p FROM Pescado p WHERE p.id = :id")})
-public class Pescado implements Serializable {
+public class Pescado extends GridBean {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "PESC_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PESC_VL_PESO")
-    @GridConfig(label="Peso", required=true)
+    @GridConfig(label = "Peso(Kg)", required = true, weight = true)
     private BigDecimal peso;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PESC_VL_PRECO")
-    @GridConfig(label="Preço/Kg",required=true,currency=true)
+    @GridConfig(label = "Preço/Kg", required = true, currency = true)
     private BigDecimal preco;
+    @Column(name = "PESC_VL_QUANTIDADE")
+    @GridConfig(label = "Peças", number = true)
+    private Integer quantidade;
     @JoinColumn(name = "PEIX_ID", referencedColumnName = "PEIX_ID")
     @ManyToOne(optional = false)
+    @GridConfig(label = "Peixe", listed = true)
     private Peixe peixe;
     @JoinColumn(name = "VEND_ID", referencedColumnName = "VEND_ID")
     @ManyToOne(optional = false)
@@ -91,6 +86,14 @@ public class Pescado implements Serializable {
         this.preco = preco;
     }
 
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
     public Peixe getPeixe() {
         return peixe;
     }
@@ -131,5 +134,25 @@ public class Pescado implements Serializable {
     public String toString() {
         return "com.jota.infopesca.bean.Pescado[ id=" + id + " ]";
     }
-    
+
+    @Override
+    public String getOutputTextLabel() {
+        StringBuilder str = new StringBuilder();
+        str.append(peixe.getNome());
+        str.append(" - ");
+        DecimalFormat df = new DecimalFormat("#,###.000");
+        str.append(df.format(peso));
+        str.append(" Kg");
+        if (quantidade != null) {
+            str.append(" - ");
+            str.append(quantidade);
+            str.append(" peças");
+        }
+        return str.toString();
+    }
+
+    @Override
+    public void setParent(Object parent) {
+        venda = (Venda) parent;
+    }
 }

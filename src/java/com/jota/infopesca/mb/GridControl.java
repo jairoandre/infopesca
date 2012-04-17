@@ -8,10 +8,8 @@ import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.bean.GridBean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
@@ -36,10 +34,20 @@ public abstract class GridControl<T> implements Serializable {
     private Boolean[] selectedItens;
     private boolean selectAll;
     private String opacity;
+    private Map<String, SoftGridControl> softControllers;
+    private Map<String, String> softControllersLabels;
+    private Map<String, Class> softControllersClass;
+    private Map<String, String> getterNames;
+    private Map<String, String> setterNames;
 
     public GridControl(Class<T> clazz) {
         this.clazz = clazz;
         opacity = "1";
+        softControllers = new LinkedHashMap<String, SoftGridControl>();
+        softControllersLabels = new HashMap<String, String>();
+        softControllersClass = new HashMap<String, Class>();
+        getterNames = new HashMap<String, String>();
+        setterNames = new HashMap<String, String>();
         retrieveLabelsAndFields();
     }
 
@@ -67,6 +75,15 @@ public abstract class GridControl<T> implements Serializable {
             if (field.isAnnotationPresent(GridConfig.class)) {
                 GridConfig annotation = field.getAnnotation(GridConfig.class);
                 String fieldName = field.getName();
+                // Campos griddable não compõem o formulário normal de dados.
+                if (annotation.griddable()) {
+                    softControllers.put(fieldName, null);
+                    softControllersLabels.put(fieldName, annotation.label());
+                    softControllersClass.put(fieldName, annotation.softGridClass());
+                    getterNames.put(fieldName, composeMethodName("get", fieldName));
+                    setterNames.put(fieldName, composeMethodName("set", fieldName));
+                    continue;
+                }
                 this.fieldNames.add(fieldName);
                 this.labels.put(fieldName, annotation.label());
                 if (annotation.editable()) {
@@ -133,11 +150,40 @@ public abstract class GridControl<T> implements Serializable {
 
     }
 
+    private String composeMethodName(String sufix, String field) {
+        StringBuilder str = new StringBuilder();
+        str.append(sufix);
+        str.append(field.substring(0, 1).toUpperCase());
+        str.append(field.substring(1));
+        return str.toString();
+    }
+
+    private void mountSoftControllers() {
+        Set<String> fields = softControllers.keySet();
+        for (String field : fields) {
+            try {
+                Method getter = this.clazz.getDeclaredMethod(getterNames.get(field));
+                Collection softList = (Collection) getter.invoke(instance);
+                if (softList == null) {
+                    softList = new ArrayList();
+                    Method setter = this.clazz.getDeclaredMethod(setterNames.get(field), Collection.class);
+                    setter.invoke(instance, softList);
+                }
+                Class softClass = softControllersClass.get(field);
+                SoftGridControl sgc = new SoftGridControl(softClass, softList, instance);
+                softControllers.put(field, sgc);
+            } catch (Exception e) {
+                // TODO: Tratar;
+            }
+        }
+    }
+
     public void preAlter(ActionEvent e) {
         isNewRecord = false;
         for (int i = 0; i < selectedItens.length; i++) {
             if (selectedItens[i]) {
                 instance = list.get(i);
+                mountSoftControllers();
                 break;
             }
         }
@@ -148,6 +194,7 @@ public abstract class GridControl<T> implements Serializable {
         isNewRecord = true;
         try {
             instance = clazz.newInstance();
+            mountSoftControllers();
             showForm = true;
         } catch (InstantiationException ex) {
             Logger.getLogger(HardGridControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -272,6 +319,24 @@ public abstract class GridControl<T> implements Serializable {
         this.isNewRecord = isNewRecord;
     }
 
+    public Map<String, SoftGridControl> getSoftControllers() {
+        return softControllers;
+    }
+
+    public void setSoftControllers(Map<String, SoftGridControl> softControllers) {
+        this.softControllers = softControllers;
+    }
+
+    public List<String> getSoftControllersSet() {
+        List<String> set = new ArrayList<String>();
+        set.addAll(softControllers.keySet());
+        return set;
+    }
+
+    public Map<String, String> getSoftControllersLabels() {
+        return softControllersLabels;
+    }
+    
     /*
      * ARTIFICIAL GETTERS
      */

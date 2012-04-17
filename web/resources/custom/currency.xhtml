@@ -2,23 +2,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="id"/>
+        <cc:attribute name="rendered"/>
         <cc:attribute name="value" required="true"/>
         <cc:attribute name="required" default="false"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:calendar id="calendar" value="#{cc.attrs.value}" size="10" maxlength="10" pattern="dd/MM/yyyy" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório">
+        <p:inputText id="input" value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório">
             <script>
                 $(function(){
-                    $("##{cc.clientId}-calendar_input").mask("99/99/9999");
+                    $("##{cc.clientId}-input").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
                 });
             </script>
-        </p:calendar>
+            <f:converter converterId="currencyConverter"/>
+        </p:inputText>
     </cc:implementation>
 </html>

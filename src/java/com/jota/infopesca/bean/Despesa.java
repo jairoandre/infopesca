@@ -54,6 +54,7 @@ public class Despesa extends GridBean {
     private Viagem viagem;
 
     public Despesa() {
+        this.tipo = TipoDespesa.POS_MANUTENCAO;
     }
 
     public Despesa(Long id) {

@@ -27,6 +27,7 @@ public class ViagemMB {
     private GenericBC bcEmbc = new GenericBC<Embarcacao>(Embarcacao.class);
     private SoftGridControl<Tripulante> softGridTripulante;
     private SoftGridControl<Despesa> softGridDespesa;
+    private SoftGridControl<Venda> softGridVenda;
     private List<Viagem> viagens;
 
     public ViagemMB() {
@@ -74,6 +75,14 @@ public class ViagemMB {
         this.softGridDespesa = softGridDespesa;
     }
 
+    public SoftGridControl<Venda> getSoftGridVenda() {
+        return softGridVenda;
+    }
+
+    public void setSoftGridVenda(SoftGridControl<Venda> softGridVenda) {
+        this.softGridVenda = softGridVenda;
+    }
+    
     public List<Viagem> getViagens() {
         return viagens;
     }
@@ -139,6 +148,8 @@ public class ViagemMB {
 
         viagem.setDespesas(new ArrayList<Despesa>());
         softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
+        viagem.setVendas(new ArrayList<Venda>());
+        softGridVenda = new SoftGridControl<Venda>(Venda.class, viagem.getVendas(), viagem);
 
         return "cadastroViagem";
     }

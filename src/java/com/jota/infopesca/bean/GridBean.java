@@ -14,12 +14,12 @@ import java.util.*;
  *
  * @author André
  */
-public abstract class GridBean implements Serializable{
-    
+public abstract class GridBean implements Serializable {
+
     private int inserctionOrder;
-    
+
     public abstract String getOutputTextLabel();
-    
+
     /**
      * Verifica se o campo é do tipo data.
      *
@@ -54,8 +54,30 @@ public abstract class GridBean implements Serializable{
         }
     }
 
+    public boolean isWeight(String fieldName) {
+        try {
+            Field field = this.getClass().getDeclaredField(fieldName);
+            GridConfig annotation = field.getAnnotation(GridConfig.class);
+            return annotation.weight();
+        } catch (Exception e) {
+            System.out.println("Erro :" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isFlag(String fieldName) {
+        try {
+            Field field = this.getClass().getDeclaredField(fieldName);
+            GridConfig annotation = field.getAnnotation(GridConfig.class);
+            return annotation.flag();
+        } catch (Exception e) {
+            System.out.println("Erro :" + e.getMessage());
+            return false;
+        }
+    }
+
     public boolean isText(String fieldName) {
-        return !isDate(fieldName) && !isCurrency(fieldName) && !isEnum(fieldName) && !isBean(fieldName);
+        return !isDate(fieldName) && !isCurrency(fieldName) && !isEnum(fieldName) && !isBean(fieldName) && !isFlag(fieldName) && getMask(fieldName).isEmpty() && !isWeight(fieldName);
     }
     private Map<String, String> masks = new HashMap<String, String>();
 
@@ -100,8 +122,8 @@ public abstract class GridBean implements Serializable{
             return false;
         }
     }
-    
-    public boolean isEnum(String fieldName){
+
+    public boolean isEnum(String fieldName) {
         try {
             Field field = this.getClass().getDeclaredField(fieldName);
             GridConfig annotation = field.getAnnotation(GridConfig.class);
@@ -111,8 +133,8 @@ public abstract class GridBean implements Serializable{
             return false;
         }
     }
-    
-    public List<Object> getEnumValues(String fieldName){
+
+    public List<Object> getEnumValues(String fieldName) {
         try {
             Field field = this.getClass().getDeclaredField(fieldName);
             List<Object> list = new ArrayList<Object>();
@@ -123,8 +145,8 @@ public abstract class GridBean implements Serializable{
             return null;
         }
     }
-    
-    public boolean isBean(String fieldName){
+
+    public boolean isBean(String fieldName) {
         try {
             Field field = this.getClass().getDeclaredField(fieldName);
             GridConfig annotation = field.getAnnotation(GridConfig.class);
@@ -134,8 +156,8 @@ public abstract class GridBean implements Serializable{
             return false;
         }
     }
-    
-    public List<Object> getBeanList(String fieldName){
+
+    public List<Object> getBeanList(String fieldName) {
         try {
             Field field = this.getClass().getDeclaredField(fieldName);
             Class clazz = field.getType();
@@ -146,7 +168,7 @@ public abstract class GridBean implements Serializable{
             return null;
         }
     }
-    
+
     public int getInsertionOrder() {
         return inserctionOrder;
     }
@@ -154,15 +176,14 @@ public abstract class GridBean implements Serializable{
     public void setInsertionOrder(int inserctionOrder) {
         this.inserctionOrder = inserctionOrder;
     }
-    
-    public String getValidationRules(String fieldName){
+
+    public String getValidationRules(String fieldName) {
         StringBuilder str = new StringBuilder();
         str.append(isRequired(fieldName) ? "required" : "");
         str.append(isDate(fieldName) ? " date" : "");
         return str.toString();
     }
-    
-    public void setParent(Object parent){
+
+    public void setParent(Object parent) {
     }
-    
 }

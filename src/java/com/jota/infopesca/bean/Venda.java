@@ -4,20 +4,11 @@
  */
 package com.jota.infopesca.bean;
 
-import java.io.Serializable;
+import com.jota.infopesca.annotations.GridConfig;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,24 +20,32 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Venda.findAll", query = "SELECT c FROM Venda c"),
     @NamedQuery(name = "Venda.findById", query = "SELECT c FROM Venda c WHERE c.id = :id")})
-public class Venda implements Serializable {
+public class Venda extends GridBean {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "VEND_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "VEND_VL_TOTAL")
+    @GridConfig(label = "Total", required = true, currency = true)
     private BigDecimal total;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
+    @GridConfig(label = "Pescado", griddable = true, softGridClass = Pescado.class)
     private Collection<Pescado> pescados;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = false)
     private Viagem viagem;
+    @Column(name = "VEND_IN_EXTRA")
+    @GridConfig(label = "Extra", required = true, flag=true)
+    private Boolean extra;
 
     public Venda() {
+        extra = false;
     }
 
     public Venda(Long id) {
@@ -90,6 +89,14 @@ public class Venda implements Serializable {
         this.viagem = viagem;
     }
 
+    public Boolean getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Boolean extra) {
+        this.extra = extra;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -114,5 +121,15 @@ public class Venda implements Serializable {
     public String toString() {
         return "com.jota.infopesca.bean.Venda[ id=" + id + " ]";
     }
-    
+
+    @Override
+    public String getOutputTextLabel() {
+        DecimalFormat df = new DecimalFormat("#,###.00");
+        return "R$ " + df.format(total.doubleValue());
+    }
+
+    @Override
+    public void setParent(Object parent) {
+        this.viagem = (Viagem) parent;
+    }
 }

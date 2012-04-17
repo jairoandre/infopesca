@@ -30,12 +30,7 @@
                             <p:column>
                                 <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
                             </p:column>                        
-                        </p:dataTable>
-                        <p:tabView id="griddaleFields" var="tab" value="#{cc.attrs.mb.softControllersSet}" dynamic="true" rendered="#{not empty cc.attrs.mb.softControllers}">
-                            <p:tab title="#{cc.attrs.mb.softControllersLabels[tab]}">
-                                <cp:softGrid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[tab]}" mb="#{cc.attrs.mb.softControllers[tab]}"/>
-                            </p:tab>
-                        </p:tabView>
+                        </p:dataTable>                        
                     </p:fieldset>
                     <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
                         <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formPnl" update="grid"/>

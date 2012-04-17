@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:cp="http://java.sun.com/jsf/composite/custom">
 
     <!-- INTERFACE -->
@@ -16,25 +15,12 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:inputMask id="masked" value="#{cc.attrs.bean[cc.attrs.field]}" mask="#{cc.attrs.bean.getMask(cc.attrs.field)}" rendered="#{not empty cc.attrs.bean.getMask(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}" requiredMessage="Campo Obrigatório"/>
-        <p:outputPanel id="notMaskedPnl" rendered="#{empty cc.attrs.bean.getMask(cc.attrs.field)}">
-            <p:inputText id="text" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isText(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
-            <p:calendar id="date" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isDate(cc.attrs.field)}" size="10" maxlength="10" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}" pattern="dd/MM/yyyy" requiredMessage="Campo Obrigatório">
-                <script>
-                    $(function(){
-                        $("##{cc.clientId}-date_input").mask("99/99/9999");
-                    });
-                </script>
-            </p:calendar>
-            <p:inputText id="currency" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isCurrency(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}" requiredMessage="Campo Obrigatório">
-                <script>
-                    $(function(){
-                        $("##{cc.clientId}-currency").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
-                    });
-                </script>
-                <f:converter converterId="currencyConverter"/>
-            </p:inputText>
-            <cp:selectOne id="enum" value="#{cc.attrs.bean[cc.attrs.field]}" list="#{cc.attrs.bean.getEnumValues(cc.attrs.field)}" listLabel="label" rendered="#{cc.attrs.bean.isEnum(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
-            <cp:selectOneBean id="list" value="#{cc.attrs.bean[cc.attrs.field]}" list="#{cc.attrs.bean.getBeanList(cc.attrs.field)}" listLabel="nome" rendered="#{cc.attrs.bean.isBean(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
-        </p:outputPanel>
+        <p:inputText id="text" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isText(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+        <cp:calendar id="date" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isDate(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+        <cp:weight id="weight" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isWeight(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+        <cp:currency id="currency" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isCurrency(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+        <cp:selectOne id="enum" value="#{cc.attrs.bean[cc.attrs.field]}" list="#{cc.attrs.bean.getEnumValues(cc.attrs.field)}" listLabel="label" rendered="#{cc.attrs.bean.isEnum(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+        <cp:selectOneBoolean id="flag" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isFlag(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
+        <cp:selectOneBean id="list" value="#{cc.attrs.bean[cc.attrs.field]}" list="#{cc.attrs.bean.getBeanList(cc.attrs.field)}" listLabel="nome" rendered="#{cc.attrs.bean.isBean(cc.attrs.field)}" required="#{cc.attrs.bean.isRequired(cc.attrs.field)}"/>
     </cc:implementation>
 </html>
