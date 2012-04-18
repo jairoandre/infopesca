@@ -5,7 +5,8 @@
     xmlns:cp="http://java.sun.com/jsf/composite/custom"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:h="http://java.sun.com/jsf/html">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition template="masterLayout.xhtml">
         <ui:define name="content">
             <h:form id="form">
@@ -14,12 +15,36 @@
                 <p:fieldset legend="Viagens em aberto" rendered="#{not empty viagemMB.viagens}">
                     <p:accordionPanel id="accordion" dynamic="true" value="#{viagemMB.viagens}" var="viagem">
                         <p:tab id="tab" title="#{viagem.embarcacao.nome}">
-                            <p:panelGrid columns="4" styleClass="border-less">
+                            <p:panelGrid columns="6" styleClass="border-less">
+                                <f:facet name="header">
+                                    Detalhes da Viagem
+                                </f:facet>
                                 <cp:label label="Início:"/>
                                 <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
                                 <cp:label label="Fim:"/>
                                 <h:outputText value="#{viagem.fim}" converter="outputTextConverter"/>
+                                <cp:label label="Despesas Totais:"/>
+                                <p:outputPanel>
+                                    <h:outputText id="despesaTotal" value="#{viagem.despesasTotais}" converter="currencyConverter" style="cursor: pointer;"/>
+                                    <p:spacer width="5"/>
+                                </p:outputPanel>
                             </p:panelGrid>
+                            <p:overlayPanel id="despesaPnl" for="despesaTotal" hideEffect="fade" dynamic="true" showEvent="mouseover" hideEvent="mouseout" style="z-index: 100;">
+                                <p:dataTable value="#{viagem.despesas}" var="despesa" resizableColumns="true">
+                                    <p:column>
+                                        <f:facet name="header">Tipo</f:facet>
+                                        <h:outputText value="#{despesa.tipo}" converter="outputTextConverter" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">Descrição</f:facet>
+                                        #{despesa.descricao}
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">Custo</f:facet>
+                                        <h:outputText value="#{despesa.custo}" converter="currencyConverter"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:overlayPanel>
                         </p:tab>
                     </p:accordionPanel>
                 </p:fieldset>

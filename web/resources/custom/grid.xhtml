@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:cp="http://java.sun.com/jsf/composite/custom">
+      xmlns:cp="http://java.sun.com/jsf/composite/custom"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -16,13 +17,14 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
+        <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
         <p:outputPanel id="grid">
             <!-- FORM BOX -->
             <p:outputPanel id="formPnl" layout="block">
                 <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
-                    <p:focus id="focusForm" />
+                    <p:focus id="focusForm" context="fieldsPnl" />
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-                        <p:dataTable id="dataTable" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">
+                        <p:dataTable id="dataTableForm" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">
                             <p:columnGroup type="header"/>
                             <p:column>
                                 <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
@@ -36,32 +38,32 @@
                     <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
                         <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formPnl" update="grid"/>
                         <p:spacer width="5"/>
-                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl"/>
+                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>
             <!-- DATA TABLE -->
             <p:outputPanel id="gridPnl" layout="block">
-                <p:focus id="focusNewBtn" for="newBtn"  />
                 <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
-                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPnl"/>
+                    <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.deleteSelected}" oncomplete="#{uniqueName}DeleteDialog.hide()" process="gridPnl" update="gridPnl,gridBtnsPnl"/>
+                    <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Excluir selecionado(s)?" command="#{uniqueName}DeleteCommand()"/>
+                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
                     <p:spacer width="5"/>
-                    <cp:dialogCommand id="#{cc.attrs.id}DeleteDialog" msg="Deseja excluir selecionado(s)?" action="#{cc.attrs.mb.deleteSelected}" process="-#{cc.clientId}-gridPnl" update="-#{cc.clientId}-gridPnl,-#{cc.clientId}-gridBtnsPnl" rendered="#{!cc.attrs.mb.showForm}" />
-                    <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{cc.attrs.id}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
+                    <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{uniqueName}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
                     <p:spacer width="5"/>
-                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="gridPnl" update="formPnl,gridBtnsPnl"/>
+                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="gridPnl" update="formPnl,gridBtnsPnl,dataTableList"/>
                 </p:outputPanel>
                 <!-- Mensagem lista vazia -->
                 <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <p:outputPanel id="tblPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
-                    <p:remoteCommand id="checkAllRemote" action="#{cc.attrs.mb.checkAll}" name="#{cc.attrs.id}CheckAll" process="dtTableList" update="tblPnl,deleteBtn,alterBtn"/>
-                    <p:remoteCommand id="checkSingleRemote" action="#{cc.attrs.mb.checkSingle}" name="#{cc.attrs.id}CheckSingle" process="dtTableList" update="tblPnl,deleteBtn,alterBtn"/>
-                    <p:dataTable id="dtTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top" resizableColumns="true">
+                <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
+                    <p:remoteCommand id="checkAllRemote" action="#{cc.attrs.mb.checkAll}" name="#{uniqueName}CheckAll" process="dataTableList" update="listPnl,deleteBtn,alterBtn"/>
+                    <p:remoteCommand id="checkSingleRemote" action="#{cc.attrs.mb.checkSingle}" name="#{uniqueName}CheckSingle" process="dataTableList" update="listPnl,deleteBtn,alterBtn"/>
+                    <p:dataTable id="dataTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top" resizableColumns="true">
                         <p:column id="columns" style="text-align: center;">
                             <f:facet name="header">
-                                <p:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}" onchange="#{cc.attrs.id}CheckAll();"/>
+                                <p:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}" onchange="#{uniqueName}CheckAll();" disabled="#{cc.attrs.mb.showForm}"/>
                             </f:facet>
-                            <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj.insertionOrder]}" converter="checkBoxBooleanConverter" onchange="#{cc.attrs.id}CheckSingle();"/>
+                            <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj.insertionOrder]}" converter="checkBoxBooleanConverter" onchange="#{uniqueName}CheckSingle();" disabled="#{cc.attrs.mb.showForm}"/>
                         </p:column>
                         <p:columns id="fieldNamesList" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
                             <f:facet name="header">
@@ -70,7 +72,9 @@
                                 </p:outputPanel>
                             </f:facet>
                             <p:outputPanel id="value" style="white-space: nowrap" layout="block">
-                                <h:outputText value="#{obj[field]}" converter="outputTextConverter"/>
+                                <h:outputText id="normalOutput" value="#{obj[field]}" converter="outputTextConverter" rendered="#{obj.isNotBigDecimal(field)}"/>
+                                <h:outputText id="currencyOutuput" value="#{obj[field]}" converter="currencyConverter" rendered="#{obj.isCurrency(field)}"/>
+                                <h:outputText id="weightOutuput" value="#{obj[field]}" converter="weightConverter" rendered="#{obj.isWeight(field)}"/>
                             </p:outputPanel>
                         </p:columns>
                     </p:dataTable>                    

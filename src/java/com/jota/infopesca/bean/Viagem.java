@@ -5,6 +5,7 @@
 package com.jota.infopesca.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
@@ -22,12 +23,13 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Viagem.findByInicio", query = "SELECT v FROM Viagem v WHERE v.inicio = :inicio"),
     @NamedQuery(name = "Viagem.findByFim", query = "SELECT v FROM Viagem v WHERE v.fim = :fim")})
 public class Viagem implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "VIAG_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
@@ -127,30 +129,19 @@ public class Viagem implements Serializable {
     public void setFechada(Boolean fechada) {
         this.fechada = fechada;
     }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Viagem)) {
-            return false;
-        }
-        Viagem other = (Viagem) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public String toString() {
         return "com.jota.infopesca.bean.Viagem[ id=" + id + " ]";
     }
-    
+
+    public BigDecimal getDespesasTotais() {
+        BigDecimal total = BigDecimal.ZERO;
+        if (despesas != null) {
+            for (Despesa despesa : despesas) {
+                total = total.add(despesa.getCusto());
+            }
+        }
+        return total;
+    }
 }

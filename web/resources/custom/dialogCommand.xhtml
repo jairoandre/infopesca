@@ -3,32 +3,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="id"/>
         <cc:attribute name="msg" required="true"/>
-        <cc:attribute name="action" required="true" method-signature="void action()"/>
-        <cc:attribute name="process" default="@this"/>
-        <cc:attribute name="update" default="@all"/>
-        <cc:attribute name="rendered"/>
+        <cc:attribute name="dialogName" required="true"/>
+        <cc:attribute name="command" required="true"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:outputPanel id="pnl" rendered="#{cc.attrs.rendered}">
-            <p:dialog id="dialog" header="Atenção" style="text-align: center;" widgetVar="#{cc.attrs.id}" modal="true" dynamic="true">
-                <p:outputPanel id="msg" style="margin: 20px 0 20px 0;" layout="block">
-                    <h:outputText value="#{cc.attrs.msg}"/>
-                </p:outputPanel>
-                <p:outputPanel id="btns" layout="block">
-                    <p:commandButton id="ok" value="OK" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.id}.hide()" process="#{cc.attrs.process}" update="#{cc.attrs.update}"/>
-                    <p:spacer width="5"/>
-                    <p:commandButton id="cancel" value="Cancelar" process="@none" onclick="#{cc.attrs.id}.hide()"/>
-                </p:outputPanel>
-            </p:dialog>            
-        </p:outputPanel>
+        <p:dialog id="dialog" header="Atenção" style="text-align: center;" widgetVar="#{cc.attrs.dialogName}" modal="true" dynamic="true">
+            <p:outputPanel id="msg" style="margin: 20px 0 20px 0;" layout="block">
+                <h:outputText value="#{cc.attrs.msg}"/>
+            </p:outputPanel>
+            <p:outputPanel id="btns" layout="block">
+                <p:commandButton id="okDialog" value="OK" process="@none" onclick="#{cc.attrs.command}"/>
+                <p:spacer width="5"/>
+                <p:commandButton id="cancelDialog" value="Cancelar" process="@none" onclick="#{cc.attrs.dialogName}.hide()"/>
+            </p:outputPanel>
+        </p:dialog>
     </cc:implementation>
 </html>

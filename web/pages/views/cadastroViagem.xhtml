@@ -20,9 +20,9 @@
                         <cp:label id="labelEmbarcacao" label="Embarcação:"/>
                         <cp:selectOneBean id="embarcacao" value="#{viagemMB.viagem.embarcacao}" list="#{viagemMB.embarcacoes}" listLabel="nome" required="true"/>
                         <cp:label id="labelInicio" label="Partida:"/>
-                        <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" label="Partida" required="true"/>
+                        <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" required="true"/>
                         <cp:label id="labelFim" label="Chegada:"/>
-                        <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}" label="Chegada" />
+                        <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}"/>
                         <cp:label id="labelFechada" label="Fechada:"/>
                         <cp:selectOneBoolean id="finalizada" value="#{viagemMB.viagem.fechada}"/>
                     </p:panelGrid>

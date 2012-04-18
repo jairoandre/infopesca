@@ -31,15 +31,15 @@ public class Despesa extends GridBean {
     @Column(name = "DESP_ID")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "DESP_TX_DESCRICAO")
-    @GridConfig(label="Descrição")
-    private String descricao;
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_CO_TIPO")
     @Enumerated(EnumType.ORDINAL)
     @GridConfig(enumerated = true, label = "Tipo", required = true)
     private TipoDespesa tipo;
+    @Column(name = "DESP_TX_DESCRICAO")
+    @GridConfig(label="Descrição")
+    private String descricao;
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_VL_CUSTO")
@@ -48,7 +48,7 @@ public class Despesa extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_BL_QUITADA")
-    private boolean quitada;
+    private Boolean quitada;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
     private Viagem viagem;
@@ -68,6 +68,7 @@ public class Despesa extends GridBean {
         this.quitada = quitada;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -100,11 +101,11 @@ public class Despesa extends GridBean {
         this.custo = custo;
     }
 
-    public boolean getQuitada() {
+    public Boolean getQuitada() {
         return quitada;
     }
 
-    public void setQuitada(boolean quitada) {
+    public void setQuitada(Boolean quitada) {
         this.quitada = quitada;
     }
 
@@ -114,26 +115,6 @@ public class Despesa extends GridBean {
 
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Despesa)) {
-            return false;
-        }
-        Despesa other = (Despesa) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
     }
 
     @Override

@@ -6,7 +6,6 @@ package com.jota.infopesca.converters;
 
 import com.jota.infopesca.bean.GridBean;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.faces.component.UIComponent;
@@ -28,12 +27,10 @@ public class OutputTextConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if(value == null){
+        if (value == null) {
             return "-";
         }
-        if (value instanceof BigDecimal) {
-            return new CurrencyConverter().getAsString(context, component, value);
-        } else if (value instanceof Date) {
+        if (value instanceof Date) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             return sdf.format((Date) value);
         } else if (value instanceof GridBean) {
@@ -46,6 +43,8 @@ public class OutputTextConverter implements Converter {
                 System.out.println("Erro na recuperação de label da enumeração: " + e);
                 return value.toString();
             }
+        }else if (value instanceof Boolean){
+            return ((Boolean) value) ? "Sim" : "Não";
         }
         return value.toString();
     }

@@ -17,6 +17,7 @@ import java.util.*;
 public abstract class GridBean implements Serializable {
 
     private int inserctionOrder;
+    private Long creationTime = new Date().getTime();
 
     public abstract String getOutputTextLabel();
 
@@ -35,6 +36,10 @@ public abstract class GridBean implements Serializable {
             System.out.println("Erro :" + e.getMessage());
             return false;
         }
+    }
+    
+    public boolean isNotBigDecimal(String fieldName){
+        return !isCurrency(fieldName) && !isWeight(fieldName);
     }
 
     /**
@@ -186,4 +191,52 @@ public abstract class GridBean implements Serializable {
 
     public void setParent(Object parent) {
     }
+
+    public long getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(long creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public abstract Long getId();
+
+    @Override
+    public boolean equals(Object o) {
+        Class thisClass = this.getClass();
+        if(o == null){
+            return false;
+        }
+        Class otherClass = o.getClass();
+        if (!thisClass.equals(otherClass)) {
+            return false;
+        }
+        GridBean other = (GridBean) o;
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
+            return false;
+        } else if (this.getId() == null && other.getId() == null) {
+            return this.creationTime == other.creationTime;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (getId() != null ? getId().hashCode() : creationTime.hashCode());
+        return hash;
+    }
+    
+    public String getLabel(String fieldName){
+        try {
+            Field field = this.getClass().getDeclaredField(fieldName);
+            GridConfig annotation = field.getAnnotation(GridConfig.class);
+            return annotation.label();
+        } catch (Exception e) {
+            System.out.println("Erro :" + e.getMessage());
+            return "";
+        }
+    }
+    
 }

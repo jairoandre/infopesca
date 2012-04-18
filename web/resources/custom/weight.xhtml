@@ -18,7 +18,7 @@
         <p:inputText id="input" value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório">
             <script>
                 $(function(){
-                    $("##{cc.clientId}-input").maskMoney({precision:3, showSymbol:false, thousands:'.', decimal:',', symbolStay: false});
+                    $("##{cc.clientId}-input").maskMoney({precision:1, showSymbol:false, thousands:'.', decimal:',', symbolStay: false});
                 });
             </script>
             <f:converter converterId="weightConverter"/>

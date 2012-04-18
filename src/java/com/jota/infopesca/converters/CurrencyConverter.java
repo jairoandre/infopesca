@@ -30,7 +30,7 @@ public class CurrencyConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        DecimalFormat df = new DecimalFormat("#,###.00");
+        DecimalFormat df = new DecimalFormat("#,##0.00");
         BigDecimal obj = (BigDecimal) o;
         return "R$ " + df.format(obj.doubleValue());
     }

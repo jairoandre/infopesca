@@ -30,7 +30,7 @@ public class WeightConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        DecimalFormat df = new DecimalFormat("#,###.000");
+        DecimalFormat df = new DecimalFormat("#,##0.0");
         BigDecimal obj = (BigDecimal) o;
         return df.format(obj.doubleValue());
     }

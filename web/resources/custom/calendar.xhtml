@@ -13,7 +13,7 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:calendar id="calendar" value="#{cc.attrs.value}" size="10" maxlength="10" pattern="dd/MM/yyyy" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório">
+        <p:calendar id="calendar" value="#{cc.attrs.value}" size="10" maxlength="10" pattern="dd/MM/yyyy" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório" locale="pt">
             <script>
                 $(function(){
                     $("##{cc.clientId}-calendar_input").mask("99/99/9999");
