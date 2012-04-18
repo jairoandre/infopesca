@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.AjaxBehaviorEvent;
 
 /**
  *
@@ -207,7 +206,7 @@ public abstract class GridControl<T> implements Serializable {
         showForm = false;
     }
 
-    public void checkAll(AjaxBehaviorEvent e) {
+    public void checkAll() {
         for (int i = 0; i < selectedItens.length; i++) {
             selectedItens[i] = selectAll;
         }
@@ -216,7 +215,7 @@ public abstract class GridControl<T> implements Serializable {
         }
     }
 
-    public void clickCheck(AjaxBehaviorEvent e) {
+    public void checkSingle() {
         int trues = 0;
         for (boolean is : selectedItens) {
             if (is) {

@@ -34,12 +34,9 @@
                             <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas"/>
                         </p:tab>
                         <p:tab id="vendaTab" title="Venda">
-                            <cp:grid id="venda" label="Vendas" mb="#{viagemMB.softGridVenda}">
-                               Teste
-                            </cp:grid>
+                            <cp:softGrid id="venda" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
                         </p:tab>
                         <p:tab id="balancoTab" title="Balanço">
-                            Balanço
                         </p:tab>
                     </p:tabView>
                     <p:commandButton value="Cadastrar" action="#{viagemMB.cadastrarViagem}" update="@form"/>

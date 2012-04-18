@@ -2,8 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:cp="http://java.sun.com/jsf/composite/custom">
 
@@ -16,67 +14,12 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:outputPanel id="grid">
-            <!-- FORM BOX -->
-            <p:outputPanel id="formPnl" layout="block">
-                <p:focus/>
-                <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
-                    <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-                        <p:dataTable id="dataTable" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">
-                            <p:columnGroup type="header"/>
-                            <p:column>
-                                <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
-                            </p:column>
-                            <p:column>
-                                <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
-                            </p:column>                        
-                        </p:dataTable>                        
-                    </p:fieldset>
-                    <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
-                        <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formPnl" update="grid"/>
-                        <p:spacer width="5"/>
-                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl"/>
-                    </p:outputPanel>
-                </p:outputPanel>
-            </p:outputPanel>
-            <!-- DATA TABLE -->
-            <p:outputPanel id="gridPnl" layout="block">
-                <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
-                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPnl"/>
-                    <p:spacer width="5"/>
-                    <cp:dialogCommand id="#{cc.attrs.id}DeleteDialog" msg="Deseja excluir selecionado(s)?" action="#{cc.attrs.mb.deleteSelected}" process="-#{cc.clientId}-gridPnl" update="-#{cc.clientId}-gridPnl,-#{cc.clientId}-gridBtnsPnl" rendered="#{!cc.attrs.mb.showForm}" />
-                    <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{cc.attrs.id}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
-                    <p:spacer width="5"/>
-                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="gridPnl" update="formPnl,gridBtnsPnl"/>
-                </p:outputPanel>
-                <!-- Mensagem lista vazia -->
-                <cp:message msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <p:outputPanel id="tblPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
-                    <p:dataTable id="dtTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top" resizableColumns="true">
-                        <p:column id="columns" style="text-align: center;">
-                            <f:facet name="header">
-                                <p:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}">
-                                    <p:ajax event="change" process="selectAll" listener="#{cc.attrs.mb.checkAll}" update="-#{cc.clientId}-tblPnl,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn" />
-                                </p:selectBooleanCheckbox>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj.insertionOrder]}" converter="checkBoxBooleanConverter">
-                                <p:ajax event="change" process="checkBox" listener="#{cc.attrs.mb.clickCheck}" update="-#{cc.clientId}-tblPnl,-#{cc.clientId}-deleteBtn,-#{cc.clientId}-alterBtn"/>
-                            </p:selectBooleanCheckbox>
-                        </p:column>
-                        <p:columns id="fieldNamesList" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
-                            <f:facet name="header">
-                                <p:outputPanel id="headerLabel" style="white-space: nowrap" layout="block">
-                                    #{cc.attrs.mb.labels[field]}
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:outputPanel id="value" style="white-space: nowrap" layout="block">
-                                <h:outputText value="#{obj[field]}" converter="outputTextConverter"/>
-                            </p:outputPanel>
-                        </p:columns>
-                    </p:dataTable>                    
-                </p:outputPanel>
-            </p:outputPanel>
-            <!-- DATATABLE -->
-        </p:outputPanel>
+        <cp:grid id="cpGrid" label="#{cc.attrs.label}" mb="#{cc.attrs.mb}">
+            <p:tabView id="tabView" var="tab" value="#{cc.attrs.mb.softControllersSet}" dynamic="true" rendered="#{not empty cc.attrs.mb.softControllers}">
+                <p:tab id="tab" title="#{cc.attrs.mb.softControllersLabels[tab]}">
+                    <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[tab]}" mb="#{cc.attrs.mb.softControllers[tab]}"/>
+                </p:tab>
+            </p:tabView>
+        </cp:grid>
     </cc:implementation>
 </html>
