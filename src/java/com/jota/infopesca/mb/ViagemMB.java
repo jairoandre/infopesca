@@ -7,6 +7,7 @@ package com.jota.infopesca.mb;
 import com.jota.infopesca.bean.*;
 import com.jota.infopesca.business.GenericBC;
 import com.jota.infopesca.util.FacesUtil;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ViagemMB {
     private SoftGridControl<Despesa> softGridDespesa;
     private SoftGridControl<Venda> softGridVenda;
     private List<Viagem> viagens;
+    private Boolean alterando = true;
 
     public ViagemMB() {
         refreshViagens();
@@ -82,7 +84,7 @@ public class ViagemMB {
     public void setSoftGridVenda(SoftGridControl<Venda> softGridVenda) {
         this.softGridVenda = softGridVenda;
     }
-    
+
     public List<Viagem> getViagens() {
         return viagens;
     }
@@ -127,6 +129,7 @@ public class ViagemMB {
     }
 
     public String preIncluirViagem() {
+        this.alterando = false;
         viagem = new Viagem();
         viagem.setInicio(new Date());
         viagem.setFechada(false);
@@ -151,6 +154,27 @@ public class ViagemMB {
         viagem.setVendas(new ArrayList<Venda>());
         softGridVenda = new SoftGridControl<Venda>(Venda.class, viagem.getVendas(), viagem);
 
-        return "cadastroViagem";
+        return "manterViagem";
+    }
+
+    public void preAlterarViagem(Viagem viag) {
+        viagem = viag;
+        this.alterando = true;
+        softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem) {
+            @Override
+            @SuppressWarnings("empty-statement")
+            protected boolean validateInclude() {
+                Funcionario func = ((Tripulante) getInstance()).getFuncionario();
+                for (Object trip : getList()) {
+                    if (func.equals(((Tripulante) trip).getFuncionario())) {
+                        FacesUtil.addError("Funcionário já é tripulante.");
+                        return false;
+                    };
+                }
+                return true;
+            }
+        };
+        softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
+        softGridVenda = new SoftGridControl<Venda>(Venda.class, viagem.getVendas(), viagem);
     }
 }

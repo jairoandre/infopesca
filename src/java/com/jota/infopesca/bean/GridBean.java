@@ -16,7 +16,6 @@ import java.util.*;
  */
 public abstract class GridBean implements Serializable {
 
-    private int inserctionOrder;
     private Long creationTime = new Date().getTime();
 
     public abstract String getOutputTextLabel();
@@ -54,7 +53,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.currency();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return false;
         }
     }
@@ -65,7 +63,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.weight();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return false;
         }
     }
@@ -76,7 +73,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.flag();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return false;
         }
     }
@@ -93,7 +89,7 @@ public abstract class GridBean implements Serializable {
                 GridConfig annotation = field.getAnnotation(GridConfig.class);
                 masks.put(fieldName, annotation.mask());
             } catch (Exception e) {
-                System.out.println("Erro :" + e.getMessage());
+                return "";
             }
         }
         return masks.get(fieldName);
@@ -106,7 +102,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.size();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return 20;
         }
     }
@@ -123,7 +118,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.required();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return false;
         }
     }
@@ -134,7 +128,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.enumerated();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return false;
         }
     }
@@ -146,7 +139,6 @@ public abstract class GridBean implements Serializable {
             list.addAll(Arrays.asList(field.getType().getEnumConstants()));
             return list;
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return null;
         }
     }
@@ -157,7 +149,6 @@ public abstract class GridBean implements Serializable {
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.listed();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return false;
         }
     }
@@ -169,17 +160,8 @@ public abstract class GridBean implements Serializable {
             GenericBC bc = new GenericBC(clazz);
             return bc.getList();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return null;
         }
-    }
-
-    public int getInsertionOrder() {
-        return inserctionOrder;
-    }
-
-    public void setInsertionOrder(int inserctionOrder) {
-        this.inserctionOrder = inserctionOrder;
     }
 
     public String getValidationRules(String fieldName) {
@@ -228,13 +210,16 @@ public abstract class GridBean implements Serializable {
         return hash;
     }
     
+    public int getHashCode(){
+        return hashCode();
+    }
+    
     public String getLabel(String fieldName){
         try {
             Field field = this.getClass().getDeclaredField(fieldName);
             GridConfig annotation = field.getAnnotation(GridConfig.class);
             return annotation.label();
         } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
             return "";
         }
     }

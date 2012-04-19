@@ -9,16 +9,12 @@
         <param-value>/WEB-INF/infopesca.taglib.xml</param-value>
     </context-param>
     <context-param>
-        <param-name>com.sun.faces.writeStateAtFormEnd</param-name>
-        <param-value>false</param-value>
-    </context-param>
-    <context-param>
         <param-name>javax.faces.SEPARATOR_CHAR</param-name>
         <param-value>-</param-value>
     </context-param>
     <context-param>  
         <param-name>primefaces.THEME</param-name>  
-        <param-value>cupertino</param-value>  
+        <param-value>infopesca</param-value>  
     </context-param> 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -56,5 +52,9 @@
     <error-page>  
         <exception-type>java.lang.Exception</exception-type>  
         <location>/faces/pages/views/error.xhtml</location>  
-    </error-page>  
+    </error-page>
+    <error-page>  
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>  
+        <location>/faces/pages/views/viewExpired.xhtml</location>  
+    </error-page>
 </web-app>

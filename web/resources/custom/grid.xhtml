@@ -45,27 +45,29 @@
             <!-- DATA TABLE -->
             <p:outputPanel id="gridPnl" layout="block">
                 <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
-                    <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.deleteSelected}" oncomplete="#{uniqueName}DeleteDialog.hide()" process="gridPnl" update="gridPnl,gridBtnsPnl"/>
+                    <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.deleteSelected}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
                     <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Excluir selecionado(s)?" command="#{uniqueName}DeleteCommand()"/>
-                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
+                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridBtnsPnl"/>
                     <p:spacer width="5"/>
                     <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{uniqueName}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
                     <p:spacer width="5"/>
-                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="gridPnl" update="formPnl,gridBtnsPnl,dataTableList"/>
+                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="@this" update="formPnl,gridBtnsPnl"/>
                 </p:outputPanel>
                 <!-- Mensagem lista vazia -->
                 <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
+                <p:remoteCommand id="clickCheck" name="clickCheck" process="dataTableList" update="gridPnl"/>                
                 <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
-                    <p:remoteCommand id="checkAllRemote" action="#{cc.attrs.mb.checkAll}" name="#{uniqueName}CheckAll" process="dataTableList" update="listPnl,deleteBtn,alterBtn"/>
-                    <p:remoteCommand id="checkSingleRemote" action="#{cc.attrs.mb.checkSingle}" name="#{uniqueName}CheckSingle" process="dataTableList" update="listPnl,deleteBtn,alterBtn"/>
-                    <p:dataTable id="dataTableList" value="#{cc.attrs.mb.list}" var="obj" paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="top" resizableColumns="true">
-                        <p:column id="columns" style="text-align: center;">
-                            <f:facet name="header">
-                                <p:selectBooleanCheckbox id="selectAll" value="#{cc.attrs.mb.selectAll}" style="opacity: #{cc.attrs.mb.opacity}" onchange="#{uniqueName}CheckAll();" disabled="#{cc.attrs.mb.showForm}"/>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="checkBox" value="#{cc.attrs.mb.selectedItens[obj.insertionOrder]}" converter="checkBoxBooleanConverter" onchange="#{uniqueName}CheckSingle();" disabled="#{cc.attrs.mb.showForm}"/>
-                        </p:column>
-                        <p:columns id="fieldNamesList" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
+                    <p:dataTable id="dataTableList" value="#{cc.attrs.mb.list}" var="obj"
+                                 paginator="true" rows="5"
+                                 paginatorAlwaysVisible="false"
+                                 paginatorPosition="top"
+                                 resizableColumns="true"
+                                 selection="#{cc.attrs.mb.selectedItens}" 
+                                 rowKey="#{obj.hashCode}" >
+                        <p:ajax event="rowSelect" update="-#{cc.clientId}-gridBtnsPnl"/>
+                        <p:ajax event="rowUnselect" update="-#{cc.clientId}-gridBtnsPnl"/>
+                        <p:column selectionMode="multiple" style="text-align: center;"/>
+                        <p:columns id="dynaColumns" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
                             <f:facet name="header">
                                 <p:outputPanel id="headerLabel" style="white-space: nowrap" layout="block">
                                     #{cc.attrs.mb.labels[field]}
@@ -79,6 +81,11 @@
                         </p:columns>
                     </p:dataTable>                    
                 </p:outputPanel>
+                <script>
+                    $(function(){
+                        $(".ui-dt-c").each().css("width","none");
+                    });
+                </script>
             </p:outputPanel>
             <!-- DATATABLE -->
         </p:outputPanel>
