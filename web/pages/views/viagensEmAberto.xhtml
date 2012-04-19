@@ -29,15 +29,15 @@
                                     <p:spacer width="5"/>
                                 </p:outputPanel>
                             </p:panelGrid>
-                            <p:overlayPanel id="despesaPnl" for="despesaTotal" hideEffect="fade" dynamic="true" showEvent="mouseover" hideEvent="mouseout" style="z-index: 100;">
-                                <p:dataTable value="#{viagem.despesas}" var="despesa" resizableColumns="true">
+                            <p:overlayPanel id="despesaPnl" for="despesaTotal" hideEffect="fade" dynamic="true" showEvent="mouseover" hideEvent="mouseout" appendToBody="true">
+                                <p:dataTable value="#{viagem.despesas}" var="despesa">
                                     <p:column>
                                         <f:facet name="header">Tipo</f:facet>
                                         <h:outputText value="#{despesa.tipo}" converter="outputTextConverter" />
                                     </p:column>
                                     <p:column>
                                         <f:facet name="header">Descrição</f:facet>
-                                        #{despesa.descricao}
+                                    #{despesa.descricao}
                                     </p:column>
                                     <p:column>
                                         <f:facet name="header">Custo</f:facet>
