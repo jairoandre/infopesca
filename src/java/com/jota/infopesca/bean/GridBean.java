@@ -20,6 +20,21 @@ public abstract class GridBean implements Serializable {
 
     public abstract String getOutputTextLabel();
 
+    private GridConfig getAnnotation(String fieldName) {
+        if (fieldName == null || fieldName.isEmpty()) {
+            return null;
+        } else {
+            try {
+                Field field = this.getClass().getDeclaredField(fieldName);
+                GridConfig annotation = field.getAnnotation(GridConfig.class);
+                return annotation;
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+                return null;
+            }
+        }
+    }
+
     /**
      * Verifica se o campo é do tipo data.
      *
@@ -27,17 +42,16 @@ public abstract class GridBean implements Serializable {
      * @return
      */
     public boolean isDate(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.date();
-        } catch (Exception e) {
-            System.out.println("Erro :" + e.getMessage());
+        } else {
             return false;
         }
+
     }
-    
-    public boolean isNotBigDecimal(String fieldName){
+
+    public boolean isNotBigDecimal(String fieldName) {
         return !isCurrency(fieldName) && !isWeight(fieldName);
     }
 
@@ -48,31 +62,28 @@ public abstract class GridBean implements Serializable {
      * @return
      */
     public boolean isCurrency(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.currency();
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
 
     public boolean isWeight(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.weight();
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
 
     public boolean isFlag(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.flag();
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
@@ -84,12 +95,11 @@ public abstract class GridBean implements Serializable {
 
     public String getMask(String fieldName) {
         if (masks.get(fieldName) == null) {
-            try {
-                Field field = this.getClass().getDeclaredField(fieldName);
-                GridConfig annotation = field.getAnnotation(GridConfig.class);
-                masks.put(fieldName, annotation.mask());
-            } catch (Exception e) {
-                return "";
+            GridConfig annotation = getAnnotation(fieldName);
+            if (annotation != null) {
+                masks.put(fieldName,annotation.mask());
+            } else {
+                masks.put(fieldName,"");
             }
         }
         return masks.get(fieldName);
@@ -97,12 +107,20 @@ public abstract class GridBean implements Serializable {
     }
 
     public int getSize(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.size();
-        } catch (Exception e) {
+        } else {
             return 20;
+        }
+    }
+    
+    public String getLabel(String fieldName) {
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
+            return annotation.label();
+        } else {
+            return "Não definido";
         }
     }
 
@@ -113,21 +131,19 @@ public abstract class GridBean implements Serializable {
      * @return
      */
     public boolean isRequired(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.required();
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
 
     public boolean isEnum(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.enumerated();
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
@@ -144,11 +160,10 @@ public abstract class GridBean implements Serializable {
     }
 
     public boolean isBean(String fieldName) {
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
             return annotation.listed();
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
@@ -162,13 +177,6 @@ public abstract class GridBean implements Serializable {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public String getValidationRules(String fieldName) {
-        StringBuilder str = new StringBuilder();
-        str.append(isRequired(fieldName) ? "required" : "");
-        str.append(isDate(fieldName) ? " date" : "");
-        return str.toString();
     }
 
     public void setParent(Object parent) {
@@ -187,7 +195,7 @@ public abstract class GridBean implements Serializable {
     @Override
     public boolean equals(Object o) {
         Class thisClass = this.getClass();
-        if(o == null){
+        if (o == null) {
             return false;
         }
         Class otherClass = o.getClass();
@@ -209,19 +217,8 @@ public abstract class GridBean implements Serializable {
         hash += (getId() != null ? getId().hashCode() : creationTime.hashCode());
         return hash;
     }
-    
-    public int getHashCode(){
+
+    public int getHashCode() {
         return hashCode();
     }
-    
-    public String getLabel(String fieldName){
-        try {
-            Field field = this.getClass().getDeclaredField(fieldName);
-            GridConfig annotation = field.getAnnotation(GridConfig.class);
-            return annotation.label();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-    
 }

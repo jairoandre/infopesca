@@ -65,13 +65,14 @@
                                  paginatorAlwaysVisible="false"
                                  paginatorPosition="top"
                                  selection="#{cc.attrs.mb.selectedItens}"
-                                 rowKey="#{obj.hashCode}">
+                                 rowKey="#{obj.hashCode}"
+                                 styleClass="table">
                         <p:ajax event="rowSelect" process="@none" onstart="clickCheck();" />
                         <p:ajax event="rowUnselect" process="@none" onstart="clickCheck();"/>
-                        <p:column selectionMode="multiple" style="text-align: center;"/>
+                        <p:column id="selector" selectionMode="multiple" style="text-align: center;"/>
                         <p:columns id="dynaColumns" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
                             <f:facet name="header">
-                                <p:outputPanel id="headerLabel" style="white-space: nowrap" layout="block">
+                                <p:outputPanel id="headerLabel" style="white-space: nowrap; text-align: left;" layout="block">
                                     #{cc.attrs.mb.labels[field]}
                                 </p:outputPanel>
                             </f:facet>
