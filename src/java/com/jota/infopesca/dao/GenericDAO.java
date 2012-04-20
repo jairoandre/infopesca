@@ -5,12 +5,16 @@
 package com.jota.infopesca.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 
 /**
  *
@@ -133,53 +137,43 @@ public class GenericDAO<T> implements Serializable {
         return retorno;
     }
 
-    public <T> List<T> listByProperty(Class<T> entityClass, String propertyName, Object propertyValue) throws Exception {
-        List retorno = null;
-        try {
-            String query = "select o from " + entityClass.getSimpleName() + "  o  where o." + propertyName + "  = :propertyValue ";
-            Query q = em.createQuery(query).setParameter("propertyValue", propertyValue);
-
-            retorno = q.getResultList();
-        } catch (Exception ex) {
-            throw ex;
-        }
-        return retorno;
+    private String getter(String field) {
+        StringBuilder getter = new StringBuilder();
+        getter.append("get");
+        getter.append(field.substring(0, 1).toUpperCase());
+        getter.append(field.substring(1));
+        return getter.toString();
     }
 
-    public <T> List<T> listByProperty(Class<T> entityClass, String propertyName, Object propertyValue, String operador, String... orderbys) throws Exception {
+    public <T> List<T> listByProperties(Class<T> entityClass, T entity, String[] fields, String[] operators) throws Exception {
         List retorno = null;
         try {
-            String query = null;
-            if (!operador.equalsIgnoreCase("like")) {
-                query = "select o from " + entityClass.getSimpleName() + "  o  where o." + propertyName + "  " + operador + " :propertyValue ";
-            } else {
-                query = "select o from " + entityClass.getSimpleName() + "  o  where upper(o." + propertyName + ")  " + operador + " upper(:propertyValue) ";
-            }
-
-            if (orderbys != null && orderbys.length > 0) {
-                query += " order by ";
-                for (String order : orderbys) {
-                    query += "o." + order + " , ";
+            StringBuilder builder = new StringBuilder();
+            builder.append("select o from ");
+            builder.append(entityClass.getSimpleName());
+            builder.append("  o  where ");
+            Map<String, Object> toEvaluate = new HashMap<String, Object>();
+            for (int i = 0; i < fields.length; i++) {
+                Method m = entityClass.getDeclaredMethod(getter(fields[i]));
+                Object value = m.invoke(m, entity);
+                if (value != null) {
+                    builder.append("o.");
+                    builder.append(fields[i]);
+                    builder.append(" ");
+                    builder.append(operators[i]);
+                    builder.append(" :");
+                    builder.append(fields[i]);
+                    toEvaluate.put(fields[i], value);
+                } else {
+                    builder.append(fields[i]);
+                    builder.append(" is null ");
                 }
-                query = query.substring(0, query.length() - 2);
             }
-
-            Query q = em.createQuery(query).setParameter("propertyValue", propertyValue);
-
-            retorno = q.getResultList();
-        } catch (Exception ex) {
-            throw ex;
-        }
-        return retorno;
-    }
-
-    public <T> List<T> listByProperty(Class<T> entityClass, String propertyName, Object propertyValue, String operador) throws Exception {
-        List retorno = null;
-        try {
-            String query = "select o from " + entityClass.getSimpleName() + "  o  where o." + propertyName + "  " + operador + " :propertyValue ";
-            Query q = em.createQuery(query).setParameter("propertyValue", propertyValue);
-
-            retorno = q.getResultList();
+            Query query = em.createQuery(builder.toString());
+            for (String propertyName : toEvaluate.keySet()) {
+                query.setParameter(propertyName, toEvaluate.get(propertyName));
+            }
+            retorno = query.getResultList();
         } catch (Exception ex) {
             throw ex;
         }

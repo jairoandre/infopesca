@@ -12,7 +12,7 @@
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
-                <p:fieldset legend="Nova Viagem">
+                <p:fieldset legend="#{viagemMB.alterando ? 'Alterar Viagem' : 'Nova Viagem'}">
                     <p:panelGrid id="gridFormInit" columns="8" styleClass="border-less">
                         <f:facet name="header">
                             Dados Básicos da Viagem
@@ -39,7 +39,7 @@
                         <p:tab id="balancoTab" title="Balanço">
                         </p:tab>
                     </p:tabView>
-                    <p:commandButton value="Cadastrar" action="#{viagemMB.cadastrarViagem}" update="@form"/>
+                    <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" update="@form"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

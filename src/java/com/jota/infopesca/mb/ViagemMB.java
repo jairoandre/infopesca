@@ -7,7 +7,6 @@ package com.jota.infopesca.mb;
 import com.jota.infopesca.bean.*;
 import com.jota.infopesca.business.GenericBC;
 import com.jota.infopesca.util.FacesUtil;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +24,7 @@ public class ViagemMB {
     private GenericBC<Viagem> bc = new GenericBC<Viagem>(Viagem.class);
     private List<Embarcacao> embarcacoes;
     private Viagem viagem;
+    private Viagem viagemPesquisa;
     private GenericBC bcEmbc = new GenericBC<Embarcacao>(Embarcacao.class);
     private SoftGridControl<Tripulante> softGridTripulante;
     private SoftGridControl<Despesa> softGridDespesa;
@@ -33,6 +33,7 @@ public class ViagemMB {
     private Boolean alterando = true;
 
     public ViagemMB() {
+        updateListaEmbarcacao();
         refreshViagens();
     }
 
@@ -59,6 +60,14 @@ public class ViagemMB {
 
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
+    }
+
+    public Viagem getViagemPesquisa() {
+        return viagemPesquisa;
+    }
+
+    public void setViagemPesquisa(Viagem viagemPesquisa) {
+        this.viagemPesquisa = viagemPesquisa;
     }
 
     public SoftGridControl<Tripulante> getSoftGridTripulante() {
@@ -91,6 +100,14 @@ public class ViagemMB {
 
     public void setViagens(List<Viagem> viagens) {
         this.viagens = viagens;
+    }
+
+    public Boolean getAlterando() {
+        return alterando;
+    }
+
+    public void setAlterando(Boolean alterando) {
+        this.alterando = alterando;
     }
 
     private void refreshViagens() {
@@ -161,6 +178,7 @@ public class ViagemMB {
         viagem = viag;
         this.alterando = true;
         softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem) {
+
             @Override
             @SuppressWarnings("empty-statement")
             protected boolean validateInclude() {
@@ -176,5 +194,11 @@ public class ViagemMB {
         };
         softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
         softGridVenda = new SoftGridControl<Venda>(Venda.class, viagem.getVendas(), viagem);
+    }
+    public static final String[] CAMPOS_PESQUISA = {"embarcacao", "inicio", "fim"};
+    public static final String[] OPERADORES = {"=", ">=", "<="};
+
+    public void pesquisarViagens() throws Exception {
+        viagens = bc.listByProperties(Viagem.class, viagem, CAMPOS_PESQUISA, OPERADORES);
     }
 }

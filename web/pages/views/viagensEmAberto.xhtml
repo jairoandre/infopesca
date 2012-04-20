@@ -12,10 +12,20 @@
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
-                <p:fieldset legend="Viagens em aberto" rendered="#{not empty viagemMB.viagens}">
+                <p:fieldset legend="Viagens" rendered="#{not empty viagemMB.viagens}">
                     <p:accordionPanel id="accordion" value="#{viagemMB.viagens}" var="viagem">
+                        <p:fieldset legend="Filtro Pesquisa">
+                            <p:panelGrid columns="4">
+                                <cp:label label="Embarcação:"/>
+                                <cp:selectOneBean list="#{viagemMB.viagemPesquisa.embarcacao}" value="#{viagemMB.embarcacao}" listLabel="nome"/>
+                                <cp:label label="Data Início:"/>
+                                <cp:calendar value="#{viagemMB.viagemPesquisa.inicio}"/>
+                                <cp:label label="Data Fim:"/>
+                                <cp:calendar value="#{viagemMB.viagemPesquisa.fim}"/>
+                            </p:panelGrid>
+                        </p:fieldset>
                         <p:tab id="tab" title="#{viagem.embarcacao.nome}">
-                            <p:panelGrid columns="2" styleClass="border-less" style="margin-bottom: 5px;">
+                            <p:panelGrid columns="6" style="margin-bottom: 5px;">
                                 <f:facet name="header">
                                     Detalhes da Viagem
                                 </f:facet>

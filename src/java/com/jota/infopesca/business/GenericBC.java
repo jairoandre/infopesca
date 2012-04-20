@@ -32,13 +32,16 @@ public class GenericBC<T> implements Serializable {
         return obj;
     }
 
-    public void remove(T obj) throws Exception{
+    public void remove(T obj) throws Exception {
         dao.delete(obj);
     }
-    
-    public T update(T obj) throws Exception{
+
+    public T update(T obj) throws Exception {
         dao.update(obj);
         return obj;
     }
 
+    public List<T> listByProperties(Class<T> entityClass, T entity, String[] fields, String[] operators) throws Exception {
+        return dao.listByProperties(entityClass, entity, fields, operators);
+    }
 }
