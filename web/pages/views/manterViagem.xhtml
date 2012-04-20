@@ -26,7 +26,7 @@
                         <cp:label id="labelFechada" label="Fechada:"/>
                         <cp:selectOneBoolean id="finalizada" value="#{viagemMB.viagem.fechada}"/>
                     </p:panelGrid>
-                    <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true">
+                    <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" cache="false">
                         <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
                         </p:tab>

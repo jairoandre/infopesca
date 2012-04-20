@@ -110,6 +110,7 @@ public abstract class GridControl<T> implements Serializable {
             }
             updateList();
             showForm = false;
+            selectedItens = null;
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
@@ -183,6 +184,7 @@ public abstract class GridControl<T> implements Serializable {
 
     public void cancel(ActionEvent e) {
         showForm = false;
+        selectedItens = null;
     }
 
     /*
