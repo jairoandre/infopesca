@@ -7,6 +7,7 @@ package com.jota.infopesca.bean;
 import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.enums.TipoTripulante;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -41,6 +42,9 @@ public class Tripulante extends GridBean implements Serializable {
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = false)
     private Viagem viagem;
+    
+    @Transient
+    private BigDecimal valorParte = BigDecimal.ZERO;
 
     public Tripulante() {
     }
@@ -84,6 +88,14 @@ public class Tripulante extends GridBean implements Serializable {
 
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
+    }
+
+    public BigDecimal getValorParte() {
+        return valorParte;
+    }
+
+    public void setValorParte(BigDecimal valorParte) {
+        this.valorParte = valorParte;
     }
 
     @Override

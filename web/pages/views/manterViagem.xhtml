@@ -27,6 +27,7 @@
                         <cp:selectOneBoolean id="finalizada" value="#{viagemMB.viagem.fechada}"/>
                     </p:panelGrid>
                     <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" cache="false">
+                        <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
                         <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
                         </p:tab>
@@ -36,7 +37,27 @@
                         <p:tab id="vendaTab" title="Venda">
                             <cp:softGrid id="venda" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
                         </p:tab>
-                        <p:tab id="balancoTab" title="Balanço">
+                        <p:tab id="balanco" title="Balanço">
+                            <p:panelGrid id="balancoTbl"  columns="2">
+                                <h:outputText value="Total Vendas:"/>
+                                <h:outputText value="#{viagemMB.viagem.totalVendas}" converter="currencyConverter"/>
+                                <h:outputText value="Despesas de Venda:"/>
+                                <h:outputText value="#{viagemMB.viagem.despesasVenda}" converter="currencyConverter"/>
+                                <h:outputText value="Sub-total Pós-venda:"/>
+                                <h:outputText value="#{viagemMB.viagem.subTotalPosVenda}" converter="currencyConverter"/>
+                                <h:outputText value="Manutenção:"/>
+                                <h:outputText value="#{viagemMB.viagem.totalManutencao}" converter="currencyConverter"/>
+                                <h:outputText value="Sub-total Pós-manutenção:"/>
+                                <h:outputText value="#{viagemMB.viagem.subTotalPosManutencao}" converter="currencyConverter"/>
+                                <h:outputText value="Despesas da Viagem:"/>
+                                <h:outputText value="#{viagemMB.viagem.despesasViagem}" converter="currencyConverter"/>
+                                <h:outputText value="50% Venda:"/>
+                                <h:outputText value="#{viagemMB.viagem.metadeViagem}" converter="currencyConverter"/>
+                                <h:outputText value="Valor da parte:"/>
+                                <h:outputText value="#{viagemMB.viagem.valorParte}" converter="currencyConverter"/>
+                                <h:outputText value="Quantidade de partes:"/>
+                                <h:outputText value="#{viagemMB.viagem.quantidadePartes}"/>                                
+                            </p:panelGrid>
                         </p:tab>
                     </p:tabView>
                     <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" update="@form"/>

@@ -4,10 +4,12 @@
  */
 package com.jota.infopesca.bean;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +24,7 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Viagem.findById", query = "SELECT v FROM Viagem v WHERE v.id = :id"),
     @NamedQuery(name = "Viagem.findByInicio", query = "SELECT v FROM Viagem v WHERE v.inicio = :inicio"),
     @NamedQuery(name = "Viagem.findByFim", query = "SELECT v FROM Viagem v WHERE v.fim = :fim")})
-public class Viagem implements Serializable {
+public class Viagem extends GridBean {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -134,14 +136,146 @@ public class Viagem implements Serializable {
     public String toString() {
         return "com.jota.infopesca.bean.Viagem[ id=" + id + " ]";
     }
+    // Lógica fechamento conta
+    @Transient
+    private BigDecimal totalVendas = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal totalManutencao = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal subTotalPosVenda = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal subTotalPosManutencao = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal despesasVenda = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal despesasViagem = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal subTotalViagem = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal quantidadePartes = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal metadeViagem = BigDecimal.ZERO;
+    @Transient
+    private BigDecimal valorParte = BigDecimal.ZERO;
+    @Transient
+    private static final BigDecimal TAXA_MANUTENCAO = new BigDecimal("0.2");
 
-    public BigDecimal getDespesasTotais() {
-        BigDecimal total = BigDecimal.ZERO;
-        if (despesas != null) {
-            for (Despesa despesa : despesas) {
-                total = total.add(despesa.getCusto());
+    public void fecharConta() {
+        for (Venda venda : vendas) {
+            totalVendas = totalVendas.add(venda.getTotal());
+        }
+        for (Despesa despesa : despesas) {
+            switch (despesa.getTipo()) {
+                case VIAGEM:
+                    despesasViagem = despesasViagem.add(despesa.getCusto());
+                    break;
+                default:
+                    despesasVenda = despesasVenda.add(despesa.getCusto());
             }
         }
-        return total;
+        subTotalPosVenda = totalVendas.subtract(despesasVenda);
+        totalManutencao = subTotalPosVenda.multiply(TAXA_MANUTENCAO);
+        subTotalPosManutencao = totalVendas.subtract(totalManutencao);
+        subTotalViagem = subTotalPosManutencao.subtract(despesasViagem);
+        
+        metadeViagem = subTotalViagem.divide(new BigDecimal("2.0"),metadeViagem.scale());
+
+        //Cálculo das partes de cada tripulante
+        for (Tripulante tripulante : tripulantes) {
+            quantidadePartes = quantidadePartes.add(tripulante.getFuncao().getPartes());
+        }
+
+        if (!quantidadePartes.equals(BigDecimal.ZERO)) {
+            valorParte = metadeViagem.divide(quantidadePartes,metadeViagem.scale());
+        }
+
+        for (Tripulante tripulante : tripulantes) {
+            tripulante.setValorParte(tripulante.getValorParte().multiply(valorParte));
+        }
+    }
+
+    public BigDecimal getDespesasVenda() {
+        return despesasVenda;
+    }
+
+    public void setDespesasVenda(BigDecimal despesasVenda) {
+        this.despesasVenda = despesasVenda;
+    }
+
+    public BigDecimal getDespesasViagem() {
+        return despesasViagem;
+    }
+
+    public void setDespesasViagem(BigDecimal despesasViagem) {
+        this.despesasViagem = despesasViagem;
+    }
+
+    public BigDecimal getMetadeViagem() {
+        return metadeViagem;
+    }
+
+    public void setMetadeViagem(BigDecimal metadeViagem) {
+        this.metadeViagem = metadeViagem;
+    }
+
+    public BigDecimal getQuantidadePartes() {
+        return quantidadePartes;
+    }
+
+    public void setQuantidadePartes(BigDecimal quantidadePartes) {
+        this.quantidadePartes = quantidadePartes;
+    }
+
+    public BigDecimal getSubTotalPosManutencao() {
+        return subTotalPosManutencao;
+    }
+
+    public void setSubTotalPosManutencao(BigDecimal subTotalPosManutencao) {
+        this.subTotalPosManutencao = subTotalPosManutencao;
+    }
+
+    public BigDecimal getSubTotalPosVenda() {
+        return subTotalPosVenda;
+    }
+
+    public void setSubTotalPosVenda(BigDecimal subTotalPosVenda) {
+        this.subTotalPosVenda = subTotalPosVenda;
+    }
+
+    public BigDecimal getSubTotalViagem() {
+        return subTotalViagem;
+    }
+
+    public void setSubTotalViagem(BigDecimal subTotalViagem) {
+        this.subTotalViagem = subTotalViagem;
+    }
+
+    public BigDecimal getTotalManutencao() {
+        return totalManutencao;
+    }
+
+    public void setTotalManutencao(BigDecimal totalManutencao) {
+        this.totalManutencao = totalManutencao;
+    }
+
+    public BigDecimal getTotalVendas() {
+        return totalVendas;
+    }
+
+    public void setTotalVendas(BigDecimal totalVendas) {
+        this.totalVendas = totalVendas;
+    }
+
+    public BigDecimal getValorParte() {
+        return valorParte;
+    }
+
+    public void setValorParte(BigDecimal valorParte) {
+        this.valorParte = valorParte;
+    }
+
+    @Override
+    public String getOutputTextLabel() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

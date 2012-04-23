@@ -12,11 +12,11 @@ import java.math.BigDecimal;
  */
 public enum TipoTripulante {
 
-    MESTRE(10d, "Mestre"), CONTRA_MESTRE(5d, "Contra-mestre"), COZINHEIRO(3d, "Cozinheiro"), MOTORISTA(5d, "Motorista"), SEGUNDO_MOTORISTA(3.5d, "Segundo Motorista"), GELADOR(3d, "Gelador"), SEGUNDO_GELADOR(2d, "Segundo Gelador"), CONVES(1.25d, "Convés");
-    private double partes;
+    MESTRE("6.0", "Mestre"), CONTRA_MESTRE("2.0", "Contra-mestre"), COZINHEIRO("2.0", "Cozinheiro"), MOTORISTA("4.0", "Motorista"), SEGUNDO_MOTORISTA("1.75", "Segundo Motorista"), GELADOR("2.0", "Gelador"), SEGUNDO_GELADOR("1.75", "Segundo Gelador"), CONVES("1.25", "Convés");
+    private String partes;
     private String label;
 
-    private TipoTripulante(double partes, String label) {
+    private TipoTripulante(String partes, String label) {
         this.partes = partes;
         this.label = label;
     }

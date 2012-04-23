@@ -5,6 +5,7 @@
 package com.jota.infopesca.business;
 
 import com.jota.infopesca.dao.GenericDAO;
+import com.jota.infopesca.util.QueryUtil;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class GenericBC<T> implements Serializable {
         return obj;
     }
 
-    public List<T> listByProperties(Class<T> entityClass, T entity, String[] fields, String[] operators) throws Exception {
-        return dao.listByProperties(entityClass, entity, fields, operators);
+    public List<T> listByProperties(QueryUtil<T> queryUtil) throws Exception {
+        return dao.listByProperties(queryUtil);
     }
 }

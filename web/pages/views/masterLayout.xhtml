@@ -26,7 +26,7 @@
                                   draggable="false" closable="false">  
                             <p:graphicImage value="#{resource['imgs:ajaxloadingbar.gif']}"/>  
                         </p:dialog> 
-                        <p:remoteCommand name="home" action="viagensEmAberto"/>
+                        <p:remoteCommand name="home" action="pesquisaViagem"/>
                         <p:graphicImage id="tunaImg" value="#{resource['imgs:tuna.png']}" styleClass="tuna" style="cursor: pointer;" onclick="home();"/>
                         <h:outputText value="Celso Rocha Jr. - Comércio de Pescado" styleClass="titulo"/>
                         <p:menubar id="menu" autoSubmenuDisplay="true" styleClass="menu">
@@ -37,7 +37,7 @@
                             </p:submenu>
                             <p:submenu label="Viagens">
                                 <p:menuitem  action="#{viagemMB.preIncluirViagem()}" value="Nova" ajax="false" onclick="statusDialog.show()"/>
-                                <p:menuitem  action="viagensEmAberto" value="Acompanhar" ajax="false" onclick="statusDialog.show()"/>
+                                <p:menuitem  action="pesquisaViagem" value="Pesquisar" ajax="false" onclick="statusDialog.show()"/>
                                 <p:menuitem  action="fecharConta" value="Fechar Conta" ajax="false" onclick="statusDialog.show()"/>
                             </p:submenu>
                             <p:submenu label="Relatórios"/>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:cp="http://java.sun.com/jsf/composite/custom"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="masterLayout.xhtml">
+        <ui:define name="content">
+            <h:form id="form">
+                <p:focus/>
+                <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
+                <p:fieldset id="filtro" legend="Filtro Pesquisa">
+                    <p:panelGrid id="fieldsPesquisa" columns="6">
+                        <cp:label label="Embarcação:"/>
+                        <cp:selectOneBean value="#{viagemMB.viagemPesquisa.embarcacao}" list="#{viagemMB.embarcacoes}"  listLabel="nome"/>
+                        <cp:label label="Data Início:"/>
+                        <cp:calendar value="#{viagemMB.viagemPesquisa.inicio}"/>
+                        <cp:label label="Data Fim:"/>
+                        <cp:calendar value="#{viagemMB.viagemPesquisa.fim}"/>
+                    </p:panelGrid>
+                    <p:commandButton id="pesquisarBtn" value="Pesquisar" actionListener="#{viagemMB.pesquisarViagens}" process="filtro" update="resultList" style="margin-top: 5px;" onstart="statusDialog.show()" onsuccess="statusDialog.hide()"/>
+                </p:fieldset>
+                <p:fieldset id="resultSet" legend="Resultado Pesquisa" style="margin-top: 5px;">
+                    <p:dataTable id="resultList" value="#{viagemMB.viagens}" var="viagem" emptyMessage="Sem registros!" styleClass="table">
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                    Embarcação
+                                </p:outputPanel>
+                            </f:facet>
+                            #{viagem.embarcacao.nome}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                    Partida
+                                </p:outputPanel>
+                            </f:facet>
+                            <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                    Chegada
+                                </p:outputPanel>
+                            </f:facet>
+                            <h:outputText value="#{viagem.fim}" converter="outputTextConverter"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                    Atualizar
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:commandButton id="alterBtn" action="manterViagem" actionListener="#{viagemMB.preAlterarViagem(viagem)}" ajax="false" icon="ui-icon-pencil"/>
+                        </p:column>
+                    </p:dataTable>                
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

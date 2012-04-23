@@ -7,11 +7,14 @@ package com.jota.infopesca.mb;
 import com.jota.infopesca.bean.*;
 import com.jota.infopesca.business.GenericBC;
 import com.jota.infopesca.util.FacesUtil;
+import com.jota.infopesca.util.QueryUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.component.tabview.Tab;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -33,10 +36,10 @@ public class ViagemMB {
     private Boolean alterando = true;
 
     public ViagemMB() {
+        viagemPesquisa = new Viagem();
         updateListaEmbarcacao();
-        refreshViagens();
     }
-
+    
     private void updateListaEmbarcacao() {
         try {
             embarcacoes = bcEmbc.getList();
@@ -110,39 +113,19 @@ public class ViagemMB {
         this.alterando = alterando;
     }
 
-    private void refreshViagens() {
-        try {
-            viagens = bc.getList();
-            List<Viagem> viagensToShow = new ArrayList<Viagem>();
-            for (Viagem viag : viagens) {
-                if (!viag.getFechada()) {
-                    viagensToShow.add(viag);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-            FacesUtil.addError("Erro na consulta!");
-        }
-    }
-
     public String cadastrarViagem() {
         if (viagem.getTripulantes().isEmpty()) {
             FacesUtil.addError("Viagem sem tripulantes!");
         } else {
             try {
                 bc.persist(viagem);
-                return viagensEmAberto();
+                return "pesquisaViagem";
             } catch (Exception e) {
                 System.out.println(e);
                 FacesUtil.addError("Erro no cadastro!");
             }
         }
         return null;
-    }
-
-    public String viagensEmAberto() {
-        refreshViagens();
-        return "viagensEmAberto";
     }
 
     public String preIncluirViagem() {
@@ -198,7 +181,23 @@ public class ViagemMB {
     public static final String[] CAMPOS_PESQUISA = {"embarcacao", "inicio", "fim"};
     public static final String[] OPERADORES = {"=", ">=", "<="};
 
-    public void pesquisarViagens() throws Exception {
-        viagens = bc.listByProperties(Viagem.class, viagem, CAMPOS_PESQUISA, OPERADORES);
+    public void pesquisarViagens(){
+        QueryUtil<Viagem> queryUtil = new QueryUtil<Viagem>(viagemPesquisa);
+        queryUtil.addCriteria("embarcacao", "=");
+        queryUtil.addCriteria("inicio", ">=");
+        queryUtil.addCriteria("fim", "<=");
+        try{
+            viagens = bc.listByProperties(queryUtil);
+            viagemPesquisa = new Viagem();
+        }catch(Exception e){
+            
+        }
+    }
+    
+    public void onTabChange(TabChangeEvent evt){
+        Tab tab = evt.getTab();
+        if(tab.getClientId().contains("balanco")){
+            viagem.fecharConta();
+        }
     }
 }

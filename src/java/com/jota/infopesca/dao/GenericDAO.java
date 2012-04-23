@@ -4,6 +4,7 @@
  */
 package com.jota.infopesca.dao;
 
+import com.jota.infopesca.util.QueryUtil;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
 
 /**
  *
@@ -137,7 +137,8 @@ public class GenericDAO<T> implements Serializable {
         return retorno;
     }
 
-    private String getter(String field) {
+    private String getter(Object obj) {
+        String field = (String) obj;
         StringBuilder getter = new StringBuilder();
         getter.append("get");
         getter.append(field.substring(0, 1).toUpperCase());
@@ -145,17 +146,21 @@ public class GenericDAO<T> implements Serializable {
         return getter.toString();
     }
 
-    public <T> List<T> listByProperties(Class<T> entityClass, T entity, String[] fields, String[] operators) throws Exception {
+    public <T> List<T> listByProperties(QueryUtil<T> queryUtil) throws Exception {
         List retorno = null;
         try {
+            T entity = queryUtil.getSample();
+            Class entityClass = entity.getClass();
+            Object[] fields = queryUtil.getFields().toArray();
+            Object[] operators = queryUtil.getOperators().toArray();
             StringBuilder builder = new StringBuilder();
             builder.append("select o from ");
             builder.append(entityClass.getSimpleName());
             builder.append("  o  where ");
-            Map<String, Object> toEvaluate = new HashMap<String, Object>();
+            Map<Object, Object> toEvaluate = new HashMap<Object, Object>();
             for (int i = 0; i < fields.length; i++) {
                 Method m = entityClass.getDeclaredMethod(getter(fields[i]));
-                Object value = m.invoke(m, entity);
+                Object value = m.invoke(entity);
                 if (value != null) {
                     builder.append("o.");
                     builder.append(fields[i]);
@@ -165,13 +170,15 @@ public class GenericDAO<T> implements Serializable {
                     builder.append(fields[i]);
                     toEvaluate.put(fields[i], value);
                 } else {
-                    builder.append(fields[i]);
-                    builder.append(" is null ");
+                    if (((String)operators[i]).contains("null")) {
+                        builder.append(fields[i]);
+                        builder.append(operators[i]);
+                    }
                 }
             }
             Query query = em.createQuery(builder.toString());
-            for (String propertyName : toEvaluate.keySet()) {
-                query.setParameter(propertyName, toEvaluate.get(propertyName));
+            for (Object propertyName : toEvaluate.keySet()) {
+                query.setParameter((String)propertyName, toEvaluate.get((String)propertyName));
             }
             retorno = query.getResultList();
         } catch (Exception ex) {

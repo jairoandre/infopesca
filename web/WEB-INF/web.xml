@@ -47,7 +47,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/pages/views/viagensEmAberto.xhtml</welcome-file>
+        <welcome-file>faces/pages/views/pesquisaViagem.xhtml</welcome-file>
     </welcome-file-list>
     <error-page>  
         <exception-type>java.lang.Exception</exception-type>  
