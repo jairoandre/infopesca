@@ -138,29 +138,40 @@ public class Viagem extends GridBean {
     }
     // Lógica fechamento conta
     @Transient
-    private BigDecimal totalVendas = BigDecimal.ZERO;
+    private BigDecimal totalVendas;
     @Transient
-    private BigDecimal totalManutencao = BigDecimal.ZERO;
+    private BigDecimal totalManutencao;
     @Transient
-    private BigDecimal subTotalPosVenda = BigDecimal.ZERO;
+    private BigDecimal subTotalPosVenda;
     @Transient
-    private BigDecimal subTotalPosManutencao = BigDecimal.ZERO;
+    private BigDecimal subTotalPosManutencao;
     @Transient
-    private BigDecimal despesasVenda = BigDecimal.ZERO;
+    private BigDecimal despesasVenda;
     @Transient
-    private BigDecimal despesasViagem = BigDecimal.ZERO;
+    private BigDecimal despesasViagem;
     @Transient
-    private BigDecimal subTotalViagem = BigDecimal.ZERO;
+    private BigDecimal subTotalViagem;
     @Transient
-    private BigDecimal quantidadePartes = BigDecimal.ZERO;
+    private BigDecimal quantidadePartes;
     @Transient
-    private BigDecimal metadeViagem = BigDecimal.ZERO;
+    private BigDecimal metadeViagem;
     @Transient
-    private BigDecimal valorParte = BigDecimal.ZERO;
+    private BigDecimal valorParte;
     @Transient
     private static final BigDecimal TAXA_MANUTENCAO = new BigDecimal("0.2");
 
     public void fecharConta() {
+        totalVendas = BigDecimal.ZERO;
+        totalManutencao = BigDecimal.ZERO;
+        subTotalPosVenda = BigDecimal.ZERO;
+        subTotalPosManutencao = BigDecimal.ZERO;
+        despesasVenda = BigDecimal.ZERO;
+        despesasViagem = BigDecimal.ZERO;
+        subTotalViagem = BigDecimal.ZERO;
+        quantidadePartes = BigDecimal.ZERO;
+        metadeViagem = BigDecimal.ZERO;
+        valorParte = BigDecimal.ZERO;
+
         for (Venda venda : vendas) {
             totalVendas = totalVendas.add(venda.getTotal());
         }
@@ -177,21 +188,26 @@ public class Viagem extends GridBean {
         totalManutencao = subTotalPosVenda.multiply(TAXA_MANUTENCAO);
         subTotalPosManutencao = totalVendas.subtract(totalManutencao);
         subTotalViagem = subTotalPosManutencao.subtract(despesasViagem);
-        
-        metadeViagem = subTotalViagem.divide(new BigDecimal("2.0"),metadeViagem.scale());
-
+        metadeViagem = subTotalViagem.divide(new BigDecimal("2.0"), metadeViagem.scale());
         //Cálculo das partes de cada tripulante
         for (Tripulante tripulante : tripulantes) {
             quantidadePartes = quantidadePartes.add(tripulante.getFuncao().getPartes());
         }
 
         if (!quantidadePartes.equals(BigDecimal.ZERO)) {
-            valorParte = metadeViagem.divide(quantidadePartes,metadeViagem.scale());
+            valorParte = metadeViagem.divide(quantidadePartes, metadeViagem.scale());
         }
-
         for (Tripulante tripulante : tripulantes) {
             tripulante.setValorParte(tripulante.getValorParte().multiply(valorParte));
         }
+    }
+
+    public boolean isEmpenhada() {
+        return subTotalViagem.compareTo(despesasViagem) < 0;
+    }
+
+    public BigDecimal getEmpenho() {
+        return despesasViagem.subtract(subTotalPosManutencao);
     }
 
     public BigDecimal getDespesasVenda() {

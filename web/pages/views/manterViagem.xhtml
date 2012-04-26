@@ -51,12 +51,16 @@
                                 <h:outputText value="#{viagemMB.viagem.subTotalPosManutencao}" converter="currencyConverter"/>
                                 <h:outputText value="Despesas da Viagem:"/>
                                 <h:outputText value="#{viagemMB.viagem.despesasViagem}" converter="currencyConverter"/>
-                                <h:outputText value="50% Venda:"/>
-                                <h:outputText value="#{viagemMB.viagem.metadeViagem}" converter="currencyConverter"/>
-                                <h:outputText value="Valor da parte:"/>
-                                <h:outputText value="#{viagemMB.viagem.valorParte}" converter="currencyConverter"/>
-                                <h:outputText value="Quantidade de partes:"/>
-                                <h:outputText value="#{viagemMB.viagem.quantidadePartes}"/>                                
+                                <h:outputText value="Sub-total Viagem:" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="#{viagemMB.viagem.subTotalViagem}" converter="currencyConverter" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="50% Venda:" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="#{viagemMB.viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="Quantidade de partes:" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="#{viagemMB.viagem.quantidadePartes}" rendered="#{!viagemMB.viagem.empenhada}"/>                                
+                                <h:outputText value="Valor da parte:" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="#{viagemMB.viagem.valorParte}" converter="currencyConverter" rendered="#{!viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="Empenho:" rendered="#{viagemMB.viagem.empenhada}"/>
+                                <h:outputText value="#{viagemMB.viagem.empenho}" converter="currencyConverter" rendered="#{viagemMB.viagem.empenhada}" style="color: red;"/>
                             </p:panelGrid>
                         </p:tab>
                     </p:tabView>

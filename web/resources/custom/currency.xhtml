@@ -18,7 +18,7 @@
         <p:inputText id="input" value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório">
             <script>
                 $(function(){
-                    $("##{cc.clientId}-input").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+                    $("##{cc.clientId}-input").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true, allowZero: true});
                 });
             </script>
             <f:converter converterId="currencyConverter"/>
