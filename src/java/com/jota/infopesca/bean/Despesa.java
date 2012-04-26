@@ -48,6 +48,7 @@ public class Despesa extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_BL_QUITADA")
+    @GridConfig(label = "Quitada", required = true)
     private Boolean quitada;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
@@ -55,6 +56,7 @@ public class Despesa extends GridBean {
 
     public Despesa() {
         this.tipo = TipoDespesa.VIAGEM;
+        this.quitada = false;
     }
 
     public Despesa(Long id) {

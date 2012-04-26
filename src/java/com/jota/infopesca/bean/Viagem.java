@@ -198,7 +198,7 @@ public class Viagem extends GridBean {
             valorParte = metadeViagem.divide(quantidadePartes, metadeViagem.scale());
         }
         for (Tripulante tripulante : tripulantes) {
-            tripulante.setValorParte(tripulante.getValorParte().multiply(valorParte));
+            tripulante.setValorParte(tripulante.getFuncao().getPartes().multiply(valorParte));
         }
     }
 
