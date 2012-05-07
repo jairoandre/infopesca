@@ -29,7 +29,7 @@ public class Despesa extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
     @NotNull
@@ -38,7 +38,7 @@ public class Despesa extends GridBean {
     @GridConfig(enumerated = true, label = "Tipo", required = true)
     private TipoDespesa tipo;
     @Column(name = "DESP_TX_DESCRICAO")
-    @GridConfig(label="Descrição")
+    @GridConfig(label = "Descrição")
     private String descricao;
     @Basic(optional = false)
     @NotNull
@@ -53,6 +53,9 @@ public class Despesa extends GridBean {
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
     private Viagem viagem;
+    @JoinColumn(name = "FUNC_ID", referencedColumnName = "FUNC_ID")
+    @ManyToOne(optional = true)
+    private Funcionario funcionario;
 
     public Despesa() {
         this.tipo = TipoDespesa.VIAGEM;
@@ -78,7 +81,7 @@ public class Despesa extends GridBean {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getDescricao() {
         return descricao;
     }
@@ -118,6 +121,14 @@ public class Despesa extends GridBean {
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
     }
+    
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
 
     @Override
     public String toString() {
@@ -131,8 +142,11 @@ public class Despesa extends GridBean {
 
     @Override
     public void setParent(Object parent) {
-        setViagem((Viagem)parent);
+        if (Viagem.class.equals(parent.getClass())) {
+            setViagem((Viagem) parent);
+
+        }else if(Funcionario.class.equals(parent.getClass())){
+            setFuncionario((Funcionario) parent);
+        }
     }
-    
-    
 }

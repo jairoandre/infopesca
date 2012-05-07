@@ -10,7 +10,7 @@ package com.jota.infopesca.enums;
  */
 public enum TipoDespesa {
 
-    VENDA("Venda"), VIAGEM("Viagem"), MANUTENCAO("Manutenção"), OUTRAS("Outras");
+    VENDA("Venda"), VIAGEM("Viagem"), MANUTENCAO("Manutenção"), OUTRAS("Outras"), VALE("Vale");
     private String label;
 
     private TipoDespesa(String label) {

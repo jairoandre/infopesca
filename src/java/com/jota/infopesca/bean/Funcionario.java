@@ -84,6 +84,8 @@ public class Funcionario extends GridBean {
     private BigDecimal salario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private Collection<Tripulante> tripulantes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
+    private Collection<Despesa> despesas;
 
     public Funcionario() {
     }
@@ -103,6 +105,7 @@ public class Funcionario extends GridBean {
         this.salario = salario;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -175,6 +178,14 @@ public class Funcionario extends GridBean {
         this.tripulantes = tripulantes;
     }
 
+    public Collection<Despesa> getDespesas() {
+        return despesas;
+    }
+
+    public void setDespesas(Collection<Despesa> despesas) {
+        this.despesas = despesas;
+    }
+    
     public Date getDataNascimento() {
         return dataNascimento;
     }
