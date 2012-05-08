@@ -4,12 +4,10 @@
  */
 package com.jota.infopesca.bean;
 
+import com.jota.infopesca.bean.pattern.GridBean;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -50,10 +48,13 @@ public class Viagem extends GridBean {
     private Collection<Tripulante> tripulantes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "viagem")
     private Collection<Despesa> despesas;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "viagem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "viagem")
     private Collection<Venda> vendas;
     @Column(name = "VIAG_IN_FECHADA")
     private Boolean fechada;
+    @JoinColumn(name = "CONT_ID", referencedColumnName = "CONT_ID")
+    @ManyToOne(optional = true)
+    private Conta conta;
 
     public Viagem() {
     }
@@ -132,6 +133,14 @@ public class Viagem extends GridBean {
         this.fechada = fechada;
     }
 
+    public Conta getConta() {
+        return conta;
+    }
+
+    public void setConta(Conta conta) {
+        this.conta = conta;
+    }
+    
     @Override
     public String toString() {
         return "com.jota.infopesca.bean.Viagem[ id=" + id + " ]";

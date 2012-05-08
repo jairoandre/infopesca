@@ -5,6 +5,7 @@
 package com.jota.infopesca.bean;
 
 import com.jota.infopesca.annotations.GridConfig;
+import com.jota.infopesca.bean.pattern.GridBean;
 import com.jota.infopesca.enums.TipoDespesa;
 import java.math.BigDecimal;
 import javax.persistence.*;

@@ -40,7 +40,7 @@ public class ViagemMB {
         viagemPesquisa = new Viagem();
         updateListaEmbarcacao();
     }
-    
+
     private void updateListaEmbarcacao() {
         try {
             embarcacoes = bcEmbc.getList();
@@ -144,7 +144,7 @@ public class ViagemMB {
                     if (func.equals(((Tripulante) trip).getFuncionario())) {
                         FacesUtil.addError("Funcionário já é tripulante.");
                         return false;
-                    };
+                    }
                 }
                 return true;
             }
@@ -182,23 +182,32 @@ public class ViagemMB {
     public static final String[] CAMPOS_PESQUISA = {"embarcacao", "inicio", "fim"};
     public static final String[] OPERADORES = {"=", ">=", "<="};
 
-    public void pesquisarViagens(){
+    public void pesquisarViagens() {
         QueryUtil<Viagem> queryUtil = new QueryUtil<Viagem>(viagemPesquisa);
         queryUtil.addCriteria("embarcacao", TipoOperacao.EQ);
         queryUtil.addCriteria("inicio", TipoOperacao.GE);
         queryUtil.addCriteria("fim", TipoOperacao.LE);
-        try{
+        try {
             viagens = bc.listByProperties(queryUtil);
             viagemPesquisa = new Viagem();
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+            System.out.println(e);
+            FacesUtil.addError("Erro na consulta.");
         }
     }
     
-    public void onTabChange(TabChangeEvent evt){
+    public void fecharConta(){
+        
+    }
+
+    public void onTabChange(TabChangeEvent evt) {
         Tab tab = evt.getTab();
-        if(tab.getClientId().contains("balanco")){
+        if (tab.getClientId().contains("balanco")) {
             viagem.fecharConta();
         }
+    }
+    
+    public boolean isExibirBtnFecharConta(){
+        return viagem.getId() != null && !viagem.getFechada();
     }
 }

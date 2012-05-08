@@ -23,8 +23,6 @@
                         <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" required="true"/>
                         <cp:label id="labelFim" label="Chegada:"/>
                         <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}"/>
-                        <cp:label id="labelFechada" label="Fechada:"/>
-                        <cp:selectOneBoolean id="finalizada" value="#{viagemMB.viagem.fechada}"/>
                     </p:panelGrid>
                     <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" cache="false">
                         <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
@@ -38,7 +36,7 @@
                             <cp:softGrid id="venda" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
                         </p:tab>
                         <p:tab id="balanco" title="Balanço">
-                            <h:panelGrid columns="2">
+                            <p:outputPanel layout="block" style="float: left;">
                                 <p:panelGrid id="balancoTbl"  columns="2">
                                     <h:outputText value="Total Vendas:"/>
                                     <h:outputText value="#{viagemMB.viagem.totalVendas}" converter="currencyConverter"/>
@@ -63,8 +61,10 @@
                                     <h:outputText value="Empenho:" rendered="#{viagemMB.viagem.empenhada}"/>
                                     <h:outputText value="#{viagemMB.viagem.empenho}" converter="currencyConverter" rendered="#{viagemMB.viagem.empenhada}" style="color: red;"/>
                                 </p:panelGrid>
+                            </p:outputPanel>
+                            <p:outputPanel layout="block" style="float: left;">
                                 <p:fieldset legend="Distribuição das Partes" rendered="#{!viagemMB.viagem.empenhada}">
-                                    <p:panelGrid id="partesInfo"  columns="4">
+                                    <p:panelGrid id="partesInfo"  columns="4" style="margin-bottom: 5px;">
                                         <h:outputText value="Quantidade de partes:" rendered="#{!viagemMB.viagem.empenhada}"/>
                                         <h:outputText value="#{viagemMB.viagem.quantidadePartes}" />                                
                                         <h:outputText value="Valor da parte:" rendered="#{!viagemMB.viagem.empenhada}"/>
@@ -105,10 +105,12 @@
                                         </p:column>
                                     </p:dataTable>                
                                 </p:fieldset>
-                            </h:panelGrid>
+                            </p:outputPanel>
+                            <p:outputPanel layout="block" style="clear: both;"/>
                         </p:tab>
                     </p:tabView>
                     <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" update="@form"/>
+                    <p:commandButton value="Fechar Conta" action="#{viagemMB.cadastrarViagem}" update="@form" rendered="#{viagemMB.exibirBtnFecharConta}"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

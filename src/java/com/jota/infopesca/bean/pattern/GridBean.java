@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jota.infopesca.bean;
+package com.jota.infopesca.bean.pattern;
 
 import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.business.GenericBC;

@@ -4,7 +4,7 @@
  */
 package com.jota.infopesca.mb;
 
-import com.jota.infopesca.bean.GridBean;
+import com.jota.infopesca.bean.pattern.GridBean;
 import java.util.Collection;
 import java.util.List;
 

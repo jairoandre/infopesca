@@ -4,7 +4,7 @@
  */
 package com.jota.infopesca.converters;
 
-import com.jota.infopesca.bean.GridBean;
+import com.jota.infopesca.bean.pattern.GridBean;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;

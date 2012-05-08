@@ -5,6 +5,7 @@
 package com.jota.infopesca.bean;
 
 import com.jota.infopesca.annotations.GridConfig;
+import com.jota.infopesca.bean.pattern.GridBean;
 import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
