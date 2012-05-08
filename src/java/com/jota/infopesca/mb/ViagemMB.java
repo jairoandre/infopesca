@@ -6,6 +6,7 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.*;
 import com.jota.infopesca.business.GenericBC;
+import com.jota.infopesca.enums.TipoOperacao;
 import com.jota.infopesca.util.FacesUtil;
 import com.jota.infopesca.util.QueryUtil;
 import java.util.ArrayList;
@@ -183,9 +184,9 @@ public class ViagemMB {
 
     public void pesquisarViagens(){
         QueryUtil<Viagem> queryUtil = new QueryUtil<Viagem>(viagemPesquisa);
-        queryUtil.addCriteria("embarcacao", "=");
-        queryUtil.addCriteria("inicio", ">=");
-        queryUtil.addCriteria("fim", "<=");
+        queryUtil.addCriteria("embarcacao", TipoOperacao.EQ);
+        queryUtil.addCriteria("inicio", TipoOperacao.GE);
+        queryUtil.addCriteria("fim", TipoOperacao.LE);
         try{
             viagens = bc.listByProperties(queryUtil);
             viagemPesquisa = new Viagem();

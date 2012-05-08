@@ -7,6 +7,7 @@ package com.jota.infopesca.dao;
 import com.jota.infopesca.util.QueryUtil;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -137,50 +142,14 @@ public class GenericDAO<T> implements Serializable {
         return retorno;
     }
 
-    private String getter(Object obj) {
-        String field = (String) obj;
-        StringBuilder getter = new StringBuilder();
-        getter.append("get");
-        getter.append(field.substring(0, 1).toUpperCase());
-        getter.append(field.substring(1));
-        return getter.toString();
-    }
-
     public <T> List<T> listByProperties(QueryUtil<T> queryUtil) throws Exception {
         List retorno = null;
         try {
-            T entity = queryUtil.getSample();
-            Class entityClass = entity.getClass();
-            Object[] fields = queryUtil.getFields().toArray();
-            Object[] operators = queryUtil.getOperators().toArray();
-            StringBuilder builder = new StringBuilder();
-            builder.append("select o from ");
-            builder.append(entityClass.getSimpleName());
-            builder.append("  o  where ");
-            Map<Object, Object> toEvaluate = new HashMap<Object, Object>();
-            for (int i = 0; i < fields.length; i++) {
-                Method m = entityClass.getDeclaredMethod(getter(fields[i]));
-                Object value = m.invoke(entity);
-                if (value != null) {
-                    builder.append("o.");
-                    builder.append(fields[i]);
-                    builder.append(" ");
-                    builder.append(operators[i]);
-                    builder.append(" :");
-                    builder.append(fields[i]);
-                    toEvaluate.put(fields[i], value);
-                } else {
-                    if (((String)operators[i]).contains("null")) {
-                        builder.append(fields[i]);
-                        builder.append(operators[i]);
-                    }
-                }
-            }
-            Query query = em.createQuery(builder.toString());
-            for (Object propertyName : toEvaluate.keySet()) {
-                query.setParameter((String)propertyName, toEvaluate.get((String)propertyName));
-            }
+
+            Query query = em.createQuery(queryUtil.createQuery(em.getCriteriaBuilder()));
+
             retorno = query.getResultList();
+
         } catch (Exception ex) {
             throw ex;
         }
