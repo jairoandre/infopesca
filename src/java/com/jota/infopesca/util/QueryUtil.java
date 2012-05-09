@@ -30,7 +30,7 @@ public class QueryUtil<T> implements Serializable {
         fields = new ArrayList<String>();
         operators = new ArrayList<TipoOperacao>();
     }
-
+    
     public void addCriteria(String field, TipoOperacao operator) {
         fields.add(field);
         operators.add(operator);

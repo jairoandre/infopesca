@@ -173,7 +173,7 @@ public abstract class GridBean implements Serializable {
             Field field = this.getClass().getDeclaredField(fieldName);
             Class clazz = field.getType();
             GenericBC bc = new GenericBC(clazz);
-            return bc.getList();
+            return bc.listAll();
         } catch (Exception e) {
             return null;
         }

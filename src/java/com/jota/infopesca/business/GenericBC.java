@@ -23,8 +23,8 @@ public class GenericBC<T> implements Serializable {
         this.dao = new GenericDAO<T>();
     }
 
-    public List<T> getList() throws Exception {
-        List<T> list = dao.listAll(clazz);
+    public List<T> listAll() throws Exception {
+        List<T> list = dao.list(new QueryUtil(clazz.newInstance()));
         return list;
     }
 
@@ -43,6 +43,6 @@ public class GenericBC<T> implements Serializable {
     }
 
     public List<T> listByProperties(QueryUtil<T> queryUtil) throws Exception {
-        return dao.listByProperties(queryUtil);
+        return dao.list(queryUtil);
     }
 }

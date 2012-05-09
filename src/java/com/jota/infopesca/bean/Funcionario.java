@@ -19,16 +19,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "funcionarios")
-@NamedQueries({
-    @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f"),
-    @NamedQuery(name = "Funcionario.findById", query = "SELECT f FROM Funcionario f WHERE f.id = :id"),
-    @NamedQuery(name = "Funcionario.findByNome", query = "SELECT f FROM Funcionario f WHERE f.nome = :nome"),
-    @NamedQuery(name = "Funcionario.findByCtps", query = "SELECT f FROM Funcionario f WHERE f.ctps = :ctps"),
-    @NamedQuery(name = "Funcionario.findByCi", query = "SELECT f FROM Funcionario f WHERE f.ci = :ci"),
-    @NamedQuery(name = "Funcionario.findByEndereco", query = "SELECT f FROM Funcionario f WHERE f.endereco = :endereco"),
-    @NamedQuery(name = "Funcionario.findByTelefone", query = "SELECT f FROM Funcionario f WHERE f.telefone = :telefone"),
-    @NamedQuery(name = "Funcionario.findByCelular", query = "SELECT f FROM Funcionario f WHERE f.celular = :celular"),
-    @NamedQuery(name = "Funcionario.findBySalario", query = "SELECT f FROM Funcionario f WHERE f.salario = :salario")})
 public class Funcionario extends GridBean {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +56,18 @@ public class Funcionario extends GridBean {
     @Column(name = "FUNC_TX_ENDERECO")
     @GridConfig(label = "Endereço", editable = true, required = true)
     private String endereco;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 60)
+    @Column(name = "FUNC_TX_BAIRRO")
+    @GridConfig(label = "Bairro", editable = true, required = true)
+    private String bairro;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 60)
+    @Column(name = "FUNC_TX_CIDADE")
+    @GridConfig(label = "Cidade", editable = true, required = true)
+    private String cidade;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)

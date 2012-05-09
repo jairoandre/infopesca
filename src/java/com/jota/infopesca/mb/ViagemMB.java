@@ -43,7 +43,7 @@ public class ViagemMB {
 
     private void updateListaEmbarcacao() {
         try {
-            embarcacoes = bcEmbc.getList();
+            embarcacoes = bcEmbc.listAll();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

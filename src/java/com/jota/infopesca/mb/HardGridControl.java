@@ -53,7 +53,7 @@ public class HardGridControl<T> extends GridControl {
     @Override
     protected List<T> refresh() {
         try {
-            return bc.getList();
+            return bc.listAll();
         } catch (Exception e) {
             System.out.println(e);
         }

@@ -6,20 +6,12 @@ package com.jota.infopesca.dao;
 
 import com.jota.infopesca.util.QueryUtil;
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 /**
  *
@@ -113,36 +105,7 @@ public class GenericDAO<T> implements Serializable {
         return retorno;
     }
 
-    public <T> List<T> listAll(Class<T> entityClass, String... orderbys) throws Exception {
-        List retorno = null;
-        try {
-            String query = "select o from " + entityClass.getSimpleName() + "  o  order by ";
-
-            for (String order : orderbys) {
-                query += order + " , ";
-            }
-            query = query.substring(0, query.length() - 2);
-            Query q = em.createQuery(query);
-            retorno = q.getResultList();
-        } catch (Exception ex) {
-            throw ex;
-        }
-        return retorno;
-    }
-
-    public <T> List<T> listAll(Class<T> entityClass) throws Exception {
-        List retorno = null;
-        try {
-            String query = "select o from " + entityClass.getSimpleName() + "  o ";
-            Query q = em.createQuery(query);
-            retorno = q.getResultList();
-        } catch (Exception ex) {
-            throw ex;
-        }
-        return retorno;
-    }
-
-    public <T> List<T> listByProperties(QueryUtil<T> queryUtil) throws Exception {
+    public <T> List<T> list(QueryUtil<T> queryUtil) throws Exception {
         List retorno = null;
         try {
 
