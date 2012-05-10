@@ -35,6 +35,7 @@ public class ViagemMB {
     private SoftGridControl<Venda> softGridVenda;
     private List<Viagem> viagens;
     private Boolean alterando = true;
+    private Viagem[] viagensSelecionadas;
 
     public ViagemMB() {
         viagemPesquisa = new Viagem();
@@ -112,6 +113,14 @@ public class ViagemMB {
 
     public void setAlterando(Boolean alterando) {
         this.alterando = alterando;
+    }
+    
+    public Viagem[] getViagensSelecionadas() {
+        return viagensSelecionadas;
+    }
+
+    public void setViagensSelecionadas(Viagem[] viagensSelecionadas) {
+        this.viagensSelecionadas = viagensSelecionadas;
     }
 
     public String cadastrarViagem() {
