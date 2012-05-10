@@ -123,7 +123,7 @@ public abstract class GridBean implements Serializable {
             return "Não definido";
         }
     }
-
+    
     /**
      * Verifica se o campo é do tipo data.
      *

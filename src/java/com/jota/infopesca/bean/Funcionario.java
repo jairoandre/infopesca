@@ -54,7 +54,7 @@ public class Funcionario extends GridBean {
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "FUNC_TX_ENDERECO")
-    @GridConfig(label = "Endereço", editable = true, required = true)
+    @GridConfig(label = "Endereço", editable = true, required = true, size = 60)
     private String endereco;
     @Basic(optional = false)
     @NotNull
@@ -188,7 +188,7 @@ public class Funcionario extends GridBean {
     public void setDespesas(Collection<Despesa> despesas) {
         this.despesas = despesas;
     }
-    
+
     public Date getDataNascimento() {
         return dataNascimento;
     }
