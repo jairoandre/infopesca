@@ -54,20 +54,36 @@ public class Funcionario extends GridBean {
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "FUNC_TX_ENDERECO")
-    @GridConfig(label = "Endereço", editable = true, required = true, size = 60)
+    @GridConfig(label = "Endereço", editable = true, required = true, size = 100)
     private String endereco;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FUNC_TX_COMPLEMENTO")
+    @GridConfig(label = "Complemento", editable = true, required = true, size = 4)
+    private String compĺemento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "FUNC_TX_BAIRRO")
-    @GridConfig(label = "Bairro", editable = true, required = true)
+    @GridConfig(label = "Bairro", editable = true)
     private String bairro;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "FUNC_TX_CIDADE")
-    @GridConfig(label = "Cidade", editable = true, required = true)
+    @GridConfig(label = "Cidade", editable = true)
     private String cidade;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 60)
+    @Column(name = "FUNC_TX_ESTADO")
+    @GridConfig(label = "Estado", editable = true)
+    private String estado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FUNC_TX_CEP")
+    @GridConfig(label = "Estado", editable = true, size= 9)
+    private String cep;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
@@ -149,6 +165,46 @@ public class Funcionario extends GridBean {
         this.endereco = endereco;
     }
 
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getCompĺemento() {
+        return compĺemento;
+    }
+
+    public void setCompĺemento(String compĺemento) {
+        this.compĺemento = compĺemento;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
     public String getTelefone() {
         return telefone;
     }
