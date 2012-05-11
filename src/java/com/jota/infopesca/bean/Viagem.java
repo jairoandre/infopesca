@@ -57,6 +57,7 @@ public class Viagem extends GridBean {
     private Conta conta;
 
     public Viagem() {
+        zerar();
     }
 
     public Viagem(Long id) {
@@ -69,6 +70,7 @@ public class Viagem extends GridBean {
         this.fim = fim;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -168,8 +170,8 @@ public class Viagem extends GridBean {
     private BigDecimal valorParte;
     @Transient
     private static final BigDecimal TAXA_MANUTENCAO = new BigDecimal("0.2");
-
-    public void fecharConta() {
+    
+    private void zerar(){
         totalVendas = BigDecimal.ZERO;
         totalManutencao = BigDecimal.ZERO;
         subTotalPosVenda = BigDecimal.ZERO;
@@ -180,6 +182,10 @@ public class Viagem extends GridBean {
         quantidadePartes = BigDecimal.ZERO;
         metadeViagem = BigDecimal.ZERO;
         valorParte = BigDecimal.ZERO;
+    }
+
+    public void fecharConta() {
+        zerar();
 
         for (Venda venda : vendas) {
             totalVendas = totalVendas.add(venda.getTotal());
@@ -195,7 +201,7 @@ public class Viagem extends GridBean {
         }
         subTotalPosVenda = totalVendas.subtract(despesasVenda);
         totalManutencao = subTotalPosVenda.multiply(TAXA_MANUTENCAO);
-        subTotalPosManutencao = totalVendas.subtract(totalManutencao);
+        subTotalPosManutencao = subTotalPosVenda.subtract(totalManutencao);
         subTotalViagem = subTotalPosManutencao.subtract(despesasViagem);
         metadeViagem = subTotalViagem.divide(new BigDecimal("2.0"), metadeViagem.scale());
         //Cálculo das partes de cada tripulante

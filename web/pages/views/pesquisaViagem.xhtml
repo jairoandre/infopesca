@@ -25,6 +25,8 @@
                 </p:fieldset>
                 <p:fieldset id="resultSet" legend="Resultado Pesquisa" style="margin-top: 5px;">
                     <p:dataTable id="resultList" value="#{viagemMB.viagens}" var="viagem" emptyMessage="Sem registros!" styleClass="table" selection="#{viagemMB.viagensSelecionadas}" rowKey="#{viagem.hashCode}">
+                        <p:ajax event="rowSelect" process="@none" onstart="contaCheck();" />
+                        <p:ajax event="rowUnselect" process="@none" onstart="contaCheck();"/>
                         <p:column id="selector" selectionMode="multiple" style="text-align: center;"/>
                         <p:column>
                             <f:facet name="header">
@@ -58,8 +60,9 @@
                             </f:facet>
                             <p:commandButton id="alterBtn" action="manterViagem" actionListener="#{viagemMB.preAlterarViagem(viagem)}" ajax="false" icon="ui-icon-pencil"/>
                         </p:column>
-                    </p:dataTable>        
-                    <p:commandButton id="fecharContaBtn" value="Fechar Conta" style="margin-top: 5px;"/>
+                    </p:dataTable>
+                    <p:remoteCommand id="contaCheck" name="contaCheck" process="resultList" update="fecharContaBtn"/>
+                    <p:commandButton id="fecharContaBtn" value="Fechar Conta" style="margin-top: 5px;" disabled="#{empty viagemMB.viagensSelecionadas}"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

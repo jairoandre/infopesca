@@ -55,7 +55,7 @@
                 </p:outputPanel>
                 <!-- Mensagem lista vazia -->
                 <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <p:remoteCommand id="clickCheck" name="clickCheck" process="dataTableList" update="gridBtnsPnl"/>                
+                <p:remoteCommand id="clickCheck" name="#{uniqueName}clickCheck" process="dataTableList" update="gridBtnsPnl"/>                
                 <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
                     <p:dataTable id="dataTableList"
                                  value="#{cc.attrs.mb.list}"
@@ -67,8 +67,8 @@
                                  selection="#{cc.attrs.mb.selectedItens}"
                                  rowKey="#{obj.hashCode}"
                                  styleClass="table">
-                        <p:ajax event="rowSelect" process="@none" onstart="clickCheck();" />
-                        <p:ajax event="rowUnselect" process="@none" onstart="clickCheck();"/>
+                        <p:ajax event="rowSelect" process="@none" onstart="#{uniqueName}clickCheck();" />
+                        <p:ajax event="rowUnselect" process="@none" onstart="#{uniqueName}clickCheck();"/>
                         <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}"/>
                         <p:columns id="dynaColumns" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
                             <f:facet name="header">

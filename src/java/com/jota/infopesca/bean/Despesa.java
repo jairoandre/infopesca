@@ -49,7 +49,7 @@ public class Despesa extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_BL_QUITADA")
-    @GridConfig(label = "Quitada", required = true)
+    @GridConfig(label = "Quitada", required = true, flag = true)
     private Boolean quitada;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
@@ -122,7 +122,7 @@ public class Despesa extends GridBean {
     public void setViagem(Viagem viagem) {
         this.viagem = viagem;
     }
-    
+
     public Funcionario getFuncionario() {
         return funcionario;
     }
@@ -146,7 +146,7 @@ public class Despesa extends GridBean {
         if (Viagem.class.equals(parent.getClass())) {
             setViagem((Viagem) parent);
 
-        }else if(Funcionario.class.equals(parent.getClass())){
+        } else if (Funcionario.class.equals(parent.getClass())) {
             setFuncionario((Funcionario) parent);
         }
     }

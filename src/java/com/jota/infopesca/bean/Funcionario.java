@@ -54,7 +54,7 @@ public class Funcionario extends GridBean {
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "FUNC_TX_ENDERECO")
-    @GridConfig(label = "Endereço", editable = true, required = true, size = 100)
+    @GridConfig(label = "Endereço", editable = true, required = true, size = 40)
     private String endereco;
     @Basic(optional = false)
     @NotNull
@@ -82,7 +82,7 @@ public class Funcionario extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_TX_CEP")
-    @GridConfig(label = "Estado", editable = true, size= 9)
+    @GridConfig(label = "CEP", editable = true, size= 9, mask="99999-999")
     private String cep;
     @Basic(optional = false)
     @NotNull
