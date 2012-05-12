@@ -12,6 +12,9 @@
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
+                <p:tabView value="#{contaMB.conta.viagens}" var="viagem">
+                    <p:tab title="#{viagem.embarcacao.nome} - #{viagem.inicio}"/>
+                </p:tabView>
             </h:form>
         </ui:define>
     </ui:composition>

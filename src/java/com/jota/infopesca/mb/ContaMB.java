@@ -9,11 +9,15 @@ import com.jota.infopesca.bean.Viagem;
 import com.jota.infopesca.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author 08404235783
  */
+@ManagedBean
+@SessionScoped
 public class ContaMB {
 
     private Conta conta;

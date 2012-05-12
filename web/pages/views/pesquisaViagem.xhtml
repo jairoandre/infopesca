@@ -62,7 +62,7 @@
                         </p:column>
                     </p:dataTable>
                     <p:remoteCommand id="contaCheck" name="contaCheck" process="resultList" update="fecharContaBtn"/>
-                    <p:commandButton id="fecharContaBtn" value="Fechar Conta" style="margin-top: 5px;" disabled="#{empty viagemMB.viagensSelecionadas}"/>
+                    <p:commandButton action="#{contaMB.novaConta(viagemMB.viagensSelecionadas)}" id="fecharContaBtn" value="Fechar Conta" style="margin-top: 5px;" disabled="#{empty viagemMB.viagensSelecionadas}"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

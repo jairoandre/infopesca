@@ -60,7 +60,7 @@ public class Funcionario extends GridBean {
     @NotNull
     @Column(name = "FUNC_TX_COMPLEMENTO")
     @GridConfig(label = "Complemento", editable = true, required = true, size = 4)
-    private String compĺemento;
+    private String complemento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
@@ -189,12 +189,12 @@ public class Funcionario extends GridBean {
         this.cidade = cidade;
     }
 
-    public String getCompĺemento() {
-        return compĺemento;
+    public String getComplemento() {
+        return complemento;
     }
 
-    public void setCompĺemento(String compĺemento) {
-        this.compĺemento = compĺemento;
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 
     public String getEstado() {
