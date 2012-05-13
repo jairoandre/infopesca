@@ -30,9 +30,8 @@ public class Funcionario extends GridBean {
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 60)
     @Column(name = "FUNC_NM")
-    @GridConfig(label = "Nome", editable = true, required = true)
+    @GridConfig(label = "Nome", editable = true, required = true, size = 50)
     private String nome;
     @Column(name = "FUNC_DT_NASCIMENTO")
     @Temporal(TemporalType.DATE)
@@ -105,6 +104,8 @@ public class Funcionario extends GridBean {
     private Collection<Tripulante> tripulantes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private Collection<Despesa> despesas;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
+    private Collection<Vale> vales;
 
     public Funcionario() {
     }
@@ -251,6 +252,14 @@ public class Funcionario extends GridBean {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    public Collection<Vale> getVales() {
+        return vales;
+    }
+
+    public void setVales(Collection<Vale> vales) {
+        this.vales = vales;
     }
 
     @Override

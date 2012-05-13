@@ -12,9 +12,14 @@
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
-                <p:tabView value="#{contaMB.conta.viagens}" var="viagem">
-                    <p:tab title="#{viagem.embarcacao.nome} - #{viagem.inicio}"/>
-                </p:tabView>
+                <p:dataGrid  value="#{contaMB.conta.viagens}" var="viagem">
+                    <p:panel collapsed="true" toggleable="true">
+                        <f:facet name="header">
+                            #{viagem.embarcacao.nome} - <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                        </f:facet>
+                        <cp:balanco id="balanco" viagem="#{viagem}"/>
+                    </p:panel>
+                </p:dataGrid>
             </h:form>
         </ui:define>
     </ui:composition>

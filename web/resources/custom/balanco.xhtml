@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id"/>
+        <cc:attribute name="viagem" required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:outputPanel id="firstPnl" layout="block" style="float: left;">
+            <p:panelGrid id="balancoTbl"  columns="2">
+                <h:outputText value="Total Vendas:"/>
+                <h:outputText value="#{viagem.totalVendas}" converter="currencyConverter"/>
+                <h:outputText value="Despesas de Venda:"/>
+                <h:outputText value="#{viagem.despesasVenda}" converter="currencyConverter"/>
+                <h:outputText value="Sub-total Pós-venda:"/>
+                <h:outputText value="#{viagem.subTotalPosVenda}" converter="currencyConverter"/>
+                <h:outputText value="Manutenção:"/>
+                <h:outputText value="#{viagem.totalManutencao}" converter="currencyConverter"/>
+                <h:outputText value="Sub-total Pós-manutenção:"/>
+                <h:outputText value="#{viagem.subTotalPosManutencao}" converter="currencyConverter"/>
+                <h:outputText value="Despesas da Viagem:"/>
+                <h:outputText value="#{viagem.despesasViagem}" converter="currencyConverter"/>
+                <h:outputText value="Sub-total Viagem:" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{viagem.subTotalViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="50% Venda:" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="Quantidade de partes:" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{viagem.quantidadePartes}" rendered="#{!viagem.empenhada}"/>                                
+                <h:outputText value="Valor da parte:" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{viagem.valorParte}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="Empenho:" rendered="#{viagem.empenhada}"/>
+                <h:outputText value="#{viagem.empenho}" converter="currencyConverter" rendered="#{viagem.empenhada}" style="color: red;"/>
+            </p:panelGrid>
+        </p:outputPanel>
+        <p:outputPanel id="secondPnl" layout="block" style="float: left;">
+            <p:fieldset legend="Distribuição das Partes" rendered="#{!viagem.empenhada}">
+                <p:panelGrid id="partesInfo"  columns="4" style="margin-bottom: 5px;">
+                    <h:outputText value="Quantidade de partes:" rendered="#{!viagem.empenhada}"/>
+                    <h:outputText value="#{viagem.quantidadePartes}" />                                
+                    <h:outputText value="Valor da parte:" rendered="#{!viagem.empenhada}"/>
+                    <h:outputText value="#{viagem.valorParte}" converter="currencyConverter" />
+                </p:panelGrid>
+                <p:dataTable id="partesList" value="#{viagem.tripulantes}" var="tripulante" emptyMessage="Sem registros!" styleClass="table">
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Nome
+                            </p:outputPanel>
+                        </f:facet>
+                        #{tripulante.funcionario.nome}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Função
+                            </p:outputPanel>
+                        </f:facet>
+                        <h:outputText value="#{tripulante.funcao.label}" converter="outputTextConverter"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Partes
+                            </p:outputPanel>
+                        </f:facet>
+                        <h:outputText value="#{tripulante.funcao.partes}" converter="outputTextConverter"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Total
+                            </p:outputPanel>
+                        </f:facet>
+                        <h:outputText value="#{tripulante.valorParte}" converter="currencyConverter"/>
+                    </p:column>
+                </p:dataTable>                
+            </p:fieldset>
+        </p:outputPanel>
+        <p:outputPanel layout="block" style="clear: both;"/>
+    </cc:implementation>
+</html>

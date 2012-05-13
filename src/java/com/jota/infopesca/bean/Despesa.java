@@ -17,12 +17,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "despesas")
-@NamedQueries({
-    @NamedQuery(name = "Despesa.findAll", query = "SELECT d FROM Despesa d"),
-    @NamedQuery(name = "Despesa.findById", query = "SELECT d FROM Despesa d WHERE d.id = :id"),
-    @NamedQuery(name = "Despesa.findByTipo", query = "SELECT d FROM Despesa d WHERE d.tipo = :tipo"),
-    @NamedQuery(name = "Despesa.findByCusto", query = "SELECT d FROM Despesa d WHERE d.custo = :custo"),
-    @NamedQuery(name = "Despesa.findByQuitada", query = "SELECT d FROM Despesa d WHERE d.quitada = :quitada")})
 public class Despesa extends GridBean {
 
     private static final long serialVersionUID = 1L;
@@ -41,6 +35,9 @@ public class Despesa extends GridBean {
     @Column(name = "DESP_TX_DESCRICAO")
     @GridConfig(label = "Descrição")
     private String descricao;
+    @Column(name = "DESP_CO_NF")
+    @GridConfig(label = "Nota Fiscal")
+    private String notaFiscal;
     @Basic(optional = false)
     @NotNull
     @Column(name = "DESP_VL_CUSTO")
@@ -89,6 +86,14 @@ public class Despesa extends GridBean {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getNotaFiscal() {
+        return notaFiscal;
+    }
+
+    public void setNotaFiscal(String notaFiscal) {
+        this.notaFiscal = notaFiscal;
     }
 
     public TipoDespesa getTipo() {

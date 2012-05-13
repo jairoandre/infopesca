@@ -31,6 +31,7 @@ public class ContaMB {
         List<Viagem> lista = new ArrayList<Viagem>();
         for (Viagem viagem : viagens) {
             if (!viagem.getFechada()) {
+                viagem.fecharConta();
                 lista.add(viagem);
             }
         }
