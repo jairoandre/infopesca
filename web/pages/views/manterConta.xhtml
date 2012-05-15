@@ -12,14 +12,22 @@
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
-                <p:dataGrid  value="#{contaMB.conta.viagens}" var="viagem">
-                    <p:panel collapsed="true" toggleable="true">
+                <p:fieldset legend="Conta">
+                    <ui:repeat value="#{contaMB.conta.viagens}" var="viagem">
+                        <p:panel collapsed="true" toggleable="true">
+                            <f:facet name="header">
+                                Viagem: #{viagem.embarcacao.nome} - <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                            </f:facet>
+                            <cp:balanco id="balanco" viagem="#{viagem}"/>
+                        </p:panel>
+                    </ui:repeat>
+                    <p:panel collapsed="false" toggleable="true">
                         <f:facet name="header">
-                            #{viagem.embarcacao.nome} - <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                            Consolidado
                         </f:facet>
-                        <cp:balanco id="balanco" viagem="#{viagem}"/>
+                        Consolidado
                     </p:panel>
-                </p:dataGrid>
+                </p:fieldset>
             </h:form>
         </ui:define>
     </ui:composition>

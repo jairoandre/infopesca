@@ -28,6 +28,7 @@
                         <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
                         <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
+                            <p:commandButton value="Carregar Tripulação Passada" style="margin-top: 5px"/>
                         </p:tab>
                         <p:tab id="despTab" title="Despesas">
                             <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas"/>
@@ -40,7 +41,6 @@
                         </p:tab>
                     </p:tabView>
                     <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" update="@form"/>
-                    <p:commandButton value="Fechar Conta" action="#{viagemMB.cadastrarViagem}" update="@form" rendered="#{viagemMB.exibirBtnFecharConta}"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

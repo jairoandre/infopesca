@@ -5,8 +5,11 @@
 package com.jota.infopesca.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.persistence.*;
 
 @Entity
@@ -45,4 +48,29 @@ public class Conta implements Serializable {
     public void setViagens(List<Viagem> viagens) {
         this.viagens = viagens;
     }
+    
+    @Transient
+    private BigDecimal totalDespesasViagem = BigDecimal.ZERO;
+    
+    @Transient
+    private BigDecimal totalVendas = BigDecimal.ZERO;
+    
+    @Transient
+    private Map<Funcionario,BigDecimal> consolidadoPartes;
+    
+    @Transient
+    private Map<Funcionario,BigDecimal> consolidadoVales;
+    
+    public void consolidar(){
+        consolidadoPartes = new TreeMap<Funcionario, BigDecimal>();
+        consolidadoVales = new TreeMap<Funcionario, BigDecimal>();
+        for(Viagem viagem : viagens){
+            totalVendas = totalVendas.add(viagem.getTotalVendas());
+            totalDespesasViagem = totalDespesasViagem.add(viagem.getDespesasViagem());
+        }
+        
+    }
+    
+    
+    
 }

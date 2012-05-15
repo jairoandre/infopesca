@@ -20,38 +20,38 @@ and open the template in the editor.
         <p:outputPanel id="firstPnl" layout="block" style="float: left;">
             <p:panelGrid id="balancoTbl"  columns="2">
                 <h:outputText value="Total Vendas:"/>
-                <h:outputText value="#{viagem.totalVendas}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.totalVendas}" converter="currencyConverter"/>
                 <h:outputText value="Despesas de Venda:"/>
-                <h:outputText value="#{viagem.despesasVenda}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.despesasVenda}" converter="currencyConverter"/>
                 <h:outputText value="Sub-total Pós-venda:"/>
-                <h:outputText value="#{viagem.subTotalPosVenda}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.subTotalPosVenda}" converter="currencyConverter"/>
                 <h:outputText value="Manutenção:"/>
-                <h:outputText value="#{viagem.totalManutencao}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.totalManutencao}" converter="currencyConverter"/>
                 <h:outputText value="Sub-total Pós-manutenção:"/>
-                <h:outputText value="#{viagem.subTotalPosManutencao}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.subTotalPosManutencao}" converter="currencyConverter"/>
                 <h:outputText value="Despesas da Viagem:"/>
-                <h:outputText value="#{viagem.despesasViagem}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.despesasViagem}" converter="currencyConverter"/>
                 <h:outputText value="Sub-total Viagem:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{viagem.subTotalViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{cc.attrs.viagem.subTotalViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
                 <h:outputText value="50% Venda:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{cc.attrs.viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
                 <h:outputText value="Quantidade de partes:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{viagem.quantidadePartes}" rendered="#{!viagem.empenhada}"/>                                
+                <h:outputText value="#{cc.attrs.viagem.quantidadePartes}" rendered="#{!viagem.empenhada}"/>                                
                 <h:outputText value="Valor da parte:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{viagem.valorParte}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="Empenho:" rendered="#{viagem.empenhada}"/>
-                <h:outputText value="#{viagem.empenho}" converter="currencyConverter" rendered="#{viagem.empenhada}" style="color: red;"/>
+                <h:outputText value="#{cc.attrs.viagem.valorParte}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="Empenho:" rendered="#{cc.attrs.viagem.empenhada}"/>
+                <h:outputText value="#{cc.attrs.viagem.empenho}" converter="currencyConverter" rendered="#{cc.attrs.viagem.empenhada}" style="color: red;"/>
             </p:panelGrid>
         </p:outputPanel>
         <p:outputPanel id="secondPnl" layout="block" style="float: left;">
             <p:fieldset legend="Distribuição das Partes" rendered="#{!viagem.empenhada}">
                 <p:panelGrid id="partesInfo"  columns="4" style="margin-bottom: 5px;">
                     <h:outputText value="Quantidade de partes:" rendered="#{!viagem.empenhada}"/>
-                    <h:outputText value="#{viagem.quantidadePartes}" />                                
+                    <h:outputText value="#{cc.attrs.viagem.quantidadePartes}" />                                
                     <h:outputText value="Valor da parte:" rendered="#{!viagem.empenhada}"/>
-                    <h:outputText value="#{viagem.valorParte}" converter="currencyConverter" />
+                    <h:outputText value="#{cc.attrs.viagem.valorParte}" converter="currencyConverter" />
                 </p:panelGrid>
-                <p:dataTable id="partesList" value="#{viagem.tripulantes}" var="tripulante" emptyMessage="Sem registros!" styleClass="table">
+                <p:dataTable id="partesList" value="#{cc.attrs.viagem.tripulantes}" var="tripulante" emptyMessage="Sem registros!" styleClass="table">
                     <p:column>
                         <f:facet name="header">
                             <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
