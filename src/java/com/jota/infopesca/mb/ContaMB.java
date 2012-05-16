@@ -40,6 +40,7 @@ public class ContaMB {
             return null;
         } else {
             conta.setViagens(lista);
+            conta.consolidar();
             return "manterConta";
         }
     }

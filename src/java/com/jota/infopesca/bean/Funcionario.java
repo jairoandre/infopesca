@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "funcionarios")
-public class Funcionario extends GridBean {
+public class Funcionario extends GridBean implements Comparable<Funcionario> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -81,7 +81,7 @@ public class Funcionario extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_TX_CEP")
-    @GridConfig(label = "CEP", editable = true, size= 9, mask="99999-999")
+    @GridConfig(label = "CEP", editable = true, size = 9, mask = "99999-999")
     private String cep;
     @Basic(optional = false)
     @NotNull
@@ -205,7 +205,7 @@ public class Funcionario extends GridBean {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
+
     public String getTelefone() {
         return telefone;
     }
@@ -270,5 +270,14 @@ public class Funcionario extends GridBean {
     @Override
     public String getOutputTextLabel() {
         return nome;
+    }
+
+    @Override
+    public int compareTo(Funcionario t) {
+        if (t == null) {
+            return 1;
+        } else {
+            return this.getNome().compareTo(t.getNome());
+        }
     }
 }

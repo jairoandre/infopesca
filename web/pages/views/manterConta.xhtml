@@ -25,7 +25,17 @@
                         <f:facet name="header">
                             Consolidado
                         </f:facet>
-                        Consolidado
+                        <p:panelGrid columns="2">
+                            <h:outputLabel value="Total Despesas:"/>
+                            <h:outputText value="#{contaMB.conta.totalDespesasViagem}" converter="currencyConverter"/>
+                            <h:outputLabel value="Total Vendas:"/>
+                            <h:outputText value="#{contaMB.conta.totalVendas}" converter="currencyConverter"/>
+                        </p:panelGrid>
+                        <p:dataGrid value="#{contaMB.conta.consolidadoPartes}" var="key">
+                            <p:column>
+                                <h:outputText value="Teste: #{key}"/>
+                            </p:column>
+                        </p:dataGrid>
                     </p:panel>
                 </p:fieldset>
             </h:form>
