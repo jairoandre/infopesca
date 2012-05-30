@@ -9,5 +9,5 @@ package com.jota.infopesca.enums;
  * @author André
  */
 public enum TipoOperacao {
-    EQ, GT, LT, GE, LE;
+    EQ, GT, LT, GE, LE, MAX;
 }

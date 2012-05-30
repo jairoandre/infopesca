@@ -31,11 +31,24 @@
                             <h:outputLabel value="Total Vendas:"/>
                             <h:outputText value="#{contaMB.conta.totalVendas}" converter="currencyConverter"/>
                         </p:panelGrid>
-                        <p:dataGrid value="#{contaMB.conta.consolidadoPartes}" var="key">
+                        <p:dataTable  value="#{contaMB.conta.funcionarios}" var="key" style="margin-top: 5px;">
                             <p:column>
-                                <h:outputText value="Teste: #{key}"/>
+                                <f:facet name="header">
+                                    <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                        Funcionário
+                                    </p:outputPanel>
+                                </f:facet>
+                                <h:outputText value="#{key.nome}"/>
                             </p:column>
-                        </p:dataGrid>
+                            <p:column>
+                                <f:facet name="header">
+                                    <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                        Total
+                                    </p:outputPanel>
+                                </f:facet>
+                                <h:outputText value="#{contaMB.conta.consolidadoPartes[key]}" converter="currencyConverter"/>
+                            </p:column>
+                        </p:dataTable>
                     </p:panel>
                 </p:fieldset>
             </h:form>

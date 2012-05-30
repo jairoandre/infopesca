@@ -10,10 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 /**
  *
@@ -30,7 +27,7 @@ public class QueryUtil<T> implements Serializable {
         fields = new ArrayList<String>();
         operators = new ArrayList<TipoOperacao>();
     }
-    
+
     public void addCriteria(String field, TipoOperacao operator) {
         fields.add(field);
         operators.add(operator);
@@ -76,8 +73,6 @@ public class QueryUtil<T> implements Serializable {
         CriteriaQuery<T> query = builder.createQuery(entityClass);
 
         Root<T> root = query.from(entityClass);
-        
-        query.select(root);
 
         List<Predicate> predicados = new ArrayList<Predicate>();
 
@@ -104,6 +99,11 @@ public class QueryUtil<T> implements Serializable {
                     case LE:
                         predicados.add(builder.lessThanOrEqualTo(root.<Comparable>get((String) fieldsArray[i]), (Comparable) value));
                         break;
+                    case MAX:
+                        Expression expr = root.get((String) fieldsArray[i]);
+                        builder.max(expr);
+                        query.select(builder.max(expr));
+                        return query;
                     default:
                         break;
                 }
@@ -111,6 +111,7 @@ public class QueryUtil<T> implements Serializable {
         }
 
         if (!predicados.isEmpty()) {
+            query.select(root);
             Predicate[] arrayPredicados = new Predicate[predicados.size()];
             predicados.toArray(arrayPredicados);
             query.where(arrayPredicados);
