@@ -33,6 +33,9 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
     @Column(name = "FUNC_NM")
     @GridConfig(label = "Nome", editable = true, required = true, size = 50)
     private String nome;
+    @Column(name = "FUNC_TX_APELIDO")
+    @GridConfig(label = "Apelido", editable = true, size = 20)
+    private String apelido;
     @Column(name = "FUNC_DT_NASCIMENTO")
     @Temporal(TemporalType.DATE)
     @GridConfig(date = true, required = true, label = "Data de Nascimento")
@@ -142,6 +145,14 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
         this.nome = nome;
     }
 
+    public String getApelido() {
+        return apelido;
+    }
+
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
+    }
+    
     public String getCtps() {
         return ctps;
     }

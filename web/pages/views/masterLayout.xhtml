@@ -13,7 +13,7 @@
         <script type="text/javascript" src="#{resource['js:jquery.maskMoney.js']}"/>
         <script type="text/javascript" src="#{resource['js:jquery.maskedinput-1.3.js']}"/>
         <script type="text/javascript" src="#{resource['js:locales.js']}"/>
-        
+
     </h:head>
 
     <h:body id="body">
@@ -38,7 +38,10 @@
                             <p:submenu label="Viagens">
                                 <p:menuitem  action="#{viagemMB.preIncluirViagem}" value="Nova" ajax="false" onclick="statusDialog.show()"/>
                                 <p:menuitem  action="pesquisaViagem" value="Pesquisar" ajax="false" onclick="statusDialog.show()"/>
-                                <p:menuitem  action="fecharConta" value="Fechar Conta" ajax="false" onclick="statusDialog.show()" style="white-space: nowrap;"/>
+                            </p:submenu>
+                            <p:submenu label="Vales">
+                                <p:menuitem action="#{valeMB.preIncluirVale}" value="Nova" ajax="false" onclick="statusDialog.show()"/>
+                                <p:menuitem action="pesquisaVales" value="Pesquisar" ajax="false" onclick="statusDialog.show()"/>
                             </p:submenu>
                             <p:submenu label="Despesas"/>
                         </p:menubar>

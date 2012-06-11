@@ -173,8 +173,6 @@ public abstract class GridControl<T> implements Serializable {
             instance = clazz.newInstance();
             mountSoftControllers();
             showForm = true;
-
-
         } catch (InstantiationException ex) {
             Logger.getLogger(HardGridControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
