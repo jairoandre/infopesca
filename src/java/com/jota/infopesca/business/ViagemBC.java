@@ -6,6 +6,7 @@ package com.jota.infopesca.business;
 
 import com.jota.infopesca.bean.Tripulante;
 import com.jota.infopesca.bean.Viagem;
+import com.jota.infopesca.dao.GenericDAO;
 import com.jota.infopesca.enums.TipoOperacao;
 import com.jota.infopesca.util.QueryUtil;
 import java.util.ArrayList;
@@ -21,11 +22,13 @@ public class ViagemBC extends GenericBC<Viagem> {
         super(Viagem.class);
     }
 
-    public List<Tripulante> carregarTripulacaoPassada(Viagem viagem) {
+    public List<Tripulante> carregarTripulacaoPassada(Viagem viagem) throws Exception{
         List<Tripulante> lista = new ArrayList<Tripulante>();
         if (viagem != null) {
             QueryUtil<Viagem> query = new QueryUtil<Viagem>(viagem);
-            query.addCriteria("data", TipoOperacao.EQ);
+            query.addCriteria("embarcacao", TipoOperacao.EQ);
+            GenericDAO<Viagem> dao = new GenericDAO<Viagem>();
+            dao.list(query);
         }
         return lista;
     }

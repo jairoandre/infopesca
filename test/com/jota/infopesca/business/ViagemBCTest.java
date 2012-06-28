@@ -38,7 +38,7 @@ public class ViagemBCTest {
      * Test of carregarTripulacaoPassada method, of class ViagemBC.
      */
     @Test
-    public void testCarregarTripulacaoPassada() {
+    public void testCarregarTripulacaoPassada() throws Exception {
         System.out.println("carregarTripulacaoPassada");
         Viagem viagem = null;
         ViagemBC instance = new ViagemBC();

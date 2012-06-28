@@ -21,11 +21,25 @@ public class QueryUtil<T> implements Serializable {
     private T sample;
     private Collection<String> fields;
     private Collection<TipoOperacao> operators;
+    private Collection<String> fieldsToOrder;
+    private Collection<Boolean> orders;
 
     public QueryUtil(T sample) {
         this.sample = sample;
         fields = new ArrayList<String>();
         operators = new ArrayList<TipoOperacao>();
+        fieldsToOrder = new ArrayList<String>();
+        orders = new ArrayList<Boolean>();
+    }
+
+    public void ascOrder(String field) {
+        fieldsToOrder.add(field);
+        orders.add(true);
+    }
+
+    public void descOrder(String field) {
+        fieldsToOrder.add(field);
+        orders.add(false);
     }
 
     public void addCriteria(String field, TipoOperacao operator) {
@@ -116,6 +130,19 @@ public class QueryUtil<T> implements Serializable {
             predicados.toArray(arrayPredicados);
             query.where(arrayPredicados);
         }
+
+        if (!fieldsToOrder.isEmpty()) {
+            List<Order> listOrders = new ArrayList<Order>();
+            Object[] fieldsToOrderArray = fieldsToOrder.toArray();
+            Object[] ordersArray = orders.toArray();
+            for (int i = 0; i < fieldsToOrder.size(); i++) {
+                if ((Boolean) ordersArray[i]) {
+                    listOrders.add(builder.asc(root.get((String) fieldsToOrderArray[i])));
+                }
+            }
+            query.orderBy(listOrders);
+        }
+
 
         return query;
     }

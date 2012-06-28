@@ -38,30 +38,36 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
     private String apelido;
     @Column(name = "FUNC_DT_NASCIMENTO")
     @Temporal(TemporalType.DATE)
-    @GridConfig(date = true, required = true, label = "Data de Nascimento")
+    @GridConfig(date = true, label = "Data de Nascimento")
     private Date dataNascimento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
+    @Column(name = "FUNC_CO_CPF")
+    @GridConfig(label = "CPF", editable = true, mask="999.999.999-99")
+    private String cpf;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "FUNC_CO_CTPS")
-    @GridConfig(label = "CTPS", editable = true, required = true)
+    @GridConfig(label = "CTPS", editable = true)
     private String ctps;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "FUNC_CO_CI")
-    @GridConfig(label = "CI", editable = true, required = true)
+    @GridConfig(label = "CI", editable = true)
     private String ci;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "FUNC_TX_ENDERECO")
-    @GridConfig(label = "Endereço", editable = true, required = true, size = 40)
+    @GridConfig(label = "Endereço", editable = true, size = 40)
     private String endereco;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_TX_COMPLEMENTO")
-    @GridConfig(label = "Complemento", editable = true, required = true, size = 4)
+    @GridConfig(label = "Complemento", editable = true, size = 4)
     private String complemento;
     @Basic(optional = false)
     @NotNull
@@ -90,18 +96,18 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "FUNC_CO_TEL")
-    @GridConfig(label = "Telefone", editable = true, required = true, mask = "(99)9999-9999")
+    @GridConfig(label = "Telefone", editable = true, mask = "(99)9999-9999")
     private String telefone;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "FUNC_CO_CEL")
-    @GridConfig(label = "Celular", editable = true, required = true, mask = "(99)9999-9999")
+    @GridConfig(label = "Celular", editable = true, mask = "(99)9999-9999")
     private String celular;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_VL_SALARIO")
-    @GridConfig(label = "Salário", editable = true, required = true, currency = true)
+    @GridConfig(label = "Salário", editable = true, currency = true)
     private BigDecimal salario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private Collection<Tripulante> tripulantes;
@@ -151,6 +157,14 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
 
     public void setApelido(String apelido) {
         this.apelido = apelido;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
     
     public String getCtps() {
