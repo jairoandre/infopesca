@@ -42,7 +42,8 @@ public class ViagemBCTest {
         System.out.println("carregarTripulacaoPassada");
         Viagem viagem = null;
         ViagemBC instance = new ViagemBC();
-        List result = instance.carregarTripulacaoPassada(viagem);
+        List result = instance.carregarTripulacaoRecente(viagem);
         assertNotNull(result);
+        assertTrue(!result.isEmpty());
     }
 }

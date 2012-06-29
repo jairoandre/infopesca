@@ -18,4 +18,9 @@ public class FacesUtil {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", msg));
     }
+    
+    public static void addWarn(String msg) {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+    }
 }

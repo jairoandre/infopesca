@@ -28,7 +28,7 @@
                         <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
                         <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
-                            <p:commandButton value="Carregar Tripulação Passada" style="margin-top: 5px"/>
+                            <p:commandButton action="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@this" update="tripulantes"/>
                         </p:tab>
                         <p:tab id="despTab" title="Despesas">
                             <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas"/>
