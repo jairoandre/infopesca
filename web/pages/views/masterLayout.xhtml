@@ -43,7 +43,9 @@
                                 <p:menuitem action="#{valeMB.preIncluirVale}" value="Nova" ajax="false" onclick="statusDialog.show()"/>
                                 <p:menuitem action="pesquisaVales" value="Pesquisar" ajax="false" onclick="statusDialog.show()"/>
                             </p:submenu>
-                            <p:submenu label="Despesas"/>
+                            <p:submenu label="Despesas">
+                                <p:menuitem action="despesa" value="Nova" ajax="false" onclick="statusDialog.show()"/>
+                            </p:submenu>
                         </p:menubar>
                     </h:form>
                 </div>

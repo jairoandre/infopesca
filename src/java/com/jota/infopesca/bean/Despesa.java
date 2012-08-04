@@ -8,6 +8,7 @@ import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.bean.pattern.GridBean;
 import com.jota.infopesca.enums.TipoDespesa;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -48,6 +49,10 @@ public class Despesa extends GridBean {
     @Column(name = "DESP_BL_QUITADA")
     @GridConfig(label = "Quitada", required = true, flag = true)
     private Boolean quitada;
+    @Column(name = "DESP_DT_VENCIMENTO")
+    @Temporal(TemporalType.DATE)
+    @GridConfig(label = "Vencimento")
+    private Date vencimento;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
     private Viagem viagem;
@@ -118,6 +123,14 @@ public class Despesa extends GridBean {
 
     public void setQuitada(Boolean quitada) {
         this.quitada = quitada;
+    }
+
+    public Date getVencimento() {
+        return vencimento;
+    }
+
+    public void setVencimento(Date vencimento) {
+        this.vencimento = vencimento;
     }
 
     public Viagem getViagem() {
