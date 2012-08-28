@@ -26,8 +26,7 @@
                                   draggable="false" closable="false">  
                             <p:graphicImage value="#{resource['imgs:ajaxloadingbar.gif']}"/>  
                         </p:dialog> 
-                        <p:remoteCommand name="home" action="pesquisaViagem"/>
-                        <p:graphicImage id="tunaImg" value="#{resource['imgs:tuna.png']}" styleClass="tuna" style="cursor: pointer;" onclick="home();"/>
+                        <h:commandButton action="pesquisaViagem" styleClass="tuna" style="background: url(#{resource['imgs:tuna.png']});"/>
                         <h:outputText value="Celso Rocha Jr. - Comércio de Pescado" styleClass="titulo"/>
                         <p:menubar id="menu" autoDisplay="true" styleClass="menu">
                             <p:submenu label="Cadastro">
@@ -51,9 +50,10 @@
                 </div>
             </div>
             <h:panelGroup id="content" styleClass="content" layout="block">
-                <ui:insert name="content"/>
+                <div class="contentWrapper">
+                    <ui:insert name="content"/>
+                </div>
             </h:panelGroup>
-            <div id="footer"/>
         </div>
     </h:body>
 </html>

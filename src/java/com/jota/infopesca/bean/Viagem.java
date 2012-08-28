@@ -4,6 +4,7 @@
  */
 package com.jota.infopesca.bean;
 
+import com.jota.infopesca.annotations.GridConfig;
 import com.jota.infopesca.bean.pattern.GridBean;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -31,6 +32,9 @@ public class Viagem extends GridBean {
     @Column(name = "VIAG_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "VIAG_TX_IDENTIFICADOR")
+    @GridConfig(label = "Identificador")
+    private String identificador;
     @Basic(optional = false)
     @NotNull
     @Column(name = "VIAG_DT_INICIO")
@@ -79,6 +83,13 @@ public class Viagem extends GridBean {
         this.id = id;
     }
 
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
     public Date getInicio() {
         return inicio;
     }
@@ -142,7 +153,7 @@ public class Viagem extends GridBean {
     public void setConta(Conta conta) {
         this.conta = conta;
     }
-    
+
     @Override
     public String toString() {
         return "com.jota.infopesca.bean.Viagem[ id=" + id + " ]";
@@ -170,8 +181,8 @@ public class Viagem extends GridBean {
     private BigDecimal valorParte;
     @Transient
     private static final BigDecimal TAXA_MANUTENCAO = new BigDecimal("0.2");
-    
-    private void zerar(){
+
+    private void zerar() {
         totalVendas = BigDecimal.ZERO;
         totalManutencao = BigDecimal.ZERO;
         subTotalPosVenda = BigDecimal.ZERO;

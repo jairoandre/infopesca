@@ -51,7 +51,7 @@ public class Despesa extends GridBean {
     private Boolean quitada;
     @Column(name = "DESP_DT_VENCIMENTO")
     @Temporal(TemporalType.DATE)
-    @GridConfig(label = "Vencimento")
+    @GridConfig(label = "Vencimento", date=true)
     private Date vencimento;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
