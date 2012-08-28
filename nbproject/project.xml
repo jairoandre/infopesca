@@ -22,11 +22,11 @@
                     <file>${libs.javaee-api-6.0.classpath}</file>
                 </library>
                 <library dirs="200">
-                    <file>${libs.JDBC Driver.classpath}</file>
+                    <file>${file.reference.primefaces-3.4.RC1.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.primefaces-3.4.RC1.jar}</file>
+                    <file>${libs.Derby JDBC Driver.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
