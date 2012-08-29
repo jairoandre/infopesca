@@ -26,10 +26,10 @@
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
                         <p:dataTable id="dataTableForm" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">
                             <p:columnGroup type="header"/>
-                            <p:column>
+                            <p:column rendered="#{cc.attrs.mb.showFields[field]}">
                                 <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
                             </p:column>
-                            <p:column>
+                            <p:column rendered="#{cc.attrs.mb.showFields[field]}">
                                 <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
                             </p:column>                        
                         </p:dataTable>
@@ -67,8 +67,8 @@
                                  selection="#{cc.attrs.mb.selectedItens}"
                                  rowKey="#{obj.hashCode}"
                                  styleClass="table">
-                        <p:ajax event="rowSelect" process="@none" onstart="#{uniqueName}clickCheck();" />
-                        <p:ajax event="rowUnselect" process="@none" onstart="#{uniqueName}clickCheck();"/>
+                        <p:ajax event="rowSelectCheckbox" process="@none" onstart="#{uniqueName}clickCheck();" />
+                        <p:ajax event="rowUnselectCheckbox" process="@none" onstart="#{uniqueName}clickCheck();"/>
                         <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}"/>
                         <p:columns id="dynaColumns" value="#{cc.attrs.mb.fieldNames}" var="field" columnIndexVar="idx">
                             <f:facet name="header">

@@ -20,23 +20,27 @@ public class Vale extends GridBean implements Serializable {
     private Long id;
     @JoinColumn(name = "FUNC_ID", referencedColumnName = "FUNC_ID")
     @ManyToOne(optional = true)
-    @GridConfig(editable=true,listed=true,required=true,label="Funcionário")
+    @GridConfig(editable = true, listed = true, required = true, label = "Funcionário")
     private Funcionario funcionario;
     @Column(name = "VL_DT_CRIACAO")
     @Temporal(TemporalType.DATE)
-    @GridConfig(editable=true,date=true,label="Data Referência")
+    @GridConfig(editable = true, date = true, label = "Data Referência")
     private Date criacao;
+    @Column(name = "VL_DT_QUITACAO")
+    @Temporal(TemporalType.DATE)
+    @GridConfig(editable = true, date = true, label = "Data de Quitação")
+    private Date quitacao;
     @Column(name = "VAL_VL")
-    @GridConfig(editable=true,currency=true,label="Valor")
+    @GridConfig(editable = true, currency = true, label = "Valor")
     private BigDecimal valor;
     @Column(name = "VAL_IN_QUITADA")
-    @GridConfig(editable=true,flag=true,label="Paga")
+    @GridConfig(editable = true, flag = true, label = "Paga")
     private Boolean quitada;
-    
-    public Vale(){
+
+    public Vale() {
         this.quitada = false;
     }
-    
+
     @Override
     public Long getId() {
         return id;
@@ -52,6 +56,14 @@ public class Vale extends GridBean implements Serializable {
 
     public void setCriacao(Date criacao) {
         this.criacao = criacao;
+    }
+
+    public Date getQuitacao() {
+        return quitacao;
+    }
+
+    public void setQuitacao(Date quitacao) {
+        this.quitacao = quitacao;
     }
 
     public BigDecimal getValor() {

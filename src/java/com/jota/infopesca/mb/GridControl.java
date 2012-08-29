@@ -25,6 +25,7 @@ public abstract class GridControl<T> implements Serializable {
     private boolean showForm = false;
     private Boolean isNewRecord;
     private Map<String, String> labels;
+    private Map<String, Boolean> showFields;
     private List<String> fieldNames;
     private List<String> formFields;
     private T[] selectedItens;
@@ -63,6 +64,7 @@ public abstract class GridControl<T> implements Serializable {
         this.formFields = new ArrayList<String>();
         this.fieldNames = new ArrayList<String>();
         this.labels = new HashMap<String, String>();
+        this.showFields = new HashMap<String, Boolean>();
         Field[] fields = this.clazz.getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(GridConfig.class)) {
@@ -79,6 +81,7 @@ public abstract class GridControl<T> implements Serializable {
                 }
                 this.fieldNames.add(fieldName);
                 this.labels.put(fieldName, annotation.label());
+                this.showFields.put(fieldName, annotation.visible());
                 if (annotation.editable()) {
                     this.formFields.add(fieldName);
                 }
@@ -226,6 +229,10 @@ public abstract class GridControl<T> implements Serializable {
 
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
+    }
+    
+    public Map<String, Boolean> getShowFields() {
+        return showFields;
     }
 
     public List<T> getList() {

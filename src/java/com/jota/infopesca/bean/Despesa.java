@@ -34,7 +34,7 @@ public class Despesa extends GridBean {
     @GridConfig(enumerated = true, label = "Tipo", required = true)
     private TipoDespesa tipo;
     @Column(name = "DESP_TX_DESCRICAO")
-    @GridConfig(label = "Descrição")
+    @GridConfig(label = "Descrição", visible = false)
     private String descricao;
     @Column(name = "DESP_CO_NF")
     @GridConfig(label = "Nota Fiscal")
@@ -51,8 +51,12 @@ public class Despesa extends GridBean {
     private Boolean quitada;
     @Column(name = "DESP_DT_VENCIMENTO")
     @Temporal(TemporalType.DATE)
-    @GridConfig(label = "Vencimento", date=true)
+    @GridConfig(label = "Vencimento", date = true)
     private Date vencimento;
+    @Column(name = "DESP_DT_PAGAMENTO")
+    @Temporal(TemporalType.DATE)
+    @GridConfig(label = "Data Pagamento", date = true)
+    private Date pagamento;
     @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
     @ManyToOne(optional = true)
     private Viagem viagem;
@@ -133,6 +137,14 @@ public class Despesa extends GridBean {
         this.vencimento = vencimento;
     }
 
+    public Date getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Date pagamento) {
+        this.pagamento = pagamento;
+    }
+
     public Viagem getViagem() {
         return viagem;
     }
@@ -167,5 +179,9 @@ public class Despesa extends GridBean {
         } else if (Funcionario.class.equals(parent.getClass())) {
             setFuncionario((Funcionario) parent);
         }
+    }
+
+    public boolean getIsViagem() {
+        return TipoDespesa.VIAGEM.equals(tipo);
     }
 }

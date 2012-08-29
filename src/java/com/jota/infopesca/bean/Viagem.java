@@ -320,4 +320,16 @@ public class Viagem extends GridBean {
     public String getOutputTextLabel() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public String getDescritor(){
+        StringBuilder buffer = new StringBuilder();
+        if(embarcacao != null){
+            buffer.append(embarcacao.getNome());
+        }
+        if(identificador != null){
+            buffer.append(" | ");
+            buffer.append(identificador);
+        }
+        return buffer.toString();
+    }
 }
