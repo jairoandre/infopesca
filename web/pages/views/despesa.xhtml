@@ -11,8 +11,11 @@
             <h:form id="form">
                 <p:fieldset legend="Despesa">
                     <cp:grid id="despGrid" label="Despesa" mb="#{despesaMB}">
-                        <cp:gridField id="tipoDespesa" bean="#{despesaMB.despesa}" field="tipo" />
-                        <h:outputText id="viagemDescritor" value="#{despesaMB.despesa.viagem.descritor}" rendered="#{not empty despesaMB.despesa.viagem}"/>
+                        <cp:line>
+                            <cp:group label="Tipo de Despesa:">
+                                <cp:gridField id="tipoDespesa" bean="#{despesaMB.despesa}" field="tipo" />
+                            </cp:group>
+                        </cp:line>
                         <p:commandButton id="btnAssociarViagem" value="Associar Viagem" rendered="#{despesaMB.despesa.isViagem and empty despesaMB.despesa.viagem}"/>
                     </cp:grid>
                 </p:fieldset>

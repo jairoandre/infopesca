@@ -34,7 +34,7 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
     @GridConfig(label = "Nome", editable = true, required = true, size = 50)
     private String nome;
     @Column(name = "FUNC_TX_APELIDO")
-    @GridConfig(label = "Apelido", editable = true, size = 20)
+    @GridConfig(label = "Apelido", editable = true, size = 20, columnVisible=false)
     private String apelido;
     @Column(name = "FUNC_DT_NASCIMENTO")
     @Temporal(TemporalType.DATE)
@@ -50,47 +50,47 @@ public class Funcionario extends GridBean implements Comparable<Funcionario> {
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "FUNC_CO_CTPS")
-    @GridConfig(label = "CTPS", editable = true)
+    @GridConfig(label = "CTPS", editable = true, columnVisible=false)
     private String ctps;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "FUNC_CO_CI")
-    @GridConfig(label = "CI", editable = true)
+    @GridConfig(label = "CI", editable = true, columnVisible=false)
     private String ci;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "FUNC_TX_ENDERECO")
-    @GridConfig(label = "Endereço", editable = true, size = 40)
+    @GridConfig(label = "Endereço", editable = true, size = 40, columnVisible=false)
     private String endereco;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_TX_COMPLEMENTO")
-    @GridConfig(label = "Complemento", editable = true, size = 4)
+    @GridConfig(label = "Complemento", editable = true, size = 4, columnVisible=false)
     private String complemento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "FUNC_TX_BAIRRO")
-    @GridConfig(label = "Bairro", editable = true)
+    @GridConfig(label = "Bairro", editable = true, columnVisible=false)
     private String bairro;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "FUNC_TX_CIDADE")
-    @GridConfig(label = "Cidade", editable = true)
+    @GridConfig(label = "Cidade", editable = true, columnVisible=false)
     private String cidade;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "FUNC_TX_ESTADO")
-    @GridConfig(label = "Estado", editable = true)
+    @GridConfig(label = "Estado", editable = true, columnVisible=false)
     private String estado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUNC_TX_CEP")
-    @GridConfig(label = "CEP", editable = true, size = 9, mask = "99999-999")
+    @GridConfig(label = "CEP", editable = true, size = 9, mask = "99999-999", columnVisible=false)
     private String cep;
     @Basic(optional = false)
     @NotNull

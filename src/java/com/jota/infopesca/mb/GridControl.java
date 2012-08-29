@@ -6,6 +6,7 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.annotations.GridConfig;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -27,6 +28,7 @@ public abstract class GridControl<T> implements Serializable {
     private Map<String, String> labels;
     private List<String> fieldNames;
     private List<String> formFields;
+    private List<String> columnFields;
     private T[] selectedItens;
     private Map<String, SoftGridControl> softControllers;
     private Map<String, String> softControllersLabels;
@@ -62,6 +64,7 @@ public abstract class GridControl<T> implements Serializable {
     private void retrieveLabelsAndFields() {
         this.formFields = new ArrayList<String>();
         this.fieldNames = new ArrayList<String>();
+        this.columnFields = new ArrayList<String>();
         this.labels = new HashMap<String, String>();
         Field[] fields = this.clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -78,6 +81,9 @@ public abstract class GridControl<T> implements Serializable {
                     continue;
                 } else if (!annotation.visible()) {
                     continue;
+                }
+                if(annotation.columnVisible()){
+                    this.columnFields.add(fieldName);
                 }
                 this.fieldNames.add(fieldName);
                 this.labels.put(fieldName, annotation.label());
@@ -212,6 +218,14 @@ public abstract class GridControl<T> implements Serializable {
 
     public void setFieldNames(List<String> fieldNames) {
         this.fieldNames = fieldNames;
+    }
+
+    public List<String> getColumnFields() {
+        return columnFields;
+    }
+
+    public void setColumnFields(List<String> columnFields) {
+        this.columnFields = columnFields;
     }
 
     public List<String> getFormFields() {

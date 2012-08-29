@@ -48,4 +48,6 @@ public @interface GridConfig {
     String mask() default "";
     
     boolean visible() default true;
+    
+    boolean columnVisible() default true;
 }

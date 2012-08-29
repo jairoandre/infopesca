@@ -2,7 +2,7 @@ html,body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #E4FFFF;
+    background: #F1F8FB;
 }
 
 #wrapper {
@@ -68,6 +68,18 @@ html,body {
 .menu {
     float: right;
     margin-top: 20px;
+}
+
+.cp-line {
+    width: 100%; margin-bottom: 5px; overflow: auto;
+}
+
+.cp-group {
+    min-width: 150px; margin-right: 10px; float: left;
+}
+
+.cp-label{
+    line-height: 25px; font-weight: bold;
 }
 
 .border-less table tbody, .border-less table tr,.border-less table tr td{
