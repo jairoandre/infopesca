@@ -31,10 +31,10 @@ public class Despesa extends GridBean {
     @NotNull
     @Column(name = "DESP_CO_TIPO")
     @Enumerated(EnumType.ORDINAL)
-    @GridConfig(enumerated = true, label = "Tipo", required = true)
+    @GridConfig(enumerated = true, label = "Tipo", required = true, visible = false)
     private TipoDespesa tipo;
     @Column(name = "DESP_TX_DESCRICAO")
-    @GridConfig(label = "Descrição", visible = false)
+    @GridConfig(label = "Descrição")
     private String descricao;
     @Column(name = "DESP_CO_NF")
     @GridConfig(label = "Nota Fiscal")

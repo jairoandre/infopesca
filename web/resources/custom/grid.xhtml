@@ -26,12 +26,12 @@
                     <p:fieldset legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
                         <p:dataTable id="dataTableForm" value="#{cc.attrs.mb.formFields}" var="field" resizableColumns="true" styleClass="border-less">
                             <p:columnGroup type="header"/>
-                            <p:column rendered="#{cc.attrs.mb.showFields[field]}">
-                                <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
-                            </p:column>
-                            <p:column rendered="#{cc.attrs.mb.showFields[field]}">
-                                <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
-                            </p:column>                        
+                                <p:column>
+                                    <cp:label id="label" label="#{cc.attrs.mb.labels[field]}:"/>
+                                </p:column>
+                                <p:column>
+                                    <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
+                                </p:column>
                         </p:dataTable>
                         <cc:insertChildren/>
                     </p:fieldset>

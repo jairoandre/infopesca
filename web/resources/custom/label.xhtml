@@ -9,11 +9,12 @@
     <cc:interface>
         <cc:attribute name="id"/>
         <cc:attribute name="label" required="true"/>
+        <cc:attribute name="rendered"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:outputPanel id="labelPnl" style="white-space: nowrap; text-align: right; width: 100%" layout="block">
+        <p:outputPanel id="labelPnl" style="white-space: nowrap; text-align: right; width: 100%" layout="block" rendered="#{cc.attrs.rendered}">
             <h:outputLabel id="label" value="#{cc.attrs.label}" style="font-weight: bold;"/>
         </p:outputPanel>
     </cc:implementation>
