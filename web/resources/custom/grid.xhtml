@@ -26,16 +26,16 @@
                     <p:fieldset id="gridFieldSet" legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
                         <cp:line id="line">
                             <ui:repeat id="repeat" var="field" value="#{cc.attrs.mb.formFields}" varStatus="idx">
-                                <cp:group id="group" label="#{cc.attrs.mb.labels[field]}:">
-                                    <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}"/>
+                                <cp:group id="group" label="#{cc.attrs.mb.labels[field]}:" required="#{cc.attrs.mb.instance.isRequired(field)}">
+                                    <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}" required="#{cc.attrs.mb.instance.isRequired(field)}"/>
                                 </cp:group>
                                 <p:outputPanel rendered="#{(((idx.index + 1) % 3) == 0)}" layout="block" style="clear: left;"/>
                             </ui:repeat>
                         </cp:line>
                         <cc:insertChildren/>
                     </p:fieldset>
-                    <p:outputPanel style="margin: 5px 0 5px 0;" layout="block">
-                        <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formPnl" update="grid"/>
+                    <p:outputPanel id="btnsPnl" style="margin: 5px 0 5px 0;" layout="block">
+                        <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="fieldsPnl" update="grid" partialSubmit="true" />
                         <p:spacer width="5"/>
                         <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
                     </p:outputPanel>

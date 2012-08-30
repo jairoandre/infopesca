@@ -5,32 +5,35 @@
     xmlns:cp="http://java.sun.com/jsf/composite/custom"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core">
+    xmlns:h="http://java.sun.com/jsf/html">
     <ui:composition template="masterLayout.xhtml">
         <ui:define name="content">
             <h:form id="form">
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
                 <p:fieldset legend="#{viagemMB.alterando ? 'Alterar Viagem' : 'Nova Viagem'}">
-                    <p:panelGrid id="gridFormInit" columns="10" styleClass="border-less">
-                        <f:facet name="header">
-                            Dados Básicos da Viagem
-                        </f:facet>
-                        <cp:label id="labelEmbarcacao" label="Embarcação:"/>
-                        <cp:selectOneBean id="embarcacao" value="#{viagemMB.viagem.embarcacao}" list="#{viagemMB.embarcacoes}" listLabel="nome" required="true"/>
-                        <cp:label id="labelInicio" label="Partida:"/>
-                        <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" required="true"/>
-                        <cp:label id="labelFim" label="Chegada:"/>
-                        <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}"/>
-                        <cp:label id="identLabel" label="Identificador:"/>
-                        <p:inputText id="identificador" value="#{viagemMB.viagem.identificador}"/>
-                    </p:panelGrid>
-                    <p:commandButton id="btnCarregarTripucao" actionListener="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@this, gridFormInit" update="gridFormInit, tabView"/>
+                    <p:fieldset id="dadosIniciais" legend="Dados Básicos da Viagem">
+                        <cp:line id="line">
+                            <cp:group id="groupEmbc" label="Embarcação:" required="true">
+                                <cp:selectOneBean id="embarcacao" value="#{viagemMB.viagem.embarcacao}" list="#{viagemMB.embarcacoes}" listLabel="nome" required="true"/>
+                            </cp:group>
+                            <cp:group id="groupPartida" label="Partida:">
+                                <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" required="true"/>
+                            </cp:group>
+                            <cp:group id="groupCalendar" label="Chegada:">
+                                <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}"/>
+                            </cp:group>
+                            <cp:group id="groupIdent" label="Identificador:">
+                                <p:inputText id="identificador" value="#{viagemMB.viagem.identificador}"/>
+                            </cp:group>
+                        </cp:line>
+                    </p:fieldset>
+
                     <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" cache="false">
                         <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
                         <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>                            
+                            <p:commandButton id="btnCarregarTripucao" actionListener="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@form" update="@form"/>
                         </p:tab>
                         <p:tab id="despTab" title="Despesas">
                             <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas">

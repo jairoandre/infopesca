@@ -1,25 +1,28 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:cc="http://java.sun.com/jsf/composite">
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html">
 
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="id"/>
         <cc:attribute name="label" required="true"/>
+        <cc:attribute name="required" default="false"/>
         <cc:attribute name="rendered"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
 
     <cc:implementation>
-        <div class="cp-group">
-            <div class="cp-label">
+        <h:panelGroup id="wrapper" styleClass="cp-group" layout="block">
+            <h:panelGroup styleClass="cp-label">
+                <h:outputText id="requiredIndicator" value="*" style="color: red;" rendered="#{cc.attrs.required}"/>
                 <label>#{cc.attrs.label}</label>
-            </div>
-            <div>
+            </h:panelGroup>
+            <h:panelGroup id="content" layout="block">
                 <cc:insertChildren/>
-            </div>
-        </div>
+            </h:panelGroup>
+        </h:panelGroup>
     </cc:implementation>
 </html>

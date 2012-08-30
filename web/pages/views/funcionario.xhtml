@@ -9,6 +9,7 @@
     <ui:composition template="masterLayout.xhtml">
         <ui:define name="content">
             <h:form id="form">
+                <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
                 <p:fieldset legend="Funcionários">
                     <cp:grid id="funcionarioGrid" label="Funcionário" mb="#{funcionarioMB}" />
                 </p:fieldset>
