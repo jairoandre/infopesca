@@ -13,7 +13,7 @@
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
                 <p:fieldset legend="#{viagemMB.alterando ? 'Alterar Viagem' : 'Nova Viagem'}">
-                    <p:panelGrid id="gridFormInit" columns="8" styleClass="border-less">
+                    <p:panelGrid id="gridFormInit" columns="10" styleClass="border-less">
                         <f:facet name="header">
                             Dados Básicos da Viagem
                         </f:facet>
@@ -23,15 +23,23 @@
                         <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" required="true"/>
                         <cp:label id="labelFim" label="Chegada:"/>
                         <cp:calendar id="dataFim" value="#{viagemMB.viagem.fim}"/>
+                        <cp:label id="identLabel" label="Identificador:"/>
+                        <p:inputText id="identificador" value="#{viagemMB.viagem.identificador}"/>
                     </p:panelGrid>
+                    <p:commandButton id="btnCarregarTripucao" actionListener="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@this, gridFormInit" update="gridFormInit, tabView"/>
                     <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" cache="false">
                         <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
                         <p:tab id="tripTab" title="Tripulação">
-                            <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
-                            <p:commandButton action="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@this" update="tripulantes"/>
+                            <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>                            
                         </p:tab>
                         <p:tab id="despTab" title="Despesas">
-                            <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas"/>
+                            <cp:grid label="Despesas" mb="#{viagemMB.softGridDespesa}" id="despesas">
+                                <cp:line>
+                                    <cp:group label="Tipo de Despesa:">
+                                        <cp:gridField id="tipoDespesa" bean="#{viagemMB.softGridDespesa.instance}" field="tipo" />
+                                    </cp:group>
+                                </cp:line>
+                            </cp:grid>
                         </p:tab>
                         <p:tab id="vendaTab" title="Venda">
                             <cp:softGrid id="venda" label="Vendas" mb="#{viagemMB.softGridVenda}"/>

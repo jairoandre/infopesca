@@ -15,7 +15,7 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class DespesaMB extends HardGridControl<Despesa> {
-
+    
     public DespesaMB() {
         super(Despesa.class);
     }
@@ -27,4 +27,5 @@ public class DespesaMB extends HardGridControl<Despesa> {
             return null;
         }
     }
+    
 }

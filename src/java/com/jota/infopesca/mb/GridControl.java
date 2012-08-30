@@ -79,14 +79,20 @@ public abstract class GridControl<T> implements Serializable {
                     getterNames.put(fieldName, composeMethodName("get", fieldName));
                     setterNames.put(fieldName, composeMethodName("set", fieldName));
                     continue;
-                } else if (!annotation.visible()) {
-                    continue;
                 }
-                if(annotation.columnVisible()){
+                // Verifica se é visível na listagem
+                if (annotation.columnVisible()) {
                     this.columnFields.add(fieldName);
                 }
+
+                // Veirifica se é visível no form.
+                if (!annotation.visible()) {
+                    continue;
+                }
+                
                 this.fieldNames.add(fieldName);
                 this.labels.put(fieldName, annotation.label());
+                
                 if (annotation.editable()) {
                     this.formFields.add(fieldName);
                 }
