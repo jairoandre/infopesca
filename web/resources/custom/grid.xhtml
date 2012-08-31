@@ -18,6 +18,7 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
+        <p:growl id="gridGrowl" autoUpdate="true"/>
         <p:outputPanel id="grid">
             <!-- FORM BOX -->
             <p:outputPanel id="formPnl" layout="block">

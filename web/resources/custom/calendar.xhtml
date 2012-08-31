@@ -9,11 +9,12 @@
         <cc:attribute name="id"/>
         <cc:attribute name="value" required="true"/>
         <cc:attribute name="required" default="false"/>
+        <cc:attribute name="requiredMessage" default="Campo obrigatório."/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:calendar id="calendar" value="#{cc.attrs.value}" size="10" maxlength="10" pattern="dd/MM/yyyy" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório" locale="pt">
+        <p:calendar id="calendar" value="#{cc.attrs.value}" size="10" maxlength="10" pattern="dd/MM/yyyy" required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}" locale="pt">
             <script>
                 $(function(){
                     $("##{cc.clientId}-calendar_input").mask("99/99/9999");

@@ -12,11 +12,12 @@
         <cc:attribute name="required" default="#{false}"/>
         <cc:attribute name="trueLabel" default="Sim"/>
         <cc:attribute name="falseLabel" default="Não"/>
+        <cc:attribute name="requiredMessage" default="Campo obrigatório."/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:selectOneMenu id="selectOne" value="#{cc.attrs.value}" required="#{cc.attrs.required}" requiredMessage="Campo Obrigatório">
+        <p:selectOneMenu id="selectOne" value="#{cc.attrs.value}" required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}">
             <f:selectItem itemLabel="Selecione" itemValue=""/>
             <f:selectItem itemLabel="#{cc.attrs.trueLabel}" itemValue="#{true}"/>
             <f:selectItem itemLabel="#{cc.attrs.falseLabel}" itemValue="#{false}"/>
