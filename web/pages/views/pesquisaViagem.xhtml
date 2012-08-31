@@ -13,14 +13,17 @@
                 <p:focus/>
                 <p:growl id="growl" autoUpdate="true" showDetail="true" globalOnly="true"/>
                 <p:fieldset id="filtro" legend="Pesquisa Viagens">
-                    <p:panelGrid id="fieldsPesquisa" columns="6">
-                        <cp:label label="Embarcação:"/>
-                        <cp:selectOneBean value="#{viagemMB.viagemPesquisa.embarcacao}" list="#{viagemMB.embarcacoes}"  listLabel="nome"/>
-                        <cp:label label="Data Início:"/>
-                        <cp:calendar value="#{viagemMB.viagemPesquisa.inicio}"/>
-                        <cp:label label="Data Fim:"/>
-                        <cp:calendar value="#{viagemMB.viagemPesquisa.fim}"/>
-                    </p:panelGrid>
+                    <cp:line id="fieldsPesquisa">
+                        <cp:group label="Embarcação:">
+                            <cp:selectOneBean value="#{viagemMB.viagemPesquisa.embarcacao}" list="#{viagemMB.embarcacoes}"  listLabel="nome"/>
+                        </cp:group>
+                        <cp:group label="Data Início:">
+                            <cp:calendar value="#{viagemMB.viagemPesquisa.inicio}"/>
+                        </cp:group>
+                        <cp:group label="Data Fim:">
+                            <cp:calendar value="#{viagemMB.viagemPesquisa.fim}"/>
+                        </cp:group>
+                    </cp:line>
                     <p:commandButton id="pesquisarBtn" value="Pesquisar" actionListener="#{viagemMB.pesquisarViagens}" process="filtro" update="resultList" style="margin-top: 5px;" onstart="statusDialog.show()" onsuccess="statusDialog.hide()"/>
                 </p:fieldset>
                 <p:fieldset id="resultSet" legend="Resultado Pesquisa" style="margin-top: 5px;">

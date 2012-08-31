@@ -16,8 +16,6 @@ import java.util.*;
  */
 public abstract class GridBean implements Serializable {
 
-    private Long creationTime = new Date().getTime();
-
     public abstract String getOutputTextLabel();
 
     private GridConfig getAnnotation(String fieldName) {
@@ -97,9 +95,9 @@ public abstract class GridBean implements Serializable {
         if (masks.get(fieldName) == null) {
             GridConfig annotation = getAnnotation(fieldName);
             if (annotation != null) {
-                masks.put(fieldName,annotation.mask());
+                masks.put(fieldName, annotation.mask());
             } else {
-                masks.put(fieldName,"");
+                masks.put(fieldName, "");
             }
         }
         return masks.get(fieldName);
@@ -114,7 +112,7 @@ public abstract class GridBean implements Serializable {
             return 20;
         }
     }
-    
+
     public String getLabel(String fieldName) {
         GridConfig annotation = getAnnotation(fieldName);
         if (annotation != null) {
@@ -123,7 +121,7 @@ public abstract class GridBean implements Serializable {
             return "Não definido";
         }
     }
-    
+
     /**
      * Verifica se o campo é do tipo data.
      *
@@ -182,14 +180,6 @@ public abstract class GridBean implements Serializable {
     public void setParent(Object parent) {
     }
 
-    public long getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(long creationTime) {
-        this.creationTime = creationTime;
-    }
-
     public abstract Long getId();
 
     @Override
@@ -205,17 +195,18 @@ public abstract class GridBean implements Serializable {
         GridBean other = (GridBean) o;
         if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
-        } else if (this.getId() == null && other.getId() == null) {
-            return this.creationTime == other.creationTime;
         }
-        return true;
+        return this.hashCode() == other.hashCode();
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (getId() != null ? getId().hashCode() : creationTime.hashCode());
-        return hash;
+        if (getId() != null) {
+            return getId().hashCode();
+        } else {
+            return super.hashCode();
+        }
+
     }
 
     public int getHashCode() {

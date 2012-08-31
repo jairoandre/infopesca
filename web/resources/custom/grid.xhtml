@@ -52,9 +52,9 @@
                     <p:spacer width="5"/>
                     <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="@this" update="formPnl,gridPnl"/>
                 </p:outputPanel>
+                <p:remoteCommand name="#{uniqueName}Click" process="dataTableList" update="gridBtnsPnl"/>
                 <!-- Mensagem lista vazia -->
                 <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <p:remoteCommand id="clickCheck" name="#{uniqueName}clickCheck" process="dataTableList" update="gridBtnsPnl"/>                
                 <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
                     <p:dataTable id="dataTableList"
                                  value="#{cc.attrs.mb.list}"
@@ -66,9 +66,11 @@
                                  selection="#{cc.attrs.mb.selectedItens}"
                                  rowKey="#{obj.hashCode}"
                                  styleClass="table">
-                        <p:ajax event="rowSelectCheckbox" process="@none" onstart="#{uniqueName}clickCheck();" />
-                        <p:ajax event="rowUnselectCheckbox" process="@none" onstart="#{uniqueName}clickCheck();"/>
-                        <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}"/>
+                        <p:ajax event="rowSelectCheckbox" process="@none" onstart="#{uniqueName}Click();" />
+                        <p:ajax event="rowUnselectCheckbox" process="@none" onstart="#{uniqueName}Click();"/>
+                        <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}">
+                            #{obj.hashCode}
+                        </p:column>
                         <p:columns id="dynaColumns" value="#{cc.attrs.mb.columnFields}" var="field" columnIndexVar="idx">
                             <f:facet name="header">
                                 <p:outputPanel id="headerLabel" style="white-space: nowrap; text-align: left;" layout="block">

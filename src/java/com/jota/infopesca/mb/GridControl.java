@@ -6,7 +6,6 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.annotations.GridConfig;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -80,6 +79,9 @@ public abstract class GridControl<T> implements Serializable {
                     setterNames.put(fieldName, composeMethodName("set", fieldName));
                     continue;
                 }
+                
+                this.labels.put(fieldName, annotation.label());
+                
                 // Verifica se é visível na listagem
                 if (annotation.columnVisible()) {
                     this.columnFields.add(fieldName);
@@ -91,7 +93,6 @@ public abstract class GridControl<T> implements Serializable {
                 }
                 
                 this.fieldNames.add(fieldName);
-                this.labels.put(fieldName, annotation.label());
                 
                 if (annotation.editable()) {
                     this.formFields.add(fieldName);
