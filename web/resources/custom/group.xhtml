@@ -7,7 +7,7 @@
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="id"/>
-        <cc:attribute name="label" required="true"/>
+        <cc:attribute name="label"/>
         <cc:attribute name="required" default="false"/>
         <cc:attribute name="rendered"/>
     </cc:interface>
@@ -15,12 +15,12 @@
     <!-- IMPLEMENTATION -->
 
     <cc:implementation>
-        <h:panelGroup id="wrapper" styleClass="cp-group" layout="block">
-            <h:panelGroup styleClass="cp-label">
+        <h:panelGroup id="group" styleClass="cp-group" layout="block">
+            <h:panelGroup id="pnlLabel" styleClass="cp-label">
                 <h:outputText id="requiredIndicator" value="*" style="color: red;" rendered="#{cc.attrs.required}"/>
                 <label>#{cc.attrs.label}</label>
             </h:panelGroup>
-            <h:panelGroup id="content" layout="block">
+            <h:panelGroup id="pnlContent" layout="block">
                 <cc:insertChildren/>
             </h:panelGroup>
         </h:panelGroup>

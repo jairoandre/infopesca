@@ -15,7 +15,7 @@
                     <p:fieldset id="dadosIniciais" legend="Dados Básicos da Viagem">
                         <cp:line id="line">
                             <cp:group id="groupEmbc" label="Embarcação:" required="true">
-                                <cp:selectOneBean id="embarcacao" value="#{viagemMB.viagem.embarcacao}" list="#{viagemMB.embarcacoes}" listLabel="nome" required="true"/>
+                                <cp:selectOneBean id="embarcacao" value="#{viagemMB.viagem.embarcacao}" list="#{viagemMB.embarcacoes}" listLabel="nome" required="true" requiredMessage="Campo [Embarcação] obrigatório."/>
                             </cp:group>
                             <cp:group id="groupPartida" label="Partida:">
                                 <cp:calendar id="dataInicio" value="#{viagemMB.viagem.inicio}" required="true"/>
@@ -30,7 +30,7 @@
                     </p:fieldset>
 
                     <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" cache="false">
-                        <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}"/>
+                        <p:ajax event="tabChange" listener="#{viagemMB.onTabChange}" process="@this" partialSubmit="true" />
                         <p:tab id="tripTab" title="Tripulação">
                             <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>                            
                             <p:commandButton id="btnCarregarTripucao" actionListener="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@form" update="@form"/>
@@ -52,6 +52,7 @@
                         </p:tab>
                     </p:tabView>
                     <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" update="@form"/>
+                    <p:commandButton value="Cancelar" action="pesquisaViagem" immediate="true"/>
                 </p:fieldset>
             </h:form>
         </ui:define>

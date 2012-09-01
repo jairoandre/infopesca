@@ -5,6 +5,8 @@
 package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Despesa;
+import com.jota.infopesca.bean.Viagem;
+import com.jota.infopesca.enums.TipoDespesa;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -15,7 +17,7 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class DespesaMB extends HardGridControl<Despesa> {
-    
+
     public DespesaMB() {
         super(Despesa.class);
     }
@@ -28,4 +30,24 @@ public class DespesaMB extends HardGridControl<Despesa> {
         }
     }
     
+    public String novaDespesa(){
+        this.setInstance(new Despesa());
+        return "despesa";
+    }
+
+    public void associarViagem(Viagem viagem) {
+        getDespesa().setViagem(viagem);
+    }
+
+    public void onChangeTipo() {
+        Despesa despesa = getDespesa();
+        if (TipoDespesa.OUTRAS.equals(despesa.getTipo())) {
+            despesa.setViagem(null);
+        }
+    }
+
+    public boolean isShowAssociarBtn() {
+        Despesa despesa = getDespesa();
+        return despesa.getViagem() == null && !TipoDespesa.OUTRAS.equals(despesa.getTipo());
+    }
 }

@@ -90,6 +90,7 @@ public class Viagem extends GridBean {
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
+
     public Date getInicio() {
         return inicio;
     }
@@ -156,7 +157,15 @@ public class Viagem extends GridBean {
 
     @Override
     public String toString() {
-        return "com.jota.infopesca.bean.Viagem[ id=" + id + " ]";
+        StringBuilder builder = new StringBuilder();
+        builder.append(embarcacao.getNome());
+        builder.append(" | ");
+        builder.append(id);
+        if (identificador != null) {
+            builder.append(" | ");
+            builder.append(identificador);
+        }
+        return builder.toString();
     }
     // Lógica fechamento conta
     @Transient
@@ -320,13 +329,13 @@ public class Viagem extends GridBean {
     public String getOutputTextLabel() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    public String getDescritor(){
+
+    public String getDescritor() {
         StringBuilder buffer = new StringBuilder();
-        if(embarcacao != null){
+        if (embarcacao != null) {
             buffer.append(embarcacao.getNome());
         }
-        if(identificador != null){
+        if (identificador != null) {
             buffer.append(" | ");
             buffer.append(identificador);
         }

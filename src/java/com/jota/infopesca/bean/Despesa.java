@@ -180,8 +180,4 @@ public class Despesa extends GridBean {
             setFuncionario((Funcionario) parent);
         }
     }
-
-    public boolean getIsViagem() {
-        return TipoDespesa.VIAGEM.equals(tipo);
-    }
 }
