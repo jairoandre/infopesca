@@ -37,6 +37,10 @@ public class ViagemMB {
     private List<Viagem> viagens;
     private Boolean alterando = true;
     private Viagem[] viagensSelecionadas;
+    
+    public long getData(){
+        return new Date().getTime();
+    }
 
     public ViagemMB() {
         viagemPesquisa = new Viagem();
@@ -207,6 +211,7 @@ public class ViagemMB {
     }
 
     public void fecharConta() {
+        viagem.fecharConta();
     }
 
     public void onTabChange(TabChangeEvent evt) {

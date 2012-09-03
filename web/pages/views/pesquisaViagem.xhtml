@@ -34,6 +34,14 @@
                         <p:column>
                             <f:facet name="header">
                                 <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                    Identificador
+                                </p:outputPanel>
+                            </f:facet>
+                            <h:outputText value="#{viagem.identificador}" converter="outputTextConverter"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
                                     Embarcação
                                 </p:outputPanel>
                             </f:facet>

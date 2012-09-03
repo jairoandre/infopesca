@@ -20,7 +20,6 @@
                                     <p:ajax event="change" process="@this" update="@all"/>
                                 </p:selectOneMenu>
                             </cp:group>
-                            <p:remoteCommand name="atualizarGroupViagem" actionListener="#{despesaMB.onChangeTipo}" process="@this, groupDespesa" update="groupViagem"/>
                             <cp:group id="groupViagem" label="Viagem:">
                                 <p:inputText id="viagem" value="#{despesaMB.despesa.viagem}" disabled="true"/>
                                 <p:commandButton id="btnAssociarViagem" value="Associar Viagem" rendered="#{despesaMB.showAssociarBtn}" icon="ui-icon-search" process="@none" />
