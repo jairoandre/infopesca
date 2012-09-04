@@ -10,8 +10,8 @@
         <ui:define name="content">
             <h:form id="form">
                 <p:focus/>
-                <p:growl id="growl" autoUpdate="true" showDetail="true"/>
-                <p:messages globalOnly="true" autoUpdate="true"/>
+                <p:growl id="growlGlobal" globalOnly="true" showDetail="true"/>
+                <p:growl id="growl" redisplay="false"/>
                 <p:fieldset legend="#{viagemMB.alterando ? 'Alterar Viagem' : 'Nova Viagem'}">
                     <p:fieldset id="dadosIniciais" legend="Dados Básicos da Viagem">
                         <cp:line id="line">
@@ -56,7 +56,7 @@
                             </p:outputPanel>
                         </p:tab>
                     </p:tabView>
-                    <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" process="dadosIniciais" update="form"/>
+                    <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" process="@this, dadosIniciais" update="form"/>
                     <p:commandButton value="Cancelar" action="pesquisaViagem" immediate="true"/>
                 </p:fieldset>
             </h:form>
