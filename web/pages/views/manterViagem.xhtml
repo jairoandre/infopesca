@@ -10,8 +10,8 @@
         <ui:define name="content">
             <h:form id="form">
                 <p:focus/>
-                <p:growl id="growlGlobal" globalOnly="true" showDetail="true"/>
-                <p:growl id="growl" redisplay="false"/>
+                <p:growl id="growlGlobal" globalOnly="true" showDetail="true" autoUpdate="true"/>
+                <p:growl id="growl" redisplay="false" autoUpdate="true"/>
                 <p:fieldset legend="#{viagemMB.alterando ? 'Alterar Viagem' : 'Nova Viagem'}">
                     <p:fieldset id="dadosIniciais" legend="Dados Básicos da Viagem">
                         <cp:line id="line">

@@ -181,6 +181,10 @@ public class Viagem extends GridBean {
     @Transient
     private BigDecimal despesasViagem;
     @Transient
+    private BigDecimal despesasManutencao;
+    @Transient
+    private BigDecimal despesasOutras;
+    @Transient
     private BigDecimal subTotalViagem;
     @Transient
     private BigDecimal quantidadePartes;
@@ -198,6 +202,8 @@ public class Viagem extends GridBean {
         subTotalPosManutencao = BigDecimal.ZERO;
         despesasVenda = BigDecimal.ZERO;
         despesasViagem = BigDecimal.ZERO;
+        despesasManutencao = BigDecimal.ZERO;
+        despesasOutras = BigDecimal.ZERO;
         subTotalViagem = BigDecimal.ZERO;
         quantidadePartes = BigDecimal.ZERO;
         metadeViagem = BigDecimal.ZERO;
@@ -215,8 +221,15 @@ public class Viagem extends GridBean {
                 case VIAGEM:
                     despesasViagem = despesasViagem.add(despesa.getCusto());
                     break;
-                default:
+                case VENDA:
                     despesasVenda = despesasVenda.add(despesa.getCusto());
+                    break;
+                case MANUTENCAO:
+                    despesasManutencao = despesasManutencao.add(despesa.getCusto());
+                    break;
+                default:
+                    despesasOutras = despesasOutras.add(despesa.getCusto());
+                    break;
             }
         }
         subTotalPosVenda = totalVendas.subtract(despesasVenda);
@@ -259,6 +272,22 @@ public class Viagem extends GridBean {
 
     public void setDespesasViagem(BigDecimal despesasViagem) {
         this.despesasViagem = despesasViagem;
+    }
+
+    public BigDecimal getDespesasManutencao() {
+        return despesasManutencao;
+    }
+
+    public void setDespesasManutencao(BigDecimal despesasManutencao) {
+        this.despesasManutencao = despesasManutencao;
+    }
+
+    public BigDecimal getDespesasOutras() {
+        return despesasOutras;
+    }
+
+    public void setDespesasOutras(BigDecimal despesasOutras) {
+        this.despesasOutras = despesasOutras;
     }
 
     public BigDecimal getMetadeViagem() {

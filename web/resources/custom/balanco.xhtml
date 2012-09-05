@@ -21,31 +21,33 @@ and open the template in the editor.
             <p:panelGrid id="balancoTbl"  columns="2">
                 <f:facet name="header">
                     <p:column colspan="2">
-                        Valores
+                        Balanço
                     </p:column>
                 </f:facet>
-                <h:outputText value="Total Vendas:"/>
-                <h:outputText value="#{cc.attrs.viagem.totalVendas}" converter="currencyConverter"/>
+                <h:outputText value="Total Vendas:" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="#{cc.attrs.viagem.totalVendas}" converter="currencyConverter" style="font-size: 15px; font-weight: bold;"/>
                 <h:outputText value="Despesas de Venda:"/>
-                <h:outputText value="#{cc.attrs.viagem.despesasVenda}" converter="currencyConverter"/>
-                <h:outputText value="Sub-total Pós-venda:"/>
-                <h:outputText value="#{cc.attrs.viagem.subTotalPosVenda}" converter="currencyConverter"/>
-                <h:outputText value="Manutenção:"/>
-                <h:outputText value="#{cc.attrs.viagem.totalManutencao}" converter="currencyConverter"/>
-                <h:outputText value="Sub-total Pós-manutenção:"/>
-                <h:outputText value="#{cc.attrs.viagem.subTotalPosManutencao}" converter="currencyConverter"/>
+                <h:outputText value="#{cc.attrs.viagem.despesasVenda}" converter="currencyConverter" style="color: red;"/>
+                <h:outputText value="Sub-total:" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="#{cc.attrs.viagem.subTotalPosVenda}" converter="currencyConverter" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="20% Manutenção:"/>
+                <h:outputText value="#{cc.attrs.viagem.totalManutencao}" converter="currencyConverter" style="color: green;"/>
+                <h:outputText value="Sub-total:" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="#{cc.attrs.viagem.subTotalPosManutencao}" converter="currencyConverter" style="font-size: 15px; font-weight: bold;"/>
                 <h:outputText value="Despesas da Viagem:"/>
-                <h:outputText value="#{cc.attrs.viagem.despesasViagem}" converter="currencyConverter"/>
-                <h:outputText value="Sub-total Viagem:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{cc.attrs.viagem.subTotalViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="50% Venda:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{cc.attrs.viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{cc.attrs.viagem.despesasViagem}" converter="currencyConverter" style="color: red;"/>
+                <h:outputText value="Sub-total:" rendered="#{!viagem.empenhada}" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="#{cc.attrs.viagem.subTotalViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="50% Dono:" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="#{cc.attrs.viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}" style="color: green;"/>
+                <h:outputText value="50% Tripulação:" rendered="#{!viagem.empenhada}" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="#{cc.attrs.viagem.metadeViagem}" converter="currencyConverter" rendered="#{!viagem.empenhada}" style="font-size: 15px; font-weight: bold;"/>
                 <h:outputText value="Quantidade de partes:" rendered="#{!viagem.empenhada}"/>
                 <h:outputText value="#{cc.attrs.viagem.quantidadePartes}" rendered="#{!viagem.empenhada}"/>                                
-                <h:outputText value="Valor da parte:" rendered="#{!viagem.empenhada}"/>
-                <h:outputText value="#{cc.attrs.viagem.valorParte}" converter="currencyConverter" rendered="#{!viagem.empenhada}"/>
+                <h:outputText value="Valor da parte:" rendered="#{!viagem.empenhada}" style="font-size: 15px; font-weight: bold;"/>
+                <h:outputText value="#{cc.attrs.viagem.valorParte}" converter="currencyConverter" rendered="#{!viagem.empenhada}" style="font-size: 15px; font-weight: bold; color: blue;"/>
                 <h:outputText value="Empenho:" rendered="#{cc.attrs.viagem.empenhada}"/>
-                <h:outputText value="-#{cc.attrs.viagem.empenho}" converter="currencyConverter" rendered="#{cc.attrs.viagem.empenhada}" style="color: red;"/>
+                <h:outputText value="#{cc.attrs.viagem.empenho}" converter="currencyConverter" rendered="#{cc.attrs.viagem.empenhada}" style="color: red;"/>
             </p:panelGrid>
         </p:outputPanel>
         <p:outputPanel id="secondPnl" layout="block" style="float: left;">
@@ -89,7 +91,7 @@ and open the template in the editor.
                         </f:facet>
                         <h:outputText value="#{tripulante.valorParte}" converter="currencyConverter"/>
                     </p:column>
-                </p:dataTable>                
+                </p:dataTable>
             </p:fieldset>
         </p:outputPanel>
         <p:outputPanel layout="block" style="clear: both;"/>
