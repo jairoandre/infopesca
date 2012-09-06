@@ -17,9 +17,20 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class DespesaMB extends HardGridControl<Despesa> {
+    
+    public Despesa despesaPesquisa;
 
     public DespesaMB() {
         super(Despesa.class);
+        despesaPesquisa = new Despesa();
+    }
+
+    public Despesa getDespesaPesquisa() {
+        return despesaPesquisa;
+    }
+
+    public void setDespesaPesquisa(Despesa despesaPesquisa) {
+        this.despesaPesquisa = despesaPesquisa;
     }
 
     public Despesa getDespesa() {
