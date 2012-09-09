@@ -59,4 +59,8 @@ public class HardGridControl<T> extends GridControl {
         }
         return null;
     }
+    
+    protected GenericBC<T> getBc(){
+        return bc;
+    }
 }

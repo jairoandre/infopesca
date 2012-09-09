@@ -71,7 +71,7 @@ html,body {
 }
 
 .cp-line {
-    width: 100%; margin-bottom: 5px; overflow: auto;
+    width: 100%; overflow: auto; padding: 5px 0 5px 0;
 }
 
 .cp-group {
