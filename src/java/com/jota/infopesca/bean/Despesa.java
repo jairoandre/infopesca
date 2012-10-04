@@ -33,9 +33,6 @@ public class Despesa extends GridBean {
     @Enumerated(EnumType.ORDINAL)
     @GridConfig(enumerated = true, label = "Tipo", required = true, visible = false)
     private TipoDespesa tipo;
-    @Column(name = "DESP_TX_DESCRICAO")
-    @GridConfig(label = "Descrição")
-    private String descricao;
     @Column(name = "DESP_CO_NF")
     @GridConfig(label = "Nota Fiscal")
     private String notaFiscal;
@@ -63,6 +60,13 @@ public class Despesa extends GridBean {
     @JoinColumn(name = "FUNC_ID", referencedColumnName = "FUNC_ID")
     @ManyToOne(optional = true)
     private Funcionario funcionario;
+    @JoinColumn(name = "FORNEC_ID", referencedColumnName = "FORNEC_ID")
+    @ManyToOne(optional = true)
+    @GridConfig(editable = true, label = "Fornecedor", listed = true)
+    private Fornecedor fornecedor;
+    @Column(name = "DESP_TX_DESCRICAO")
+    @GridConfig(label = "Descrição", textArea = true)
+    private String descricao;
 
     public Despesa() {
         this.tipo = TipoDespesa.VIAGEM;
@@ -159,6 +163,14 @@ public class Despesa extends GridBean {
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
     @Override

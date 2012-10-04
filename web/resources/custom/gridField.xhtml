@@ -20,6 +20,7 @@
         <p:outputPanel id="pnl" rendered="#{cc.attrs.rendered}" layout="block">
             <p:inputMask id="masked" value="#{cc.attrs.bean[cc.attrs.field]}" mask="#{cc.attrs.bean.getMask(cc.attrs.field)}" rendered="#{not empty cc.attrs.bean.getMask(cc.attrs.field)}" required="#{cc.attrs.required}" requiredMessage="#{msgObrigatorio}"/>
             <p:inputText id="text" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isText(cc.attrs.field)}" required="#{cc.attrs.required}" size="#{cc.attrs.bean.getSize(cc.attrs.field)}" requiredMessage="#{msgObrigatorio}"/>
+            <p:inputTextarea id="textArea" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isTextArea(cc.attrs.field)}" required="#{cc.attrs.required}" requiredMessage="#{msgObrigatorio}"/>
             <cp:calendar id="date" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isDate(cc.attrs.field)}" required="#{cc.attrs.required}" requiredMessage="#{msgObrigatorio}"/>
             <cp:weight id="weight" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isWeight(cc.attrs.field)}" required="#{cc.attrs.required}"/>
             <cp:currency id="currency" value="#{cc.attrs.bean[cc.attrs.field]}" rendered="#{cc.attrs.bean.isCurrency(cc.attrs.field)}" required="#{cc.attrs.required}" requiredMessage="#{msgObrigatorio}"/>

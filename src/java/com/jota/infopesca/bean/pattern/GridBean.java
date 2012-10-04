@@ -76,6 +76,15 @@ public abstract class GridBean implements Serializable {
             return false;
         }
     }
+    
+    public boolean isTextArea(String fieldName) {
+        GridConfig annotation = getAnnotation(fieldName);
+        if (annotation != null) {
+            return annotation.textArea();
+        } else {
+            return false;
+        }
+    }
 
     public boolean isFlag(String fieldName) {
         GridConfig annotation = getAnnotation(fieldName);
@@ -87,7 +96,7 @@ public abstract class GridBean implements Serializable {
     }
 
     public boolean isText(String fieldName) {
-        return !isDate(fieldName) && !isCurrency(fieldName) && !isEnum(fieldName) && !isBean(fieldName) && !isFlag(fieldName) && getMask(fieldName).isEmpty() && !isWeight(fieldName);
+        return !isDate(fieldName) && !isCurrency(fieldName) && !isEnum(fieldName) && !isBean(fieldName) && !isFlag(fieldName) && getMask(fieldName).isEmpty() && !isWeight(fieldName) && !isTextArea(fieldName);
     }
     private Map<String, String> masks = new HashMap<String, String>();
 

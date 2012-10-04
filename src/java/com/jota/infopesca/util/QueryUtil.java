@@ -96,6 +96,9 @@ public class QueryUtil<T> implements Serializable {
         for (int i = 0; i < fieldsArray.length; i++) {
             Method m = entityClass.getDeclaredMethod(getter(fieldsArray[i]));
             Object value = m.invoke(sample);
+            if (value != null && "".equals(value)) {
+                value = null;
+            }
             if (value != null) {
                 switch ((TipoOperacao) operatorsArray[i]) {
                     case EQ:

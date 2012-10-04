@@ -50,4 +50,6 @@ public @interface GridConfig {
     boolean visible() default true;
     
     boolean columnVisible() default true;
+    
+    boolean textArea() default false;
 }

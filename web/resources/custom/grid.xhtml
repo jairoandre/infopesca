@@ -77,7 +77,7 @@
                                     #{cc.attrs.mb.labels[field]}
                                 </p:outputPanel>
                             </f:facet>
-                            <p:outputPanel id="value" style="white-space: nowrap" layout="block">
+                            <p:outputPanel id="value" layout="block">
                                 <h:outputText id="normalOutput" value="#{obj[field]}" converter="outputTextConverter" rendered="#{obj.isNotBigDecimal(field)}"/>
                                 <h:outputText id="currencyOutuput" value="#{obj[field]}" converter="currencyConverter" rendered="#{obj.isCurrency(field)}"/>
                                 <h:outputText id="weightOutuput" value="#{obj[field]}" converter="weightConverter" rendered="#{obj.isWeight(field)}"/>

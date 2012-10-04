@@ -27,6 +27,7 @@ public class DespesaMB extends HardGridControl<Despesa> {
   public DespesaMB() {
     super(Despesa.class);
     despesaPesquisa = new Despesa();
+    despesaPesquisa.setTipo(null);
   }
 
   public Despesa getDespesaPesquisa() {
