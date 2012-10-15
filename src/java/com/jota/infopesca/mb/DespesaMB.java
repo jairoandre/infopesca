@@ -54,6 +54,10 @@ public class DespesaMB extends HardGridControl<Despesa> {
   public void associarViagem(Viagem viagem) {
     getDespesa().setViagem(viagem);
   }
+  
+  public void desassociarViagem(){
+    getDespesa().setViagem(null);
+  }
 
   public void onChangeTipo() {
     Despesa despesa = getDespesa();
@@ -77,6 +81,7 @@ public class DespesaMB extends HardGridControl<Despesa> {
       QueryUtil<Despesa> query = new QueryUtil<Despesa>(despesaPesquisa);
       query.addCriteria("tipo", TipoOperacao.EQ);
       query.addCriteria("notaFiscal", TipoOperacao.EQ);
+      query.addCriteria("fornecedor", TipoOperacao.EQ);
       return getBc().listByProperties(query);
     } catch (Exception e) {
       return null;

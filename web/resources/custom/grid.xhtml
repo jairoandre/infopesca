@@ -81,6 +81,7 @@
                                 <h:outputText id="normalOutput" value="#{obj[field]}" converter="outputTextConverter" rendered="#{obj.isNotBigDecimal(field)}"/>
                                 <h:outputText id="currencyOutuput" value="#{obj[field]}" converter="currencyConverter" rendered="#{obj.isCurrency(field)}"/>
                                 <h:outputText id="weightOutuput" value="#{obj[field]}" converter="weightConverter" rendered="#{obj.isWeight(field)}"/>
+                                <p:tooltip value="#{obj[field]}" for="toolTip" rendered="#{obj.isNotBigDecimal(field)}" />
                             </p:outputPanel>
                         </p:columns>
                     </p:dataTable>

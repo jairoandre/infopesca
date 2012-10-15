@@ -1,110 +1,114 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:cp="http://java.sun.com/jsf/composite/custom"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core">
-    <ui:composition template="masterLayout.xhtml">
-        <ui:define name="content">
-            <h:form id="form">
-                <p:fieldset legend="Despesa">
-                    <cp:grid id="despGrid" label="Despesa" mb="#{despesaMB}">
-                        <cp:line id="linhaDespesa" >
-                            <cp:group id="groupDespesa" label="Tipo de Despesa:" required="true">
-                                <p:selectOneMenu id="tipoDespesa" value="#{despesaMB.despesa.tipo}" converter="beanConverter" required="true" requiredMessage="Campo [Tipo Despesa] obrigatório." effectDuration="50">
-                                    <f:selectItem itemLabel="Selecione" itemValue=""/>
-                                    <f:selectItems value="#{despesaMB.despesa.getEnumValues('tipo')}" var="obj" itemLabel="#{obj['label']}" itemValue="#{obj}"/>
-                                    <p:ajax event="change" process="@this" oncomplete="groupViagem();"/>
-                                </p:selectOneMenu>
-                            </cp:group>
-                            <p:remoteCommand process="@this" update="pnlViagem" name="groupViagem"/>
-                            <h:panelGroup id="pnlViagem" layout="block">
-                                <cp:group id="groupViagem" label="Viagem:" rendered="#{despesaMB.showGroupViagem}">
-                                    <p:inputText id="viagem" value="#{despesaMB.despesa.viagem}" disabled="true"/>
-                                    <p:commandButton id="btnAssociarViagem" value="Viagem" rendered="#{despesaMB.showAssociarBtn}" icon="ui-icon-search" process="@none" style="margin-left: 5px;" />
-                                    <p:commandButton id="btnDesassociarViagem" value="Desassociar Viagem" rendered="#{not empty despesaMB.despesa.viagem}" icon="ui-icon-search" process="@this" style="margin-left: 5px;"/>
-                                    <p:overlayPanel id="overlayViagem" for="btnAssociarViagem" appendToBody="true">
-                                        <p:fieldset legend="Pesquisa Viagens">
-                                            <h:panelGroup id="fieldsViagem" layout="block">
-                                                <cp:line id="fieldsPesquisa">
-                                                    <cp:group label="Embarcação:">
-                                                        <cp:selectOneBean value="#{viagemMB.viagemPesquisa.embarcacao}" list="#{viagemMB.embarcacoes}"  listLabel="nome"/>
-                                                    </cp:group>
-                                                    <cp:group label="Data Início:">
-                                                        <cp:calendar value="#{viagemMB.viagemPesquisa.inicio}"/>
-                                                    </cp:group>
-                                                    <cp:group label="Data Fim:">
-                                                        <cp:calendar value="#{viagemMB.viagemPesquisa.fim}"/>
-                                                    </cp:group>
-                                                    <cp:group label="Identificador:">
-                                                        <cp:calendar value="#{viagemMB.viagemPesquisa.identificador}"/>
-                                                    </cp:group>
-                                                </cp:line>
-                                            </h:panelGroup>
-                                            <p:commandButton id="pesquisarBtn" value="Pesquisar" actionListener="#{viagemMB.pesquisarViagens}" process="@this, fieldsViagem" update="listFieldSet" style="margin-top: 5px;"/>
-                                            <p:fieldset id="listFieldSet" legend="Resultado" style="margin-top: 5px;">
-                                                <p:dataTable id="resultList" value="#{viagemMB.viagens}" var="viagem" emptyMessage="Sem registros!" styleClass="table">
-                                                    <p:column>
-                                                        <f:facet name="header">
-                                                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
-                                                                Embarcação
-                                                            </p:outputPanel>
-                                                        </f:facet>
-                                                        #{viagem.embarcacao.nome}
-                                                    </p:column>
-                                                    <p:column>
-                                                        <f:facet name="header">
-                                                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
-                                                                Partida
-                                                            </p:outputPanel>
-                                                        </f:facet>
-                                                        <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
-                                                    </p:column>
-                                                    <p:column>
-                                                        <f:facet name="header">
-                                                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
-                                                                Chegada
-                                                            </p:outputPanel>
-                                                        </f:facet>
-                                                        <h:outputText value="#{viagem.fim}" converter="outputTextConverter"/>
-                                                    </p:column>
-                                                    <p:column>
-                                                        <f:facet name="header">
-                                                            <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
-                                                                Associar
-                                                            </p:outputPanel>
-                                                        </f:facet>
-                                                        <p:commandButton id="alterBtn" actionListener="#{despesaMB.associarViagem(viagem)}" update="@all" icon="ui-icon-pencil" process="@this" partialSubmit="true"/>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </p:fieldset>
-                                        </p:fieldset>
-                                    </p:overlayPanel>
-                                </cp:group>
-                            </h:panelGroup>
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:cp="http://java.sun.com/jsf/composite/custom"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+  <ui:composition template="masterLayout.xhtml">
+    <ui:define name="content">
+      <h:form id="form">
+        <p:fieldset legend="Despesa">
+          <cp:line id="lineFiltro">
+            <p:panel id="filtro" toggleable="true" header="Filtro">
+              <h:panelGroup id="fieldsFiltro" layout="block">                            
+                <cp:line>
+                  <cp:group label="Tipo:">
+                    <cp:gridField id="tipoPesquisa" bean="#{despesaMB.despesaPesquisa}" field="tipo" />
+                  </cp:group>
+                  <cp:group label="Nota Fiscal:">
+                    <cp:gridField id="notaFiscal" bean="#{despesaMB.despesaPesquisa}" field="notaFiscal"/>
+                  </cp:group>
+                  <cp:group label="Fornecedor:">
+                    <cp:gridField id="fornecedor" bean="#{despesaMB.despesaPesquisa}" field="fornecedor"/>
+                  </cp:group>
+                </cp:line>
+              </h:panelGroup>
+              <p:commandButton id="btnOkFiltro" value="Filtrar" action="#{despesaMB.filtrar}" process="@this, fieldsFiltro" update="@form"/>
+            </p:panel>
+          </cp:line>
+          <cp:grid id="despGrid" label="Despesa" mb="#{despesaMB}">
+            <cp:line id="linhaDespesa" >
+              <cp:group id="groupDespesa" label="Tipo de Despesa:" required="true">
+                <p:selectOneMenu id="tipoDespesa" value="#{despesaMB.despesa.tipo}" converter="beanConverter" required="true" requiredMessage="Campo [Tipo Despesa] obrigatório." effectSpeed="50">
+                  <f:selectItem itemLabel="Selecione" itemValue=""/>
+                  <f:selectItems value="#{despesaMB.despesa.getEnumValues('tipo')}" var="obj" itemLabel="#{obj['label']}" itemValue="#{obj}"/>
+                  <p:ajax event="change" process="@this" oncomplete="groupViagem();"/>
+                </p:selectOneMenu>
+              </cp:group>
+              <p:remoteCommand process="@this" update="pnlViagem" name="groupViagem"/>
+              <h:panelGroup id="pnlViagem" layout="block">
+                <cp:group id="groupViagem" label="Viagem:" rendered="#{despesaMB.showGroupViagem}">
+                  <p:inputText id="viagem" value="#{despesaMB.despesa.viagem}" disabled="true"/>
+                  <p:commandButton id="btnAssociarViagem" value="Viagem" rendered="#{despesaMB.showAssociarBtn}" icon="ui-icon-search" process="@none" style="margin-left: 5px;" oncomplete="mdlAssociar.show()"/>
+                  <p:commandButton id="btnDesassociarViagem" value="Desassociar Viagem" actionListener="#{despesaMB.desassociarViagem()}" rendered="#{not empty despesaMB.despesa.viagem}" icon="ui-icon-search" process="@this" style="margin-left: 5px;" oncomplete="groupViagem();"/>
+                  <p:dialog id="overlayViagem" header="Associar Viagem" widgetVar="mdlAssociar" appendToBody="true" modal="true">
+                    <p:fieldset legend="Pesquisa Viagens">
+                      <h:panelGroup id="fieldsViagem" layout="block">
+                        <cp:line id="fieldsPesquisa">
+                          <cp:group label="Embarcação:">
+                            <cp:selectOneBean value="#{viagemMB.viagemPesquisa.embarcacao}" list="#{viagemMB.embarcacoes}"  listLabel="nome"/>
+                          </cp:group>
+                          <cp:group label="Data Início:">
+                            <cp:calendar value="#{viagemMB.viagemPesquisa.inicio}"/>
+                          </cp:group>
+                          <cp:group label="Data Fim:">
+                            <cp:calendar value="#{viagemMB.viagemPesquisa.fim}"/>
+                          </cp:group>
+                          <cp:group label="Identificador:">
+                            <cp:calendar value="#{viagemMB.viagemPesquisa.identificador}"/>
+                          </cp:group>
                         </cp:line>
-                    </cp:grid>
-                    <cp:line id="lineFiltro">
-                        <p:commandButton id="btnFiltro" value="Filtrar"/>
-                        <p:overlayPanel id="pnlFiltro" for="btnFiltro" >
-                            <h:panelGroup id="fieldsFiltro" layout="block">                            
-                                <cp:line>
-                                    <cp:group label="Tipo">
-                                        <cp:gridField id="tipoPesquisa" bean="#{despesaMB.despesaPesquisa}" field="tipo" />
-                                    </cp:group>
-                                    <cp:group label="Nota Fiscal">
-                                        <cp:gridField id="notaFiscal" bean="#{despesaMB.despesaPesquisa}" field="notaFiscal"/>
-                                    </cp:group>
-                                </cp:line>
-                            </h:panelGroup>
-                            <p:commandButton id="btnOkFiltro" value="Filtrar" action="#{despesaMB.filtrar}" process="@this, fieldsFiltro" update="@form"/>
-                        </p:overlayPanel>
-                    </cp:line>
-                </p:fieldset>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+                      </h:panelGroup>
+                      <p:commandButton id="pesquisarBtn" value="Pesquisar" actionListener="#{viagemMB.pesquisarViagens}" process="@this, fieldsViagem" update="listFieldSet" style="margin-top: 5px;"/>
+                      <p:fieldset id="listFieldSet" legend="Resultado" style="margin-top: 5px;">
+                        <p:dataTable id="resultList" value="#{viagemMB.viagens}" var="viagem" emptyMessage="Sem registros!" styleClass="table">
+                          <p:column>
+                            <f:facet name="header">
+                              <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Embarcação
+                              </p:outputPanel>
+                            </f:facet>
+                            #{viagem.embarcacao.nome}
+                          </p:column>
+                          <p:column>
+                            <f:facet name="header">
+                              <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Partida
+                              </p:outputPanel>
+                            </f:facet>
+                            <h:outputText value="#{viagem.inicio}" converter="outputTextConverter"/>
+                          </p:column>
+                          <p:column>
+                            <f:facet name="header">
+                              <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Chegada
+                              </p:outputPanel>
+                            </f:facet>
+                            <h:outputText value="#{viagem.fim}" converter="outputTextConverter"/>
+                          </p:column>
+                          <p:column>
+                            <f:facet name="header">
+                              <p:outputPanel style="white-space: nowrap; text-align: left;" layout="block">
+                                Associar
+                              </p:outputPanel>
+                            </f:facet>
+                            <p:commandButton id="alterBtn" actionListener="#{despesaMB.associarViagem(viagem)}" icon="ui-icon-pencil" process="@this" partialSubmit="true" oncomplete="groupViagem(); mdlAssociar.hide();"/>
+                          </p:column>
+                        </p:dataTable>
+                      </p:fieldset>
+                      <p:commandButton id="closeMdlAssociar" value="Cancelar" process="@none" oncomplete="mdlAssociar.hide();"/>
+                    </p:fieldset>
+                  </p:dialog>
+                </cp:group>
+              </h:panelGroup>
+            </cp:line>
+          </cp:grid>
+
+        </p:fieldset>
+      </h:form>
+    </ui:define>
+  </ui:composition>
 </html>

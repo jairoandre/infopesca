@@ -46,6 +46,10 @@ public class OutputTextConverter implements Converter {
         }else if (value instanceof Boolean){
             return ((Boolean) value) ? "Sim" : "Não";
         }
-        return value.toString();
+        String str = value.toString();
+        if(str.length() > 50){
+          str = str.substring(0,49);
+        }
+        return str;
     }
 }

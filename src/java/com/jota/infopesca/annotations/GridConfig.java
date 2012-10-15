@@ -43,7 +43,7 @@ public @interface GridConfig {
 
     int order() default -1;
 
-    int size() default 20;
+    int size() default 50;
 
     String mask() default "";
     
@@ -52,4 +52,8 @@ public @interface GridConfig {
     boolean columnVisible() default true;
     
     boolean textArea() default false;
+    
+    int cols() default 40;
+    
+    int rows() default 4;
 }

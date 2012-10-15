@@ -33,7 +33,7 @@ public class Fornecedor extends GridBean {
     @Basic(optional = false)
     @NotNull
     @Column(name = "FORNEC_CPFCNPJ")
-    @GridConfig(label = "CPF/CNPJ", editable = true, required = true, size = 50)
+    @GridConfig(label = "CPF/CNPJ", editable = true, required = true, mask="99.999.999/9999-99")
     private String cpfCnpj;
 
     @Override
