@@ -34,7 +34,7 @@ public class Despesa extends GridBean {
   @GridConfig(enumerated = true, label = "Tipo", required = true, visible = false)
   private TipoDespesa tipo;
   @Column(name = "DESP_CO_NF")
-  @GridConfig(label = "Nota Fiscal")
+  @GridConfig(label = "Nota Fiscal", size = 20)
   private String notaFiscal;
   @Basic(optional = false)
   @NotNull

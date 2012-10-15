@@ -43,7 +43,7 @@ public @interface GridConfig {
 
     int order() default -1;
 
-    int size() default 50;
+    int size() default 30;
 
     String mask() default "";
     

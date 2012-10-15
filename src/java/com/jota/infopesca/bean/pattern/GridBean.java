@@ -16,7 +16,7 @@ import java.util.*;
  * @author André
  */
 public abstract class GridBean implements Serializable {
-  
+
   public abstract String getOutputTextLabel();
 
   private GridConfig getAnnotation(String fieldName) {
@@ -53,8 +53,15 @@ public abstract class GridBean implements Serializable {
   public boolean isNotBigDecimal(String fieldName) {
     return !isCurrency(fieldName) && !isWeight(fieldName);
   }
-  
-  
+
+  public boolean isLongString(Object obj) {
+    if (obj instanceof String) {
+      return obj.toString().length() > 50;
+    } else {
+      return false;
+    }
+  }
+
   /**
    * Verifica se o campo é do tipo moeda.
    *

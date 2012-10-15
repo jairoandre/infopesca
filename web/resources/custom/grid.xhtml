@@ -8,86 +8,89 @@
       xmlns:cp="http://java.sun.com/jsf/composite/custom"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <!-- INTERFACE -->
-    <cc:interface>
-        <cc:attribute name="id"/>
-        <cc:attribute name="label" required="true"/>
-        <cc:attribute name="mb" required="true"/>
-    </cc:interface>
+  <!-- INTERFACE -->
+  <cc:interface>
+    <cc:attribute name="id"/>
+    <cc:attribute name="label" required="true"/>
+    <cc:attribute name="mb" required="true"/>
+  </cc:interface>
 
-    <!-- IMPLEMENTATION -->
-    <cc:implementation>
-        <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
-        <p:outputPanel id="grid">
-            <!-- FORM BOX -->
-            <p:outputPanel id="formPnl" layout="block">
-                <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
-                    <p:focus id="focusForm" context="fieldsPnl" />
-                    <p:fieldset id="gridFieldSet" legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-                        <cp:line id="line">
-                            <ui:repeat id="repeat" var="field" value="#{cc.attrs.mb.formFields}" varStatus="idx">
-                                <cp:group id="group" label="#{cc.attrs.mb.labels[field]}:" required="#{cc.attrs.mb.instance.isRequired(field)}">
-                                    <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}" required="#{cc.attrs.mb.instance.isRequired(field)}"/>
-                                </cp:group>
-                                <p:outputPanel rendered="#{(((idx.index + 1) % 3) == 0)}" layout="block" style="clear: left;"/>
-                            </ui:repeat>
-                        </cp:line>
-                        <cc:insertChildren/>
-                    </p:fieldset>
-                    <p:outputPanel id="btnsPnl" style="margin: 5px 0 5px 0;" layout="block">
-                        <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="fieldsPnl" update="grid" partialSubmit="true" />
-                        <p:spacer width="5"/>
-                        <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
-                    </p:outputPanel>
-                </p:outputPanel>
-            </p:outputPanel>
-            <!-- DATA TABLE -->
-            <p:outputPanel id="gridPnl" layout="block">
-                <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
-                    <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.deleteSelected}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
-                    <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Excluir selecionado(s)?" command="#{uniqueName}DeleteCommand()"/>
-                    <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridPnl"/>
-                    <p:spacer width="5"/>
-                    <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{uniqueName}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
-                    <p:spacer width="5"/>
-                    <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="@this" update="formPnl,gridPnl"/>
-                </p:outputPanel>
-                <p:remoteCommand name="#{uniqueName}Click" process="dataTableList" update="gridBtnsPnl"/>
-                <!-- Mensagem lista vazia -->
-                <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
-                <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
-                    <p:dataTable id="dataTableList"
-                                 value="#{cc.attrs.mb.list}"
-                                 var="obj"
-                                 paginator="true"
-                                 rows="5"
-                                 paginatorAlwaysVisible="false"
-                                 paginatorPosition="top"
-                                 selection="#{cc.attrs.mb.selectedItens}"
-                                 rowKey="#{obj.hashCode}"
-                                 styleClass="table">
-                        <p:ajax event="rowSelectCheckbox" process="@none" onstart="#{uniqueName}Click();" />
-                        <p:ajax event="rowUnselectCheckbox" process="@none" onstart="#{uniqueName}Click();"/>
-                        <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}">
-                            #{obj.hashCode}
-                        </p:column>
-                        <p:columns id="dynaColumns" value="#{cc.attrs.mb.columnFields}" var="field" columnIndexVar="idx">
-                            <f:facet name="header">
-                                <p:outputPanel id="headerLabel" style="white-space: nowrap; text-align: left;" layout="block">
-                                    #{cc.attrs.mb.labels[field]}
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:outputPanel id="value" layout="block">
-                                <h:outputText id="normalOutput" value="#{obj[field]}" converter="outputTextConverter" rendered="#{obj.isNotBigDecimal(field)}"/>
-                                <h:outputText id="currencyOutuput" value="#{obj[field]}" converter="currencyConverter" rendered="#{obj.isCurrency(field)}"/>
-                                <h:outputText id="weightOutuput" value="#{obj[field]}" converter="weightConverter" rendered="#{obj.isWeight(field)}"/>
-                                <p:tooltip value="#{obj[field]}" for="toolTip" rendered="#{obj.isNotBigDecimal(field)}" />
-                            </p:outputPanel>
-                        </p:columns>
-                    </p:dataTable>
-                </p:outputPanel>
-            </p:outputPanel>
-            <!-- DATATABLE -->
+  <!-- IMPLEMENTATION -->
+  <cc:implementation>
+    <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
+    <p:outputPanel id="grid">
+      <!-- FORM BOX -->
+      <p:outputPanel id="formPnl" layout="block">
+        <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
+          <p:focus id="focusForm" context="fieldsPnl" />
+          <p:fieldset id="gridFieldSet" legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
+            <cp:line id="line">
+              <ui:repeat id="repeat" var="field" value="#{cc.attrs.mb.formFields}" varStatus="idx">
+                <cp:group id="group" label="#{cc.attrs.mb.labels[field]}:" required="#{cc.attrs.mb.instance.isRequired(field)}">
+                  <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}" required="#{cc.attrs.mb.instance.isRequired(field)}"/>
+                </cp:group>
+                <p:outputPanel rendered="#{(((idx.index + 1) % 3) == 0)}" layout="block" style="clear: left;"/>
+              </ui:repeat>
+            </cp:line>
+            <cc:insertChildren/>
+          </p:fieldset>
+          <p:outputPanel id="btnsPnl" style="margin: 5px 0 5px 0;" layout="block">
+            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="fieldsPnl" update="grid" partialSubmit="true" />
+            <p:spacer width="5"/>
+            <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
+          </p:outputPanel>
         </p:outputPanel>
-    </cc:implementation>
+      </p:outputPanel>
+      <!-- DATA TABLE -->
+      <p:outputPanel id="gridPnl" layout="block">
+        <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
+          <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.deleteSelected}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
+          <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Excluir selecionado(s)?" command="#{uniqueName}DeleteCommand()"/>
+          <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridPnl"/>
+          <p:spacer width="5"/>
+          <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{uniqueName}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
+          <p:spacer width="5"/>
+          <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="@this" update="formPnl,gridPnl"/>
+        </p:outputPanel>
+        <p:remoteCommand name="#{uniqueName}Click" process="dataTableList" update="gridBtnsPnl"/>
+        <!-- Mensagem lista vazia -->
+        <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
+        <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
+          <p:dataTable id="dataTableList"
+                       value="#{cc.attrs.mb.list}"
+                       var="obj"
+                       paginator="true"
+                       rows="10"
+                       paginatorAlwaysVisible="false"
+                       paginatorPosition="top"
+                       selection="#{cc.attrs.mb.selectedItens}"
+                       rowKey="#{obj.hashCode}"
+                       styleClass="table">
+            <p:ajax event="rowSelectCheckbox" process="@none" onstart="#{uniqueName}Click();" />
+            <p:ajax event="rowUnselectCheckbox" process="@none" onstart="#{uniqueName}Click();"/>
+            <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}">
+              #{obj.hashCode}
+            </p:column>
+            <p:columns id="dynaColumns" value="#{cc.attrs.mb.columnFields}" var="field" columnIndexVar="idx">
+              <f:facet name="header">
+                <p:outputPanel id="headerLabel" style="white-space: nowrap; text-align: left;" layout="block">
+                  #{cc.attrs.mb.labels[field]}
+                </p:outputPanel>
+              </f:facet>
+              <p:outputPanel id="value" layout="block">
+                <h:outputText id="normalOutput" value="#{obj[field]}" converter="outputTextConverter" rendered="#{obj.isNotBigDecimal(field)}"/>
+                <p:outputPanel id="toolTip" styleClass="ui-icon-pencil" rendered="#{obj.isNotBigDecimal(field) and obj.isLongString(obj[field])}" style="cursor: pointer;">
+                  <h:outputText value="..."/>
+                  <p:tooltip value="#{obj[field]}" for="toolTip" style="width: 300px; border: 1px solid #ccc; font-weight: bold; box-shadow: 3px 3px 5px #ccc;"/>
+                </p:outputPanel>
+                <h:outputText id="currencyOutuput" value="#{obj[field]}" converter="currencyConverter" rendered="#{obj.isCurrency(field)}" style="white-space: nowrap;"/>
+                <h:outputText id="weightOutuput" value="#{obj[field]}" converter="weightConverter" rendered="#{obj.isWeight(field)}"/>
+              </p:outputPanel>
+            </p:columns>
+          </p:dataTable>
+        </p:outputPanel>
+      </p:outputPanel>
+      <!-- DATATABLE -->
+    </p:outputPanel>
+  </cc:implementation>
 </html>

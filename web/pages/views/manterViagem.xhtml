@@ -57,7 +57,7 @@
             </p:tab>
           </p:tabView>
           <p:commandButton value="Salvar" action="#{viagemMB.cadastrarViagem}" process="@this, dadosIniciais" update="@form"/>
-          <p:commandButton value="Cancelar" action="pesquisaViagem" immediate="true"/>
+          <p:commandButton value="Cancelar" action="pesquisaViagem" immediate="true" ajax="false"/>
         </p:fieldset>
       </h:form>
     </ui:define>
