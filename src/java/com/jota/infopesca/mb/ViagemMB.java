@@ -163,7 +163,6 @@ public class ViagemMB {
                 return true;
             }
         };
-
         viagem.setDespesas(new ArrayList<Despesa>());
         softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
         viagem.setVendas(new ArrayList<Venda>());

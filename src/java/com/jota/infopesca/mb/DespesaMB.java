@@ -8,9 +8,9 @@ import com.jota.infopesca.bean.Despesa;
 import com.jota.infopesca.bean.Viagem;
 import com.jota.infopesca.enums.TipoDespesa;
 import com.jota.infopesca.enums.TipoOperacao;
-import com.jota.infopesca.util.FacesUtil;
-import com.jota.infopesca.util.QueryUtil;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -22,20 +22,8 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class DespesaMB extends HardGridControl<Despesa> {
 
-  public Despesa despesaPesquisa;
-
   public DespesaMB() {
     super(Despesa.class);
-    despesaPesquisa = new Despesa();
-    despesaPesquisa.setTipo(null);
-  }
-
-  public Despesa getDespesaPesquisa() {
-    return despesaPesquisa;
-  }
-
-  public void setDespesaPesquisa(Despesa despesaPesquisa) {
-    this.despesaPesquisa = despesaPesquisa;
   }
 
   public Despesa getDespesa() {
@@ -54,8 +42,8 @@ public class DespesaMB extends HardGridControl<Despesa> {
   public void associarViagem(Viagem viagem) {
     getDespesa().setViagem(viagem);
   }
-  
-  public void desassociarViagem(){
+
+  public void desassociarViagem() {
     getDespesa().setViagem(null);
   }
 
@@ -76,34 +64,27 @@ public class DespesaMB extends HardGridControl<Despesa> {
     return TipoDespesa.MANUTENCAO.equals(despesa.getTipo()) || TipoDespesa.VIAGEM.equals(despesa.getTipo());
   }
 
-  private List<Despesa> pesquisar() {
-    try {
-      QueryUtil<Despesa> query = new QueryUtil<Despesa>(despesaPesquisa);
-      query.addCriteria("tipo", TipoOperacao.EQ);
-      query.addCriteria("notaFiscal", TipoOperacao.EQ);
-      query.addCriteria("fornecedor", TipoOperacao.EQ);
-      return getBc().listByProperties(query);
-    } catch (Exception e) {
-      return null;
-    }
-  }
-
-  public void filtrar() {
-    List<Despesa> lista = pesquisar();
-    if (lista == null) {
-      FacesUtil.addWarn("Erro na pesquisa.");
-    } else {
-      setList(lista);
-    }
-  }
-
   @Override
-  protected List<Despesa> refresh() {
-    List<Despesa> lista = pesquisar();
-    if (lista == null) {
-      return super.refresh();
-    } else {
-      return lista;
+  protected void init() {
+    Despesa sample = new Despesa();
+    sample.setTipo(null);
+    setSample(sample);
+    Map<String, TipoOperacao> searchParams = new HashMap<String, TipoOperacao>();
+    searchParams.put("tipo", TipoOperacao.EQ);
+    searchParams.put("notaFiscal", TipoOperacao.EQ);
+    searchParams.put("fornecedor", TipoOperacao.EQ);
+    setSearchParams(searchParams);
+  }
+
+  public BigDecimal getTotal() {
+    BigDecimal total = BigDecimal.ZERO;
+    for (Object obj : getList()) {
+      Despesa desp = (Despesa) obj;
+      BigDecimal custo = desp.getCusto();
+      if (custo != null) {
+        total = total.add(desp.getCusto());
+      }
     }
+    return total;
   }
 }

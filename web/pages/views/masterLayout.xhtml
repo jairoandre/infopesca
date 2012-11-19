@@ -22,6 +22,9 @@
       <div id="header">
         <div class="header-block">
           <h:form id="form-menu">
+            <p:ajaxStatus id="teste" onstart="statusDialog.show()" oncomplete="statusDialog.hide()"/>
+            <p:growl id="growlGlobal" globalOnly="true" showDetail="true" autoUpdate="true"/>
+            <p:growl id="growl" redisplay="false" autoUpdate="true"/>
             <p:dialog id="status" modal="true" widgetVar="statusDialog" header="Carregando"   
                       draggable="false" closable="false">  
               <p:graphicImage value="#{resource['imgs:ajaxloadingbar.gif']}"/>  

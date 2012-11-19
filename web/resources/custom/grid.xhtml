@@ -18,59 +18,45 @@
   <!-- IMPLEMENTATION -->
   <cc:implementation>
     <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
-    <p:outputPanel id="grid">
+    <p:outputPanel id="grid" rendered="#{not empty cc.attrs.mb}">
       <!-- FORM BOX -->
-      <p:outputPanel id="formPnl" layout="block">
+      <p:dialog id="formMdl" modal="true" resizable="false" widgetVar="#{uniqueName}Modal" appendToBody="true" header="#{cc.attrs.label} - #{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}" closable="false" width="600">
         <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
           <p:focus id="focusForm" context="fieldsPnl" />
-          <p:fieldset id="gridFieldSet" legend="#{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}">
-            <cp:line id="line">
-              <ui:repeat id="repeat" var="field" value="#{cc.attrs.mb.formFields}" varStatus="idx">
-                <cp:group id="group" label="#{cc.attrs.mb.labels[field]}:" required="#{cc.attrs.mb.instance.isRequired(field)}">
-                  <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}" required="#{cc.attrs.mb.instance.isRequired(field)}"/>
-                </cp:group>
-                <p:outputPanel rendered="#{(((idx.index + 1) % 3) == 0)}" layout="block" style="clear: left;"/>
-              </ui:repeat>
-            </cp:line>
-            <cc:insertChildren/>
-          </p:fieldset>
+          <cp:line id="line">
+            <ui:repeat id="repeat" var="field" value="#{cc.attrs.mb.formFields}" varStatus="idx">
+              <cp:group id="group" label="#{cc.attrs.mb.labels[field]}:" required="#{cc.attrs.mb.instance.isRequired(field)}">
+                <cp:gridField id="field" bean="#{cc.attrs.mb.instance}" field="#{field}" required="#{cc.attrs.mb.instance.isRequired(field)}"/>
+              </cp:group>
+              <p:outputPanel rendered="#{(((idx.index + 1) % 3) == 0)}" layout="block" style="clear: left;"/>
+            </ui:repeat>
+          </cp:line>
+          <cc:insertChildren/>
           <p:outputPanel id="btnsPnl" style="margin: 5px 0 5px 0;" layout="block">
-            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="fieldsPnl" update="grid" partialSubmit="true" />
+            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formMdl" update="fieldsPnl, gridPnl" oncomplete="if(!args.validationFailed) #{uniqueName}Modal.hide(); else return;" partialSubmit="true"/>
             <p:spacer width="5"/>
-            <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="formPnl,gridBtnsPnl,dataTableList"/>
+            <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" oncomplete="#{uniqueName}Modal.hide();"/>
           </p:outputPanel>
-        </p:outputPanel>
-      </p:outputPanel>
+        </p:outputPanel>        
+      </p:dialog>
       <!-- DATA TABLE -->
       <p:outputPanel id="gridPnl" layout="block">
         <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
-          <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.deleteSelected}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
-          <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Excluir selecionado(s)?" command="#{uniqueName}DeleteCommand()"/>
-          <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" rendered="#{!cc.attrs.mb.showForm}" process="@this" update="formPnl,gridPnl"/>
-          <p:spacer width="5"/>
-          <p:commandButton id="deleteBtn" value="Excluir Selecionados" process="@none" onclick="#{uniqueName}DeleteDialog.show()" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.atLeastOneSelect}"/>
-          <p:spacer width="5"/>
-          <p:commandButton id="alterBtn" actionListener="#{cc.attrs.mb.preAlter}" value="Alterar Selecionado" rendered="#{!cc.attrs.mb.showForm}" disabled="#{!cc.attrs.mb.onlyOneSelect}" process="@this" update="formPnl,gridPnl"/>
+          <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.delete}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
+          <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Confirma a exclusão?" command="#{uniqueName}DeleteCommand()"/>
+          <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" process="@this" update="formMdl" oncomplete="#{uniqueName}Modal.show();"/>
         </p:outputPanel>
-        <p:remoteCommand name="#{uniqueName}Click" process="dataTableList" update="gridBtnsPnl"/>
         <!-- Mensagem lista vazia -->
         <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
         <p:outputPanel id="listPnl" rendered="#{!cc.attrs.mb.emptyList}" layout="block">
           <p:dataTable id="dataTableList"
-                       value="#{cc.attrs.mb.list}"
+                       value="#{cc.attrs.mb.model}"
                        var="obj"
                        paginator="true"
                        rows="10"
-                       paginatorAlwaysVisible="false"
                        paginatorPosition="top"
-                       selection="#{cc.attrs.mb.selectedItens}"
-                       rowKey="#{obj.hashCode}"
-                       styleClass="table">
-            <p:ajax event="rowSelectCheckbox" process="@none" onstart="#{uniqueName}Click();" />
-            <p:ajax event="rowUnselectCheckbox" process="@none" onstart="#{uniqueName}Click();"/>
-            <p:column id="selector" selectionMode="multiple" style="text-align: center;" disabledSelection="#{cc.attrs.mb.showForm}">
-              #{obj.hashCode}
-            </p:column>
+                       styleClass="table" 
+                       lazy="true" transient="true">
             <p:columns id="dynaColumns" value="#{cc.attrs.mb.columnFields}" var="field" columnIndexVar="idx">
               <f:facet name="header">
                 <p:outputPanel id="headerLabel" style="white-space: nowrap; text-align: left;" layout="block">
@@ -87,6 +73,17 @@
                 <h:outputText id="weightOutuput" value="#{obj[field]}" converter="weightConverter" rendered="#{obj.isWeight(field)}"/>
               </p:outputPanel>
             </p:columns>
+            <p:column id="actions">
+              <f:facet name="header">
+                Ações
+              </f:facet>
+              <p:commandButton id="btnAlterar" actionListener="#{cc.attrs.mb.preAlter}" icon="ui-icon-pencil" process="@this" update="-#{cc.clientId}-formMdl" oncomplete="#{uniqueName}Modal.show();" style="display: inline-table">
+                <f:setPropertyActionListener value="#{obj}" target="#{cc.attrs.mb.instance}"/>
+              </p:commandButton>
+              <p:commandButton id="btnExcluir" actionListener="#{cc.attrs.mb.preDelete}" icon="ui-icon-trash" process="@this" oncomplete="#{uniqueName}DeleteDialog.show()" style="display: inline-table">
+                <f:setPropertyActionListener value="#{obj}" target="#{cc.attrs.mb.instance}"/>
+              </p:commandButton>
+            </p:column>
           </p:dataTable>
         </p:outputPanel>
       </p:outputPanel>

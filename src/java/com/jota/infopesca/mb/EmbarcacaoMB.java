@@ -18,6 +18,6 @@ public class EmbarcacaoMB extends HardGridControl<Embarcacao> {
     
     public EmbarcacaoMB(){
         super(Embarcacao.class);
-    }    
-       
+    }
+
 }

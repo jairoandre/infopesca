@@ -3,23 +3,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:cp="http://java.sun.com/jsf/composite/custom">
+      xmlns:cp="http://java.sun.com/jsf/composite/custom"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <!-- INTERFACE -->
-    <cc:interface>
-        <cc:attribute name="id"/>
-        <cc:attribute name="label" required="true"/>
-        <cc:attribute name="mb" required="true"/>
-    </cc:interface>
+  <!-- INTERFACE -->
+  <cc:interface>
+    <cc:attribute name="id"/>
+    <cc:attribute name="label" required="true"/>
+    <cc:attribute name="mb" required="true"/>
+  </cc:interface>
 
-    <!-- IMPLEMENTATION -->
-    <cc:implementation>
-        <cp:grid id="cpGrid" label="#{cc.attrs.label}" mb="#{cc.attrs.mb}">
-            <p:tabView id="tabView" var="tab" value="#{cc.attrs.mb.softControllersSet}" dynamic="true" rendered="#{not empty cc.attrs.mb.softControllers}">
-                <p:tab id="tab" title="#{cc.attrs.mb.softControllersLabels[tab]}">
-                    <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[tab]}" mb="#{cc.attrs.mb.softControllers[tab]}"/>
-                </p:tab>
-            </p:tabView>
-        </cp:grid>
-    </cc:implementation>
+  <!-- IMPLEMENTATION -->
+  <cc:implementation>
+    <cp:grid id="cpGrid" label="#{cc.attrs.label}" mb="#{cc.attrs.mb}">
+      <ui:repeat var="field" value="#{cc.attrs.mb.softControllersSet}">
+        <p:panel header="#{cc.attrs.mb.softControllersLabels[field]}" toggleable="true">
+          <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[field]}" mb="#{cc.attrs.mb.softControllers[field]}"/>
+        </p:panel>
+      </ui:repeat>
+    </cp:grid>
+  </cc:implementation>
 </html>

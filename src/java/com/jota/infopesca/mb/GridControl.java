@@ -5,6 +5,9 @@
 package com.jota.infopesca.mb;
 
 import com.jota.infopesca.annotations.GridConfig;
+import com.jota.infopesca.business.GenericBC;
+import com.jota.infopesca.enums.TipoOperacao;
+import com.jota.infopesca.util.QueryUtil;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,6 +15,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -22,18 +28,22 @@ public abstract class GridControl<T> implements Serializable {
   private Class<T> clazz;
   private List<T> list;
   private T instance;
+  private T sample;
+  private Map<String, TipoOperacao> searchParams;
   private boolean showForm = false;
   private Boolean isNewRecord;
   private Map<String, String> labels;
   private List<String> fieldNames;
   private List<String> formFields;
   private List<String> columnFields;
-  private T[] selectedItens;
   private Map<String, SoftGridControl> softControllers;
   private Map<String, String> softControllersLabels;
   private Map<String, Class> softControllersClass;
   private Map<String, String> getterNames;
   private Map<String, String> setterNames;
+  private LazyDataModel<T> model;
+  private GenericBC<T> bc;
+  private DataTable dataTable = new DataTable();
 
   public GridControl(Class<T> clazz) {
     this.clazz = clazz;
@@ -42,7 +52,9 @@ public abstract class GridControl<T> implements Serializable {
     softControllersClass = new HashMap<String, Class>();
     getterNames = new HashMap<String, String>();
     setterNames = new HashMap<String, String>();
+    bc = new GenericBC<T>(clazz);
     retrieveLabelsAndFields();
+    dataTable.setFirst(0);
   }
 
   protected abstract void add(T obj);
@@ -51,7 +63,7 @@ public abstract class GridControl<T> implements Serializable {
 
   protected abstract void remove(T obj);
 
-  protected abstract List<T> refresh();
+  protected void init(){};
 
   protected boolean validateInclude() {
     return true;
@@ -72,7 +84,6 @@ public abstract class GridControl<T> implements Serializable {
         String fieldName = field.getName();
         // Campos griddable não compõem o formulário normal de dados.
         if (annotation.griddable()) {
-          softControllers.put(fieldName, null);
           softControllersLabels.put(fieldName, annotation.label());
           softControllersClass.put(fieldName, annotation.softGridClass());
           getterNames.put(fieldName, composeMethodName("get", fieldName));
@@ -101,12 +112,40 @@ public abstract class GridControl<T> implements Serializable {
     }
   }
 
-  protected void updateList() {
-    try {
-      list = refresh();
-    } catch (Exception e) {
-      System.out.println("Erro: " + e.getMessage());
+  protected List<T> listAll() throws Exception {
+    return bc.listAll();
+  }
+
+  public final void search() throws Exception {
+    dataTable.setFirst(0);
+    if (sample != null) {
+      QueryUtil<T> query = new QueryUtil<T>(sample);
+      for (String field : searchParams.keySet()) {
+        query.addCriteria(field, searchParams.get(field));
+      }
+      list = bc.listByProperties(query);
+    } else {
+      list = listAll();
     }
+    final int listSize = list.size();
+    model = new LazyDataModel<T>() {
+
+      @Override
+      public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filter) {
+        if (listSize > pageSize) {
+
+          try {
+            return list.subList(first, first + pageSize);
+          } catch (IndexOutOfBoundsException e) {
+            System.out.println("Tamanho da lista ultrapassado!");
+            return list.subList(first, first + (listSize % pageSize));
+          }
+        } else {
+          return list;
+        }
+      }
+    };
+    model.setRowCount(listSize);
   }
 
   /*
@@ -123,21 +162,18 @@ public abstract class GridControl<T> implements Serializable {
       } else {
         alter(instance);
       }
-      updateList();
+      search();
       showForm = false;
-      selectedItens = null;
     } catch (Exception ex) {
       System.out.println("Erro: " + ex.getMessage());
     }
 
   }
 
-  public void deleteSelected() {
+  public void delete() {
     try {
-      for (T obj : selectedItens) {
-        remove(obj);
-      }
-      updateList();
+      remove(instance);
+      search();
     } catch (Exception e) {
       System.out.println(e);
     }
@@ -174,12 +210,12 @@ public abstract class GridControl<T> implements Serializable {
 
   public void preAlter() {
     isNewRecord = false;
-    for (T item : selectedItens) {
-      instance = item;
-      mountSoftControllers();
-      break;
-    }
+    mountSoftControllers();
     showForm = true;
+  }
+
+  public void preDelete() {
+    isNewRecord = false;
   }
 
   public void preInclude() {
@@ -197,7 +233,6 @@ public abstract class GridControl<T> implements Serializable {
 
   public void cancel(ActionEvent e) {
     showForm = false;
-    selectedItens = null;
   }
 
   /*
@@ -259,12 +294,20 @@ public abstract class GridControl<T> implements Serializable {
     this.list = list;
   }
 
-  public T[] getSelectedItens() {
-    return selectedItens;
+  public T getSample() {
+    return sample;
   }
 
-  public void setSelectedItens(T[] selectedItens) {
-    this.selectedItens = selectedItens;
+  public void setSample(T sample) {
+    this.sample = sample;
+  }
+
+  public Map<String, TipoOperacao> getSearchParams() {
+    return searchParams;
+  }
+
+  public void setSearchParams(Map<String, TipoOperacao> searchParams) {
+    this.searchParams = searchParams;
   }
 
   public Boolean getIsNewRecord() {
@@ -293,6 +336,10 @@ public abstract class GridControl<T> implements Serializable {
     return softControllersLabels;
   }
 
+  public LazyDataModel<T> getModel() {
+    return model;
+  }
+
   /*
    * ARTIFICIAL GETTERS
    */
@@ -314,21 +361,16 @@ public abstract class GridControl<T> implements Serializable {
     return this.fieldNames != null ? this.fieldNames.size() + 1 : 0;
   }
 
-  /**
-   * Verifica se há ao menos um item selecionado.
-   *
-   * @return
-   */
-  public boolean isAtLeastOneSelect() {
-    return selectedItens != null ? selectedItens.length > 0 : false;
+  public GenericBC<T> getBc() {
+    return this.bc;
   }
 
-  /**
-   * Verifica se há ao menos um item selecionado.
-   *
-   * @return
-   */
-  public boolean isOnlyOneSelect() {
-    return selectedItens != null ? selectedItens.length == 1 : false;
+  public DataTable getDataTable() {
+    return dataTable;
   }
+
+  public void setDataTable(DataTable dataTable) {
+    this.dataTable = dataTable;
+  }
+  
 }

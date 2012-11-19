@@ -4,63 +4,48 @@
  */
 package com.jota.infopesca.mb;
 
-import com.jota.infopesca.business.GenericBC;
-import java.util.List;
-
 /**
  * Classe genérica para manutenção de CRUD simples.
  *
  * @author root
  */
-public class HardGridControl<T> extends GridControl {
+public abstract class HardGridControl<T> extends GridControl {
 
-    private GenericBC<T> bc;
+  public HardGridControl(Class<T> clazz) {
+    super(clazz);
+    init();
+    try {
+      search();
+    } catch (Exception e) {
+      System.out.println("Erro na excecução da consulta: " + e.getMessage());
+    }
+  }
 
-    public HardGridControl(Class<T> clazz) {
-        super(clazz);
-        this.bc = new GenericBC<T>(clazz);
-        updateList();
+  @Override
+  protected void add(Object obj) {
+    try {
+      getBc().persist((T) obj);
+    } catch (Exception e) {
+      System.out.println(e);
     }
 
-    @Override
-    protected void add(Object obj) {
-        try {
-            bc.persist((T) obj);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+  }
 
+  @Override
+  protected void alter(Object obj) {
+    try {
+      getBc().update((T) obj);
+    } catch (Exception e) {
+      System.out.println(e);
     }
+  }
 
-    @Override
-    protected void alter(Object obj) {
-        try {
-            bc.update((T) obj);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+  @Override
+  protected void remove(Object obj) {
+    try {
+      getBc().remove((T) obj);
+    } catch (Exception e) {
+      System.out.println(e);
     }
-
-    @Override
-    protected void remove(Object obj) {
-        try {
-            bc.remove((T) obj);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    @Override
-    protected List<T> refresh() {
-        try {
-            return bc.listAll();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
-    }
-    
-    protected GenericBC<T> getBc(){
-        return bc;
-    }
+  }
 }

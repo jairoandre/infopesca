@@ -10,25 +10,35 @@
   <ui:composition template="masterLayout.xhtml">
     <ui:define name="content">
       <h:form id="form">
-        <p:fieldset legend="Despesa">
+        <p:fieldset legend="Despesas">
           <cp:line id="lineFiltro">
             <p:panel id="filtro" toggleable="true" header="Filtro">
               <h:panelGroup id="fieldsFiltro" layout="block">                            
                 <cp:line>
                   <cp:group label="Tipo:">
-                    <cp:gridField id="tipoPesquisa" bean="#{despesaMB.despesaPesquisa}" field="tipo" />
+                    <cp:gridField id="tipoPesquisa" bean="#{despesaMB.sample}" field="tipo" />
                   </cp:group>
                   <cp:group label="Fornecedor:">
-                    <cp:gridField id="fornecedor" bean="#{despesaMB.despesaPesquisa}" field="fornecedor"/>
+                    <cp:gridField id="fornecedor" bean="#{despesaMB.sample}" field="fornecedor"/>
                   </cp:group>
                   <cp:group label="Nota Fiscal:">
-                    <cp:gridField id="notaFiscal" bean="#{despesaMB.despesaPesquisa}" field="notaFiscal"/>
+                    <cp:gridField id="notaFiscal" bean="#{despesaMB.sample}" field="notaFiscal"/>
                   </cp:group>
                 </cp:line>
               </h:panelGroup>
-              <p:commandButton id="btnOkFiltro" value="Filtrar" action="#{despesaMB.filtrar}" process="@this, fieldsFiltro" update="@form"/>
+              <p:commandButton id="btnOkFiltro" value="Filtrar" actionListener="#{despesaMB.search}" process="@this, fieldsFiltro" update="@form"/>
             </p:panel>
           </cp:line>
+          <p:panel id="informacoes" toggleable="true" header="Informações">
+            <cp:line>
+              <cp:group label="Total de despesas (listadas):">
+                <h:outputText value="#{despesaMB.total}" converter="currencyConverter"/>
+              </cp:group>
+              <cp:group label="Quantidade de registros (listadas):">
+                #{despesaMB.list.size()}
+              </cp:group>
+            </cp:line>
+          </p:panel>
           <cp:grid id="despGrid" label="Despesa" mb="#{despesaMB}">
             <cp:line id="linhaDespesa" >
               <cp:group id="groupDespesa" label="Tipo de Despesa:" required="true">
@@ -44,7 +54,7 @@
                   <p:inputText id="viagem" value="#{despesaMB.despesa.viagem}" disabled="true"/>
                   <p:commandButton id="btnAssociarViagem" value="Viagem" rendered="#{despesaMB.showAssociarBtn}" icon="ui-icon-search" process="@none" style="margin-left: 5px;" oncomplete="mdlAssociar.show()"/>
                   <p:commandButton id="btnDesassociarViagem" value="Desassociar Viagem" actionListener="#{despesaMB.desassociarViagem()}" rendered="#{not empty despesaMB.despesa.viagem}" icon="ui-icon-search" process="@this" style="margin-left: 5px;" oncomplete="groupViagem();"/>
-                  <p:dialog id="overlayViagem" header="Associar Viagem" widgetVar="mdlAssociar" appendToBody="true" modal="true">
+                  <p:dialog id="mdlAssociar" header="Associar Viagem" widgetVar="mdlAssociar" appendToBody="true" modal="true">
                     <p:fieldset legend="Pesquisa Viagens">
                       <h:panelGroup id="fieldsViagem" layout="block">
                         <cp:line id="fieldsPesquisa">

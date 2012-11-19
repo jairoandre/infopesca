@@ -10,8 +10,6 @@
     <ui:define name="content">
       <h:form id="form">
         <p:focus/>
-        <p:growl id="growlGlobal" globalOnly="true" showDetail="true" autoUpdate="true"/>
-        <p:growl id="growl" redisplay="false" autoUpdate="true"/>
         <p:fieldset legend="#{viagemMB.alterando ? 'Alterar Viagem' : 'Nova Viagem'}">
           <p:fieldset id="dadosIniciais" legend="Dados Básicos da Viagem">
             <cp:line id="line">
@@ -29,11 +27,10 @@
               </cp:group>
             </cp:line>
           </p:fieldset>
-
-          <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="false" cache="false" >
+          <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="false" >
             <p:tab id="tripTab" title="Tripulação">
               <p:outputPanel id="pnlTrip">
-                <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>                            
+                <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
               </p:outputPanel>
               <p:commandButton id="btnCarregarTripucao" actionListener="#{viagemMB.carregarTripulacaoRecente}" value="Carregar Tripulação Recente" style="margin-top: 5px" process="@form" update="pnlTrip"/>
             </p:tab>
@@ -47,7 +44,11 @@
               </cp:grid>
             </p:tab>
             <p:tab id="vendaTab" title="Venda">
-              <cp:softGrid id="venda" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
+              <cp:grid id="cpGrid" label="Vendas" mb="#{viagemMB.softGridVenda}">
+                <p:panel header="#{viagemMB.softGridVenda.softControllersLabels['pescados']}" toggleable="true">
+                  <cp:grid id="softGrid" label="#{viagemMB.softGridVenda.softControllersLabels['pescados']}" mb="#{viagemMB.softGridVenda.softControllers['pescados']}"/>
+                </p:panel>
+              </cp:grid>
             </p:tab>
             <p:tab id="balancoTab" title="Balanço">
               <p:commandButton id="btnAtualizarBalanco" actionListener="#{viagemMB.fecharConta}" process="@this" update="pnlBalanco" value="Atualizar Balanço" />
