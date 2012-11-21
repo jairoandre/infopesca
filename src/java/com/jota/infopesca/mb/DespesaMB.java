@@ -12,14 +12,14 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author 08404235783
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class DespesaMB extends HardGridControl<Despesa> {
 
   public DespesaMB() {

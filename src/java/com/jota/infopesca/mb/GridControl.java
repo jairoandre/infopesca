@@ -84,6 +84,7 @@ public abstract class GridControl<T> implements Serializable {
         String fieldName = field.getName();
         // Campos griddable não compõem o formulário normal de dados.
         if (annotation.griddable()) {
+          softControllers.put(fieldName, new SoftGridControl(annotation.softGridClass(), instance));
           softControllersLabels.put(fieldName, annotation.label());
           softControllersClass.put(fieldName, annotation.softGridClass());
           getterNames.put(fieldName, composeMethodName("get", fieldName));

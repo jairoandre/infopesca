@@ -27,7 +27,7 @@
               </cp:group>
             </cp:line>
           </p:fieldset>
-          <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="false" >
+          <p:tabView id="tabView" style="margin: 5px 0 5px;" dynamic="true" >
             <p:tab id="tripTab" title="Tripulação">
               <p:outputPanel id="pnlTrip">
                 <cp:grid label="Tripulantes" mb="#{viagemMB.softGridTripulante}" id="tripulantes"/>
@@ -44,11 +44,7 @@
               </cp:grid>
             </p:tab>
             <p:tab id="vendaTab" title="Venda">
-              <cp:grid id="cpGrid" label="Vendas" mb="#{viagemMB.softGridVenda}">
-                <p:panel header="#{viagemMB.softGridVenda.softControllersLabels['pescados']}" toggleable="true">
-                  <cp:grid id="softGrid" label="#{viagemMB.softGridVenda.softControllersLabels['pescados']}" mb="#{viagemMB.softGridVenda.softControllers['pescados']}"/>
-                </p:panel>
-              </cp:grid>
+              <cp:grid id="cpGrid" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
             </p:tab>
             <p:tab id="balancoTab" title="Balanço">
               <p:commandButton id="btnAtualizarBalanco" actionListener="#{viagemMB.fecharConta}" process="@this" update="pnlBalanco" value="Atualizar Balanço" />

@@ -6,17 +6,16 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Funcionario;
 import com.jota.infopesca.bean.Vale;
-import com.jota.infopesca.business.GenericBC;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author 08404235783
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ValeMB extends HardGridControl<Vale> {
     
     private List<Vale> vales;
