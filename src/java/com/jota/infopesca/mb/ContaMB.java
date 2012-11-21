@@ -10,14 +10,14 @@ import com.jota.infopesca.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author 08404235783
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ContaMB {
 
     private Conta conta;

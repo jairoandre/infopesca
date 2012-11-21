@@ -6,14 +6,14 @@ package com.jota.infopesca.mb;
 
 import com.jota.infopesca.bean.Peixe;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PeixeMB extends HardGridControl<Peixe> {
 
     public PeixeMB() {

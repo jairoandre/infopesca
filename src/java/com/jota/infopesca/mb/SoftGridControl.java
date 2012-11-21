@@ -27,10 +27,16 @@ public class SoftGridControl<T> extends GridControl {
   protected final void init() {
     setList(list);
   }
-  
+
+  public SoftGridControl(Class<T> clazz, Object parent) {
+    super(clazz);
+    list = new ArrayList<T>();
+    this.parent = parent;
+
+  }
+
   public SoftGridControl(Class<T> clazz, Collection<T> list, Object parent) {
     super(clazz);
-    this.list = new ArrayList<T>(list);
     this.parent = parent;
     init();
     try {
@@ -55,5 +61,4 @@ public class SoftGridControl<T> extends GridControl {
   protected void remove(Object obj) {
     this.list.remove((T) obj);
   }
-
 }
