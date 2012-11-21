@@ -6,22 +6,20 @@
     <class>com.jota.infopesca.mb.FornecedorMB</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-            <!-- 
             <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/infopesca"/>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
             <property name="javax.persistence.jdbc.user" value="infopesca"/>
             <property name="javax.persistence.jdbc.password" value="infopesca"/>
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
             <property name="eclipselink.ddl-generation" value="create-tables"/>
-            -->
+            <!-- 
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/infopesca"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.user" value="infopesca"/>
             <property name="javax.persistence.jdbc.password" value="infopesca"/>
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-            <property name="eclipselink.ddl-generation" value="create-tables"/>                    
-        <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/infopesca"/><property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/><property name="hibernate.connection.username" value="infopesca"/><property name="hibernate.connection.password" value="infopesca"/><property name="eclipselink.ddl-generation" value="drop-and-create-tables"/><property name="eclipselink.ddl-generation" value="create-tables"/>
-            --&gt;
+            <property name="eclipselink.ddl-generation" value="create-tables"/>-->
+            
         </properties>
   </persistence-unit>
 </persistence>
