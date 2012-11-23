@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
@@ -23,7 +24,7 @@ import org.primefaces.event.TabChangeEvent;
  * @author André
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ViagemMB {
 
   private GenericBC<Viagem> bc = new GenericBC<Viagem>(Viagem.class);
@@ -43,7 +44,6 @@ public class ViagemMB {
   }
 
   public ViagemMB() {
-    preIncluirViagem();
     viagemPesquisa = new Viagem();
     updateListaEmbarcacao();
   }
@@ -144,15 +144,14 @@ public class ViagemMB {
     return null;
   }
 
-  
-  private void preIncluirViagem() {
+  public String preIncluirViagem() {
     this.alterando = false;
     viagem = new Viagem();
     viagem.setInicio(new Date());
     viagem.setFechada(false);
     viagem.setTripulantes(new ArrayList<Tripulante>());
-    
-    softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem) {
+
+    softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem){
 
       @Override
       protected boolean validateInclude() {
@@ -170,9 +169,10 @@ public class ViagemMB {
     softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
     viagem.setVendas(new ArrayList<Venda>());
     softGridVenda = new SoftGridControl<Venda>(Venda.class, viagem.getVendas(), viagem);
+    return "manterViagem";
   }
 
-  public void preAlterarViagem(Viagem viag) {
+  public String preAlterarViagem(Viagem viag) {
     viagem = viag;
     this.alterando = true;
     softGridTripulante = new SoftGridControl<Tripulante>(Tripulante.class, viagem.getTripulantes(), viagem) {
@@ -192,6 +192,7 @@ public class ViagemMB {
     };
     softGridDespesa = new SoftGridControl<Despesa>(Despesa.class, viagem.getDespesas(), viagem);
     softGridVenda = new SoftGridControl<Venda>(Venda.class, viagem.getVendas(), viagem);
+    return "manterViagem";
   }
   public static final String[] CAMPOS_PESQUISA = {"embarcacao", "inicio", "fim"};
   public static final String[] OPERADORES = {"=", ">=", "<="};

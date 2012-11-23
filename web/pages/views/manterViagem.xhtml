@@ -44,7 +44,7 @@
               </cp:grid>
             </p:tab>
             <p:tab id="vendaTab" title="Venda">
-              <cp:grid id="cpGrid" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
+              <cp:softGrid id="cpGrid" label="Vendas" mb="#{viagemMB.softGridVenda}"/>
             </p:tab>
             <p:tab id="balancoTab" title="Balanço">
               <p:commandButton id="btnAtualizarBalanco" actionListener="#{viagemMB.fecharConta}" process="@this" update="pnlBalanco" value="Atualizar Balanço" />

@@ -4,7 +4,8 @@
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui"
       xmlns:cp="http://java.sun.com/jsf/composite/custom"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
   <!-- INTERFACE -->
   <cc:interface>
@@ -17,11 +18,13 @@
   <cc:implementation>
     <cp:grid id="cpGrid" label="#{cc.attrs.label}" mb="#{cc.attrs.mb}">
       <f:facet name="softGrid">
-        <p:accordionPanel var="field" value="#{cc.attrs.mb.softControllersSet}">
-          <p:tab title="#{cc.attrs.mb.softControllersLabels[field]}">
-            <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[field]}" mb="#{cc.attrs.mb.softControllers[field]}" rendered="#{not empty cc.attrs.mb}"/>
-          </p:tab>
-        </p:accordionPanel>
+        <f:facet name="softGrid">
+          <ui:repeat var="sfField" value="#{cc.attrs.mb.softControllersSet}">
+            <p:fieldset legend="#{cc.attrs.mb.softControllersLabels[sfField]}">
+              <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[sfField]}" mb="#{cc.attrs.mb.softControllers[sfField]}"/>
+            </p:fieldset>
+          </ui:repeat>
+        </f:facet>
       </f:facet>
     </cp:grid>
   </cc:implementation>

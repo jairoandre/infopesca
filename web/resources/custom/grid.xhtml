@@ -13,7 +13,7 @@
     <cc:attribute name="id"/>
     <cc:attribute name="label" required="true"/>
     <cc:attribute name="mb" required="true"/>
-    <cc:facet name="softGrid"/>
+    <cc:facet name="softGrid" />
   </cc:interface>
 
   <!-- IMPLEMENTATION -->
@@ -21,7 +21,7 @@
     <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
     <p:outputPanel id="grid" rendered="#{not empty cc.attrs.mb}">
       <!-- FORM BOX -->
-      <p:dialog id="formMdl" modal="true" resizable="false" widgetVar="#{uniqueName}Modal" appendToBody="false" header="#{cc.attrs.label} - #{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}" closable="false" width="600">
+      <p:dialog id="formMdl" modal="true" resizable="false" widgetVar="#{uniqueName}Modal" appendToBody="true" header="#{cc.attrs.label} - #{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}" closable="false" width="600">
         <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
           <p:focus id="focusForm" context="fieldsPnl" />
           <cp:line id="line">
@@ -58,7 +58,8 @@
                        rows="10"
                        paginatorPosition="top"
                        styleClass="table" 
-                       lazy="true" binding="#{cc.attrs.mb.dataTable}">
+                       lazy="true"
+                       transient="true">
             <p:columns id="dynaColumns" value="#{cc.attrs.mb.columnFields}" var="field" columnIndexVar="idx">
               <f:facet name="header">
                 <p:outputPanel id="headerLabel" style="white-space: nowrap; text-align: left;" layout="block">

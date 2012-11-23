@@ -26,7 +26,7 @@ import org.primefaces.model.SortOrder;
 public abstract class GridControl<T> implements Serializable {
 
   private Class<T> clazz;
-  private List<T> list;
+  private Collection<T> list;
   private T instance;
   private T sample;
   private Map<String, TipoOperacao> searchParams;
@@ -63,7 +63,10 @@ public abstract class GridControl<T> implements Serializable {
 
   protected abstract void remove(T obj);
 
-  protected void init(){};
+  protected void init() {
+  }
+
+  ;
 
   protected boolean validateInclude() {
     return true;
@@ -113,7 +116,7 @@ public abstract class GridControl<T> implements Serializable {
     }
   }
 
-  protected List<T> listAll() throws Exception {
+  protected Collection<T> listAll() throws Exception {
     return bc.listAll();
   }
 
@@ -128,21 +131,26 @@ public abstract class GridControl<T> implements Serializable {
     } else {
       list = listAll();
     }
+    if (list == null) {
+      list = new ArrayList<T>();
+    }
     final int listSize = list.size();
     model = new LazyDataModel<T>() {
+
+      List<T> convertedList = new ArrayList<T>(list);
 
       @Override
       public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filter) {
         if (listSize > pageSize) {
 
           try {
-            return list.subList(first, first + pageSize);
+            return convertedList.subList(first, first + pageSize);
           } catch (IndexOutOfBoundsException e) {
             System.out.println("Tamanho da lista ultrapassado!");
-            return list.subList(first, first + (listSize % pageSize));
+            return convertedList.subList(first, first + (listSize % pageSize));
           }
         } else {
-          return list;
+          return convertedList;
         }
       }
     };
@@ -287,11 +295,11 @@ public abstract class GridControl<T> implements Serializable {
     this.labels = labels;
   }
 
-  public List<T> getList() {
+  public Collection<T> getList() {
     return list;
   }
 
-  public void setList(List<T> list) {
+  public void setList(Collection<T> list) {
     this.list = list;
   }
 
@@ -373,5 +381,4 @@ public abstract class GridControl<T> implements Serializable {
   public void setDataTable(DataTable dataTable) {
     this.dataTable = dataTable;
   }
-  
 }

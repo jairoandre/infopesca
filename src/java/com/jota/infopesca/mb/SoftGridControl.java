@@ -7,7 +7,6 @@ package com.jota.infopesca.mb;
 import com.jota.infopesca.bean.pattern.GridBean;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  *
@@ -16,10 +15,10 @@ import java.util.List;
 public class SoftGridControl<T> extends GridControl {
 
   private Object parent;
-  private List<T> list;
+  private Collection<T> list;
 
   @Override
-  protected List listAll() throws Exception {
+  protected Collection listAll() throws Exception {
     return list;
   }
 
@@ -37,6 +36,9 @@ public class SoftGridControl<T> extends GridControl {
 
   public SoftGridControl(Class<T> clazz, Collection<T> list, Object parent) {
     super(clazz);
+    if(list != null){
+      this.list = list;
+    }
     this.parent = parent;
     init();
     try {
