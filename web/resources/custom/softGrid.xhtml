@@ -18,13 +18,11 @@
   <cc:implementation>
     <cp:grid id="cpGrid" label="#{cc.attrs.label}" mb="#{cc.attrs.mb}">
       <f:facet name="softGrid">
-        <f:facet name="softGrid">
-          <ui:repeat var="sfField" value="#{cc.attrs.mb.softControllersSet}">
-            <p:fieldset legend="#{cc.attrs.mb.softControllersLabels[sfField]}">
-              <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[sfField]}" mb="#{cc.attrs.mb.softControllers[sfField]}"/>
-            </p:fieldset>
-          </ui:repeat>
-        </f:facet>
+        <p:dataGrid id="dtTable" var="sfField" value="#{cc.attrs.mb.softControllersSet}" columns="1" rows="1">
+          <p:fieldset legend="#{cc.attrs.mb.softControllersLabels[sfField]}">
+            <cp:grid id="softGrid" label="#{cc.attrs.mb.softControllersLabels[sfField]}" mb="#{cc.attrs.mb.softControllers[sfField]}"/>
+          </p:fieldset>
+        </p:dataGrid>
       </f:facet>
     </cp:grid>
   </cc:implementation>

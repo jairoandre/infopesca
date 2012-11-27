@@ -21,7 +21,8 @@
     <ui:param name="uniqueName" value="#{cc.clientId.replace('-','_')}"/>
     <p:outputPanel id="grid" rendered="#{not empty cc.attrs.mb}">
       <!-- FORM BOX -->
-      <p:dialog id="formMdl" modal="true" resizable="false" widgetVar="#{uniqueName}Modal" appendToBody="true" header="#{cc.attrs.label} - #{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}" closable="false" width="600">
+      <p:remoteCommand name="#{uniqueName}MdlUpdate" update="mdl" oncomplete="#{uniqueName}Mdl.show();"/>
+      <p:dialog id="mdl" modal="true" appendToBody="true" resizable="false" widgetVar="#{uniqueName}Mdl" header="#{cc.attrs.label} - #{cc.attrs.mb.isNewRecord ? 'Novo Registro' : 'Alterar Registro'}" closable="false" width="600">
         <p:outputPanel id="fieldsPnl" layout="block" rendered="#{cc.attrs.mb.showForm}">
           <p:focus id="focusForm" context="fieldsPnl" />
           <cp:line id="line">
@@ -35,18 +36,19 @@
           <cc:insertChildren/>
           <cc:renderFacet name="softGrid"/>
           <p:outputPanel id="btnsPnl" style="margin: 5px 0 5px 0;" layout="block">
-            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="formMdl" update="fieldsPnl, gridPnl" oncomplete="if(!args.validationFailed) #{uniqueName}Modal.hide(); else return;" partialSubmit="true"/>
+            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="mdl" update="fieldsPnl, gridPnl" oncomplete="if(!args.validationFailed) #{uniqueName}Mdl.hide(); else return;" partialSubmit="true"/>
             <p:spacer width="5"/>
-            <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" oncomplete="#{uniqueName}Modal.hide();"/>
+            <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" oncomplete="#{uniqueName}Mdl.hide();"/>
           </p:outputPanel>
         </p:outputPanel>        
       </p:dialog>
+
       <!-- DATA TABLE -->
       <p:outputPanel id="gridPnl" layout="block">
         <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
           <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.delete}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
           <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Confirma a exclusão?" command="#{uniqueName}DeleteCommand()"/>
-          <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" process="@this" update="formMdl" oncomplete="#{uniqueName}Modal.show();"/>
+          <p:commandButton id="newBtn" actionListener="#{cc.attrs.mb.preInclude}" value="Novo" process="@this" update="mdl" oncomplete="#{uniqueName}Mdl.show();"/>
         </p:outputPanel>
         <!-- Mensagem lista vazia -->
         <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>
@@ -80,7 +82,7 @@
               <f:facet name="header">
                 Ações
               </f:facet>
-              <p:commandButton id="btnAlterar" actionListener="#{cc.attrs.mb.preAlter}" icon="ui-icon-pencil" process="@this" update="-#{cc.clientId}-formMdl" oncomplete="#{uniqueName}Modal.show();" style="display: inline-table">
+              <p:commandButton id="btnAlterar" actionListener="#{cc.attrs.mb.preAlter}" icon="ui-icon-pencil" process="@this" update="@form" oncomplete="#{uniqueName}Mdl.show();" style="display: inline-table">
                 <f:setPropertyActionListener value="#{obj}" target="#{cc.attrs.mb.instance}"/>
               </p:commandButton>
               <p:commandButton id="btnExcluir" actionListener="#{cc.attrs.mb.preDelete}" icon="ui-icon-trash" process="@this" oncomplete="#{uniqueName}DeleteDialog.show()" style="display: inline-table">
