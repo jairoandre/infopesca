@@ -43,7 +43,7 @@ public abstract class GridControl<T> implements Serializable {
   private Map<String, String> setterNames;
   private LazyDataModel<T> model;
   private GenericBC<T> bc;
-  private DataTable dataTable = new DataTable();
+  private Integer page;
 
   public GridControl(Class<T> clazz) {
     this.clazz = clazz;
@@ -54,7 +54,7 @@ public abstract class GridControl<T> implements Serializable {
     setterNames = new HashMap<String, String>();
     bc = new GenericBC<T>(clazz);
     retrieveLabelsAndFields();
-    dataTable.setFirst(0);
+    page = 0;
   }
 
   protected abstract void add(T obj);
@@ -121,7 +121,6 @@ public abstract class GridControl<T> implements Serializable {
   }
 
   public final void search() throws Exception {
-    dataTable.setFirst(0);
     if (sample != null) {
       QueryUtil<T> query = new QueryUtil<T>(sample);
       for (String field : searchParams.keySet()) {
@@ -134,6 +133,10 @@ public abstract class GridControl<T> implements Serializable {
     if (list == null) {
       list = new ArrayList<T>();
     }
+    refreshModel();
+  }
+
+  private void refreshModel() {
     final int listSize = list.size();
     model = new LazyDataModel<T>() {
 
@@ -146,7 +149,6 @@ public abstract class GridControl<T> implements Serializable {
           try {
             return convertedList.subList(first, first + pageSize);
           } catch (IndexOutOfBoundsException e) {
-            System.out.println("Tamanho da lista ultrapassado!");
             return convertedList.subList(first, first + (listSize % pageSize));
           }
         } else {
@@ -155,6 +157,7 @@ public abstract class GridControl<T> implements Serializable {
       }
     };
     model.setRowCount(listSize);
+    page = list.size() / 10;
   }
 
   /*
@@ -165,13 +168,14 @@ public abstract class GridControl<T> implements Serializable {
       if (isNewRecord) {
         if (validateInclude()) {
           add(instance);
+          list.add(instance);
+          refreshModel();
         } else {
           return;
         }
       } else {
         alter(instance);
       }
-      search();
       showForm = false;
     } catch (Exception ex) {
       System.out.println("Erro: " + ex.getMessage());
@@ -374,11 +378,11 @@ public abstract class GridControl<T> implements Serializable {
     return this.bc;
   }
 
-  public DataTable getDataTable() {
-    return dataTable;
+  public Integer getPage() {
+    return page;
   }
 
-  public void setDataTable(DataTable dataTable) {
-    this.dataTable = dataTable;
+  public void setPage(Integer page) {
+    this.page = page;
   }
 }

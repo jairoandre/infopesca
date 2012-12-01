@@ -12,14 +12,14 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author 08404235783
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class DespesaMB extends HardGridControl<Despesa> {
 
   public DespesaMB() {
@@ -87,4 +87,15 @@ public class DespesaMB extends HardGridControl<Despesa> {
     }
     return total;
   }
+
+  @Override
+  public void preInclude() {
+    super.preInclude();
+    Despesa sample = (Despesa) getSample();
+    if(sample.getFornecedor() != null){
+      ((Despesa)getInstance()).setFornecedor(sample.getFornecedor());
+    }
+  }
+  
+  
 }
