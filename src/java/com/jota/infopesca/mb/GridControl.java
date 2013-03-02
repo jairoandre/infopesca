@@ -15,7 +15,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -168,8 +167,7 @@ public abstract class GridControl<T> implements Serializable {
       if (isNewRecord) {
         if (validateInclude()) {
           add(instance);
-          list.add(instance);
-          refreshModel();
+          search();
         } else {
           return;
         }

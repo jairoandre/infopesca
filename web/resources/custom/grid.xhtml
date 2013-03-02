@@ -13,6 +13,7 @@
     <cc:attribute name="id"/>
     <cc:attribute name="label" required="true"/>
     <cc:attribute name="mb" required="true"/>
+    <cc:attribute name="callOnChange"/>
     <cc:facet name="softGrid" />
   </cc:interface>
 
@@ -35,7 +36,8 @@
           <cc:insertChildren/>
           <cc:renderFacet name="softGrid"/>
           <p:outputPanel id="btnsPnl" style="margin: 5px 0 5px 0;" layout="block">
-            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="@this, fieldsPnl" update="gridPnl, fieldsPnl"/>
+            <p:commandButton id="confirmBtn" actionListener="#{cc.attrs.mb.confirm}" value="Confirmar" process="@this, fieldsPnl" update="@form" oncomplete="#{cc.attrs.callOnChange}"/>
+            <p:hotkey bind="ctrl+alt+s" actionListener="#{cc.attrs.mb.confirm}" process="@this, fieldsPnl" update="@form" oncomplete="#{cc.attrs.callOnChange}" />
             <p:spacer width="5"/>
             <p:commandButton id="cancelBtn" actionListener="#{cc.attrs.mb.cancel}" value="Cancelar" process="@this" update="fieldsPnl"/>
           </p:outputPanel>
@@ -43,11 +45,13 @@
       </p:outputPanel>        
 
       <!-- DATA TABLE -->
+      <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.delete}" oncomplete="#{uniqueName}DeleteDialog.hide();#{cc.attrs.callOnChange}" update="gridPnl"/>
+      <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Confirma a exclusão?" command="#{uniqueName}DeleteCommand()"/>
+
       <p:outputPanel id="gridPnl" layout="block">
         <p:outputPanel id="gridBtnsPnl" layout="block" style="margin: 5px 0 5px 0;">
-          <p:remoteCommand id="deleteCommand" name="#{uniqueName}DeleteCommand" action="#{cc.attrs.mb.delete}" oncomplete="#{uniqueName}DeleteDialog.hide()" update="gridPnl"/>
-          <cp:dialogCommand id="deleteDialog" dialogName="#{uniqueName}DeleteDialog" msg="Confirma a exclusão?" command="#{uniqueName}DeleteCommand()"/>
-          <p:commandButton id="newBtn" action="#{cc.attrs.mb.preInclude}" value="Novo" process="@this" update="fieldsPnl, gridBtnsPnl" rendered="#{!cc.attrs.mb.showForm}"/>
+          <p:commandButton id="newBtn" action="#{cc.attrs.mb.preInclude}" value="Novo" process="@this" update="fieldsPnl, gridBtnsPnl" rendered="#{!cc.attrs.mb.showForm}"  />
+          <p:hotkey action="#{cc.attrs.mb.preInclude}" bind="alt+c" process="@this" update="fieldsPnl, gridBtnsPnl" rendered="#{!cc.attrs.mb.showForm}"/>
         </p:outputPanel>
         <!-- Mensagem lista vazia -->
         <cp:message id="msgVazia" msg="Sem registros na lista." rendered="#{cc.attrs.mb.emptyList}"/>

@@ -29,6 +29,7 @@
               <p:commandButton id="btnOkFiltro" value="Filtrar" actionListener="#{despesaMB.search}" process="@this, fieldsFiltro" update="@form"/>
             </p:panel>
           </cp:line>
+          <p:remoteCommand update="informacoes" name="atualizarInformacoes"/>
           <p:panel id="informacoes" toggleable="true" header="Informações">
             <cp:line>
               <cp:group label="Total de despesas (listadas):">
@@ -39,7 +40,7 @@
               </cp:group>
             </cp:line>
           </p:panel>
-          <cp:grid id="despGrid" label="Despesa" mb="#{despesaMB}">
+          <cp:grid id="despGrid" label="Despesa" mb="#{despesaMB}" callOnChange="atualizarInformacoes();">
             <cp:line id="linhaDespesa" >
               <cp:group id="groupDespesa" label="Tipo de Despesa:" required="true">
                 <p:selectOneMenu id="tipoDespesa" value="#{despesaMB.despesa.tipo}" converter="beanConverter" required="true" requiredMessage="Campo [Tipo Despesa] obrigatório." effectSpeed="50">

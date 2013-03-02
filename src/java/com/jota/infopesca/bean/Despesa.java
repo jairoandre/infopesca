@@ -48,11 +48,11 @@ public class Despesa extends GridBean {
   private Boolean quitada;
   @Column(name = "DESP_DT_VENCIMENTO")
   @Temporal(TemporalType.DATE)
-  @GridConfig(label = "Vencimento", date = true)
+  @GridConfig(label = "Vencimento", date = true, columnVisible = false)
   private Date vencimento;
   @Column(name = "DESP_DT_PAGAMENTO")
   @Temporal(TemporalType.DATE)
-  @GridConfig(label = "Data Pagamento", date = true, columnVisible = false)
+  @GridConfig(label = "Data Pagamento", date = true)
   private Date pagamento;
   @JoinColumn(name = "VIAG_ID", referencedColumnName = "VIAG_ID")
   @ManyToOne(optional = true)
@@ -70,8 +70,8 @@ public class Despesa extends GridBean {
   private String descricao;
 
   public Despesa() {
-    this.tipo = TipoDespesa.VIAGEM;
-    this.quitada = false;
+    this.tipo = TipoDespesa.OUTRAS;
+    this.quitada = true;
   }
 
   public Despesa(Long id) {
